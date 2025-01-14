@@ -60,7 +60,7 @@ const Home = ()=> {
             <Button 
                 onClick={() => navigate("/newTask")}
                 variant="plain"
-                css={{"float": "right", "marginRight": "0.5rem", 'marginBottom': "0.5rem", "backgroundColor": "#0044D7", "color":"white"}} >
+                css={{"float": "right", "marginRight": "0.5rem", 'marginBottom': "0.5rem", "backgroundColor": "#007bff", "color":"white"}} >
                 +
             </Button>
         </Container>

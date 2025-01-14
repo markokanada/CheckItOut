@@ -1,7 +1,7 @@
 import './App.css'
 import Layout from './components/Layout'
 import { Route, Routes } from 'react-router-dom'
-import TaskRecording from './taskRecording'
+import TaskRecording from './pages/taskRecording'
 import Home from './pages/Home'
 
 function App() {
