@@ -1,8 +1,12 @@
 
 import { Box, Container } from "@chakra-ui/react";
-import PropTypes from "prop-types";
+import { ReactNode } from "react";
 
-const Layout = ({children}) => {
+interface LayoutProps {
+    children: ReactNode
+}
+
+const Layout: React.FC<LayoutProps> = ({children}) => {
     return (
         <Container pt={0}>
             <Box as="main">
@@ -11,9 +15,5 @@ const Layout = ({children}) => {
         </Container>
     );
 };
-
-Layout.propTypes = {
-    children: PropTypes.node.isRequired,
-}
 
 export default Layout;

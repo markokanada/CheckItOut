@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import './taskRecording.css';
 
-const TaskRecording = () => {
-  const [taskType, setTaskType] = useState('Egyszeri');
-  const [taskName, setTaskName] = useState('');
-  const [duration, setDuration] = useState('');
-  const [deadline, setDeadline] = useState('');
-  const [description, setDescription] = useState('');
-  const [tasks, setTasks] = useState([]);
+interface Task {
+  type: string;
+  name: string;
+  duration: string;
+  deadline: string;
+  description: string;
+}
 
+
+const TaskRecording: React.FC = () => {
+  const [taskType, setTaskType] = useState<string>("Egyszeri");
+  const [taskName, setTaskName] = useState<string>("");
+  const [duration, setDuration] = useState<string>("");
+  const [deadline, setDeadline] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  
   const handleAddTask = () => {
     if (taskName.trim()) {
       setTasks([...tasks, {

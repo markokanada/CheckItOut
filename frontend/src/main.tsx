@@ -2,8 +2,8 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from "react-router-dom";
 import { ChakraProvider, createSystem, defineConfig } from "@chakra-ui/react";
 import './index.css'
-import App from './App.jsx'
-import Header from './components/Header.jsx';
+import App from './App.js'
+import Header from './components/Header';
 
 const config = defineConfig({
   theme: {
@@ -15,7 +15,7 @@ const config = defineConfig({
 
 const system = createSystem(config);
 
-createRoot(document.getElementById('root')).render(
+createRoot(document.getElementById('root') as HTMLElement).render(
   <ChakraProvider value={system}>
     <Router>
       <Header />
