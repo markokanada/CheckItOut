@@ -13,7 +13,11 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string("description", 255)->nullable();
+            $table->dateTime("due_date",0)->nullable();
+            $table->integer("priority");
+            $table->string("status", 15);
+            $table->foreignId("category_id")->constrained();
         });
     }
 
