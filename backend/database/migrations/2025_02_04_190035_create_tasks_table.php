@@ -17,7 +17,7 @@ return new class extends Migration
             $table->dateTime("due_date",0)->nullable();
             $table->integer("priority");
             $table->string("status", 15);
-            $table->foreignId("category_id")->constrained();
+            $table->foreignId("category_id")->constrained()->onDelete("cascade");
         });
     }
 
