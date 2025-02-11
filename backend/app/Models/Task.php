@@ -34,6 +34,6 @@ class Task extends Model
     }
 
     public function schedules() : BelongsToMany {
-        return $this->belongsToMany("task_schedule");
+        return $this->belongsToMany(Schedule::class, "task_schedule");
     }
 }
