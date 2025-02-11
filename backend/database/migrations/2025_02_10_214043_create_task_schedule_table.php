@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('task_schedule', function (Blueprint $table) {
-            $table->foreignId("task_id")->primary();
-            $table->foreignId("schedule_id")->primary();
+            $table->foreignId("task_id");
+            $table->foreignId("schedule_id");
 
-
+            $table->primary(["task_id", "schedule_id"]);
         });
     }
 
