@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
+use App\Http\Resources\ScheduleResource;
 use App\Models\Schedule;
 
 class ScheduleController extends Controller
@@ -13,7 +14,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        //
+        return ScheduleResource::collection(Schedule::all());
     }
 
     /**
@@ -21,7 +22,8 @@ class ScheduleController extends Controller
      */
     public function store(StoreScheduleRequest $request)
     {
-        //
+        $schedule = Schedule::create($request->all());
+        return new ScheduleResource($schedule);
     }
 
     /**
@@ -29,7 +31,7 @@ class ScheduleController extends Controller
      */
     public function show(Schedule $schedule)
     {
-        //
+        return new ScheduleResource($schedule);
     }
 
     /**
@@ -37,7 +39,9 @@ class ScheduleController extends Controller
      */
     public function update(UpdateScheduleRequest $request, Schedule $schedule)
     {
-        //
+        $schedule = Schedule::findOrfail($schedule->id);
+        $schedule->update($request->all());
+        return new ScheduleResource($schedule);
     }
 
     /**
@@ -45,6 +49,7 @@ class ScheduleController extends Controller
      */
     public function destroy(Schedule $schedule)
     {
-        //
+        Schedule::destroy($schedule->id);
+        return response()->json(null, 204);
     }
 }
