@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import TaskRecording from './pages/taskRecording'
 import Home from './pages/Home'
 import Register from './pages/Register';
+import Login from './pages/Login';
 
 
 function App() {
@@ -21,6 +22,9 @@ function App() {
 
       <Routes>
         <Route path='/register' element={<Register />} />
+      </Routes>
+      <Routes>
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Layout>
   );
