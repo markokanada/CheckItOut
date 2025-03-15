@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './taskRecording.css';
+import './css/taskRecording.css';
 
 interface Task {
   type: string;
