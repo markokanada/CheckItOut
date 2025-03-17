@@ -1,8 +1,10 @@
 import React, { Component, FormEvent, ChangeEvent } from "react";
 import { makeObservable, observable, action, computed } from "mobx";
-import { NavigateFunction } from "react-router-dom";
+import {  NavigateFunction } from "react-router-dom";
 import "./css/Login.css";
 import ViewComponent from "../interfaces/ViewComponent";
+import { Box, Heading, Input, Button, Text, Link } from "@chakra-ui/react";
+import { FormControl, FormLabel } from "@mui/material";
 
 export default class Login implements ViewComponent {
     formData = {
@@ -44,40 +46,89 @@ export default class Login implements ViewComponent {
     };
 
     View = () => (
-        <div className="login-container">
-            <h1>Bejelentkezés</h1>
-            <form onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                    <label>E-mail</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={this.formData.email}
-                        onChange={this.handleChange}
-                    />
-                    {this.errors.email && <span className="error">{this.errors.email}</span>}
-                </div>
-
-                <div className="form-group">
-                    <label>Jelszó</label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={this.formData.password}
-                        onChange={this.handleChange}
-                    />
-                    {this.errors.password && <span className="error">{this.errors.password}</span>}
-                </div>
-
-                <button type="submit">Bejelentkezés</button>
-            </form>
-
-            <p>
-                Még nincs fiókod?{" "}
-                <span className="register-link" onClick={() => this.navigate("/register")}>
-                    Regisztrálj itt
-                </span>
-            </p>
-        </div>
+<Box
+      maxWidth="400px"
+      margin="0 auto"
+      padding="2rem"
+      backgroundColor="#242424"
+      color="rgba(255, 255, 255, 0.87)"
+      borderRadius="8px"
+      fontFamily="Inter, system-ui, Avenir, Helvetica, Arial, sans-serif"
+    >
+      <Heading as="h1" fontSize="3.2em" lineHeight="1.1" marginBottom="1rem">
+        Bejelentkezés
+      </Heading>
+      <form onSubmit={this.handleSubmit}>
+        <FormControl sx={{marginBottom:"1rem"}}>
+          <FormLabel>E-mail</FormLabel>
+          <Input
+            type="email"
+            name="email"
+            onChange={this.handleChange}
+            backgroundColor="#1a1a1a"
+            color="rgba(255, 255, 255, 0.87)"
+            border="1px solid transparent"
+            borderRadius="8px"
+            padding="0.6em 1.2em"
+            fontSize="1em"
+            fontFamily="inherit"
+            _hover={{
+              borderColor: '#646cff',
+            }}
+          />
+        </FormControl>
+        <FormControl sx={{marginBottom:"1rem"}}>
+          <FormLabel>Jelszó</FormLabel>
+          <Input
+            type="password"
+            name="password"
+            onChange={this.handleChange}
+            backgroundColor="#1a1a1a"
+            color="rgba(255, 255, 255, 0.87)"
+            border="1px solid transparent"
+            borderRadius="8px"
+            padding="0.6em 1.2em"
+            fontSize="1em"
+            fontFamily="inherit"
+            _hover={{
+              borderColor: '#646cff',
+            }}
+          />
+        </FormControl>
+        <Button
+          type="submit"
+          backgroundColor="#1a1a1a"
+          color="rgba(255, 255, 255, 0.87)"
+          border="1px solid transparent"
+          borderRadius="8px"
+          padding="0.6em 1.2em"
+          fontSize="1em"
+          fontFamily="inherit"
+          cursor="pointer"
+          _hover={{
+            borderColor: '#646cff',
+          }}
+        >
+          Bejelentkezés
+        </Button>
+      </form>
+      <Text marginTop="1rem">
+        Még nincs fiókod?{' '}
+        <Link
+          onClick={() => this.navigate('/register')}
+          color="white"
+          textDecoration="none"
+          padding="0.5rem"
+          backgroundColor="#007bff"
+          borderRadius="10px"
+          cursor="pointer"
+          _hover={{
+            color: '#535bf2',
+          }}
+        >
+          Regisztrálj itt
+        </Link>
+      </Text>
+    </Box>
     );
 }
