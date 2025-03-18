@@ -26,7 +26,6 @@ const AppWrapper = () => {
 
   return (
     <>
-      <Header />
       {appInstance && appInstance.View()}
     </>
   );

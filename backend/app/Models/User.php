@@ -59,4 +59,14 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'users_users', 'guest_id', 'owner_id');
     }
 
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
 }

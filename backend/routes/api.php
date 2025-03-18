@@ -12,3 +12,6 @@ Route::get('/user', function (Request $request) {
 Route::apiResource("users",UserController::class);
 
 Route::apiResource("schedule", ScheduleController::class);
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
