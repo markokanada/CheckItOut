@@ -4,12 +4,14 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -57,6 +59,10 @@ class User extends Authenticatable
     public function shared_tasklists_owners()
     {
         return $this->belongsToMany(User::class, 'users_users', 'guest_id', 'owner_id');
+    }
+
+    public function tasks() : HasMany {
+        return $this->hasMany(Task::class);
     }
 
     public function getJWTIdentifier()

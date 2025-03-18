@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -37,18 +39,25 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validated();
 
-        if (!$token = JWTAuth::attempt($credentials)) {
-            return response()->json(['error' => 'Érvénytelen bejelentkezési adatok!'], 401);
+        if (Auth::attempt($credentials)) {
+            $token = $request->user()->createToken("app");
+
+            return response()->json([
+                'message' => 'Sikeres bejelentkezés!',
+                'token' => $token->plainTextToken
+            ]);
         }
 
         return response()->json([
-            'message' => 'Sikeres bejelentkezés!',
-            'token' => $token
-        ]);
+                "data" => [
+                    "message" => "SIKERETELEN belépés",
+                ]
+            ],401);
+
     }
 
     public function me()
