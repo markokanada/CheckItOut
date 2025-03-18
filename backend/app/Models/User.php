@@ -65,6 +65,10 @@ class User extends Authenticatable
         return $this->hasMany(Task::class, "user_id", "id");
     }
 
+    public function schedules() : HasMany {
+        return $this->hasMany(Schedule::class);
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();
