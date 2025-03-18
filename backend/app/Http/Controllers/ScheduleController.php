@@ -55,8 +55,14 @@ class ScheduleController extends Controller
     }
 
     public function scheduleComposer(User $user) : mixed {
-        $schedules = $user->load("tasks")->only("tasks");
+        $schedules = $user->load("tasks")->only("tasks")['tasks']->toArray();
+        usort($schedules, function ($a, $b){
+            return $b['priority'] <=> $a['priority'];
+        });
 
-        return null;
+        usort($schedules, function ($a, $b){
+            return $a['due_date'] <=> $b['due_date'];
+        });
+        return $schedules;
     }
 }
