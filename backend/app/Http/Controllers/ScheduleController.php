@@ -6,6 +6,7 @@ use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Http\Resources\ScheduleResource;
 use App\Models\Schedule;
+use App\Models\User;
 
 class ScheduleController extends Controller
 {
@@ -51,5 +52,11 @@ class ScheduleController extends Controller
     {
         Schedule::destroy($schedule->id);
         return response()->json(null, 204);
+    }
+
+    public function scheduleComposer(User $user) : mixed {
+        $schedules = $user->load("tasks")->only("tasks");
+
+        return null;
     }
 }
