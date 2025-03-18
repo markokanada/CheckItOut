@@ -16,5 +16,9 @@ export default defineConfig({
               ]
           }
       })
-  ]
+  ],
+  server:{
+    host: true,
+    allowedHosts: ['frontend.vm1.test']
+  }
 });
