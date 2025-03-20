@@ -16,3 +16,6 @@ Route::apiResource("schedule", ScheduleController::class);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::get("/scheduleComposer/{user}", [ScheduleController::class, 'scheduleComposer'])
+->name("schedule.compose")->middleware('auth:sanctum');

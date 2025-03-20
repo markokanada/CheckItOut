@@ -6,6 +6,8 @@ use App\Http\Requests\StoreScheduleRequest;
 use App\Http\Requests\UpdateScheduleRequest;
 use App\Http\Resources\ScheduleResource;
 use App\Models\Schedule;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
 {
@@ -51,5 +53,29 @@ class ScheduleController extends Controller
     {
         Schedule::destroy($schedule->id);
         return response()->json(null, 204);
+    }
+
+    public function scheduleComposer(User $user) : mixed {
+        $userData = $user->load("tasks", "schedules");
+        $tasks = $userData['tasks']->toArray();
+        $schedules = $userData['schedules']->toArray();
+
+        //sorting tasks
+        usort($tasks, function ($a, $b){
+            return $b['priority'] <=> $a['priority'];
+        });
+
+        usort($tasks, function ($a, $b){
+            return $a['due_date'] <=> $b['due_date'];
+        });
+        //sorting schedules
+        usort($schedules, function ($a, $b){
+            return $a['deadline'] <=> $b['deadline'];
+        });
+
+        foreach($tasks as $task) {
+            DB::table('task_schedule')->insertOrIgnore(['task_id' => $task['id'], 'schedule_id' => $user->id]);
+        }
+        return compact('tasks', 'schedules');
     }
 }
