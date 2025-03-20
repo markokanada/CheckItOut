@@ -5,7 +5,6 @@ import TaskRecording from './pages/taskRecording';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import { Component } from 'react';
 import Landing from './pages/Landing';
 import { computed, makeObservable } from 'mobx';
 import ViewComponent from './interfaces/ViewComponent';
@@ -23,12 +22,16 @@ export default class App implements ViewComponent{
     return new Landing(this.navigate); 
   }
 
+  @computed get home(): ViewComponent {
+    return new Home(this.navigate);
+  }
+
   View = () =>
      (
       <Layout>
         <Routes>
           <Route path='/' element={<this.landing.View/>} />
-          <Route path='/home' element={<Home />} />
+          <Route path='/home' element={<this.home.View />} />
           <Route path='/newTask' element={<TaskRecording />} />
           <Route path='/profile' element={<main><h1>In development - profile</h1></main>} />
           <Route path='/register' element={<Register />} />
