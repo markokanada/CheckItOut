@@ -22,8 +22,7 @@ export default class Home implements ViewComponent {
                     <Card.Root css={{ "boxShadow": "7px 7px 7px rgb(0,0,0,0.5)", "borderRadius": "0.5rem", "margin": "5rem" }}>
                         <Card.Body>
                             <Card.Description>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus sunt nostrum eos recusandae fugit quod est nemo explicabo quos obcaecati maiores, cumque neque nihil optio suscipit vero sed molestias iure!
-
+                               {toJS(GlobalEntities.tasks)[0].description}
                             </Card.Description>
                         </Card.Body>
                     </Card.Root>
