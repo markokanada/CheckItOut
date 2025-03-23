@@ -39,9 +39,8 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user->update($request->validated());
-        return new UserResource($user);
-
+        $user->update($request->only(['name', 'email', 'role']));
+        return response()->json(['message' => 'User updated successfully']);
     }
 
     /**
@@ -49,6 +48,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        return $user->delete() ? response()->noContent() : abort(500);
+        $user->delete();
+        return response()->json(['message' => 'User deleted successfully']);
     }
+
 }

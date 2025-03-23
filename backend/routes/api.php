@@ -19,3 +19,12 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::get("/scheduleComposer/{user}", [ScheduleController::class, 'scheduleComposer'])
 ->name("schedule.compose")->middleware('auth:sanctum');
+
+
+
+
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::get('/users', [UserController::class, 'index']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+});
