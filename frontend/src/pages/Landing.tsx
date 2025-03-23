@@ -9,7 +9,7 @@ export default class Landing implements ViewComponent {
     constructor(public navigate: NavigateFunction) { }
 
     View = () => (
-        <Box bg="white" color="#2D3748" minH="100vh">
+        <Box bg="white" color="#2D3748" minH="100vh" fontFamily="Inter, sans-serif">
             <Container maxW="container.xl" py="5rem">
                 <Stack>
                     {/* Hero Section */}
@@ -21,6 +21,7 @@ export default class Landing implements ViewComponent {
                             bgGradient="linear(to-r, #3182CE, #00B5D8)"
                             bgClip="text"
                             mb="1rem"
+                            textAlign="center"
                         >
                             Üdvözlünk a CheckItOut alkalmazásban!
                         </Heading>
@@ -45,72 +46,77 @@ export default class Landing implements ViewComponent {
                     </Box>
 
                     {/* Features Section */}
-                    <Box mb="3rem">
-                        <Heading
-                            textAlign="center"
-                            fontSize={{ base: "2xl", md: "3xl" }}
-                            fontWeight="bold"
-                            mb="2rem"
-                        >
-                            Miért válaszd a CheckItOut-ot?
-                        </Heading>
-                        <Flex
-                            direction={{ base: "column", md: "row" }}
-                            gap="2rem"
-                            justify="center"
-                            align="start"
-                        >
-                            {[
-                                {
-                                    icon: FaCheckCircle,
-                                    title: "Egyszerű használat",
-                                    description: "Intuitív felület, ami segít gyorsan és hatékonyan kezelni a feladataidat."
-                                },
-                                {
-                                    icon: FaListUl,
-                                    title: "Személyre szabható",
-                                    description: "Alakítsd az alkalmazást a saját igényeidhez, készíts egyedi listákat."
-                                },
-                                {
-                                    icon: FaClock,
-                                    title: "Időmegtakarítás",
-                                    description: "Rendszerezett feladatkezelés, hogy több időd maradjon a fontos dolgokra."
-                                },
-                                {
-                                    icon: FaBell,
-                                    title: "Emlékeztetők",
-                                    description: "Soha ne maradj le egy határidőről sem az intelligens értesítéseknek köszönhetően."
-                                }
-                            ].map((feature, index) => (
-                                <Box
-                                    key={index}
-                                    p="1.5rem"
-                                    borderRadius="xl"
-                                    bg="white"
-                                    boxShadow="xl"
-                                    flex="1"
-                                    _hover={{
-                                        transform: "translateY(-4px)",
-                                        transition: "all 0.3s ease"
-                                    }}
-                                >
-                                    <Icon
-                                        as={feature.icon}
-                                        w={8}
-                                        h={8}
-                                        color="#3182CE"
-                                        mb="1rem"
-                                    />
-                                    <Heading size="md" mb="0.75rem">
-                                        {feature.title}
-                                    </Heading>
-                                    <Text>
-                                        {feature.description}
-                                    </Text>
-                                </Box>
-                            ))}
-                        </Flex>
-                    </Box>
+                    <Flex justify="center">
+                        <Box mb="3rem" maxW="1200px" w="100%" textAlign="center">
+                            <Heading
+                                textAlign="center"
+                                fontSize={{ base: "2xl", md: "3xl" }}
+                                fontWeight="bold"
+                                mb="2rem"
+                            >
+                                Miért válaszd a CheckItOut-ot?
+                            </Heading>
+                            <Flex
+                                direction={{ base: "column", md: "row" }}
+                                gap="2rem"
+                                justify="center"
+                                align="stretch"
+                                textAlign="center"
+                            >
+                                {[
+                                    {
+                                        icon: FaCheckCircle,
+                                        title: "Egyszerű használat",
+                                        description: "Intuitív felület, ami segít gyorsan és hatékonyan kezelni a feladataidat."
+                                    },
+                                    {
+                                        icon: FaListUl,
+                                        title: "Személyre szabható",
+                                        description: "Alakítsd az alkalmazást a saját igényeidhez, készíts egyedi listákat."
+                                    },
+                                    {
+                                        icon: FaClock,
+                                        title: "Időmegtakarítás",
+                                        description: "Rendszerezett feladatkezelés, hogy több időd maradjon a fontos dolgokra."
+                                    },
+                                    {
+                                        icon: FaBell,
+                                        title: "Emlékeztetők",
+                                        description: "Soha ne maradj le egy határidőről sem az intelligens értesítéseknek köszönhetően."
+                                    }
+                                ].map((feature, index) => (
+                                    <Box
+                                        key={index}
+                                        p="1.5rem"
+                                        borderRadius="xl"
+                                        bg="white"
+                                        boxShadow="xl"
+                                        flex="1"
+                                        _hover={{
+                                            transform: "translateY(-4px)",
+                                            transition: "all 0.3s ease"
+                                        }}
+                                    >
+                                        <Icon
+                                            as={feature.icon}
+                                            w={8}
+                                            h={8}
+                                            color="#3182CE"
+                                            mb="1rem"
+                                        />
+                                        <Heading size="md" mb="0.75rem">
+                                            {feature.title}
+                                        </Heading>
+                                        <Text>
+                                            {feature.description}
+                                        </Text>
+                                    </Box>
+                                ))}
+                            </Flex>
+                        </Box>
+                    </Flex>
+
+
 
                     {/* Call to Action */}
                     <Box
