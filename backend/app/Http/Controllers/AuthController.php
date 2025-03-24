@@ -70,5 +70,29 @@ class AuthController extends Controller
         auth()->logout();
         return response()->json(['message' => 'Sikeres kijelentkezés']);
     }
+
+
+
+        public function authenticate(LoginRequest $request){
+        $cred = $request->validated();
+
+        if(Auth::attempt($cred)) {
+            $token = $request->user()->createToken('app');
+
+            return response()->json([
+                "data" => [
+                    "token" => $token->plainTextToken
+                ]
+            ]);
+        }
+        else {
+            return response()->json([
+                "data" => [
+                    "message" => "Sikertelen belépés"
+                ]
+            ], 401);
+        }
+    }
+
 }
 
