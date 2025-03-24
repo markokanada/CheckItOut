@@ -4,6 +4,8 @@ import ViewComponent from "../interfaces/ViewComponent";
 import { makeObservable, toJS } from "mobx";
 import GlobalEntities from "../store/GlobalEntities";
 import { getElementRef } from "@chakra-ui/react/dist/types/utils";
+import { BaseCard } from "../components/Card";
+import { ReactNode } from "react";
 
 
 
@@ -12,6 +14,8 @@ export default class Home implements ViewComponent {
         makeObservable(this, {});
     }
 
+    card = new BaseCard(toJS(GlobalEntities.tasks)[0].title, toJS(GlobalEntities.tasks)[0].description);
+
     View = () => (
         <Container>
             <Stack>
@@ -19,28 +23,20 @@ export default class Home implements ViewComponent {
                     <h1>
                         Következő teendő
                     </h1>
-                    <Card.Root css={{ "boxShadow": "7px 7px 7px rgb(0,0,0,0.5)", "borderRadius": "0.5rem", "margin": "5rem" }}>
-                        <Card.Body>
-                            <Card.Description>
-                               {toJS(GlobalEntities.tasks)[0].description}
-                            </Card.Description>
-                        </Card.Body>
-                    </Card.Root>
+                    < this.card.View />
                 </Box>
                 <Box>
                     <h1>
                         Mai teendő
                     </h1>
-                    {toJS(GlobalEntities.tasks).map((task: Task, index) => (
-                        <Card.Root key={index} css={{ "boxShadow": "7px 7px 7px rgb(0,0,0,0.5)", "borderRadius": "0.5rem", "marginTop": "0.2rem", "marginLeft": "5rem", "marginRight": "5rem" }}>
-                            <Card.Body>
-                                <Card.Description>
-                                    {task.description}
-                                </Card.Description>
-                            </Card.Body>
-                        </Card.Root>
-                    ))}
+                    
+                    {toJS(GlobalEntities.tasks).map((task: Task, index) => {
+                        const card = new BaseCard(task.title, task.description);
 
+                        return (
+                            < card.View key={index}/>
+                        )
+                    })}
 
 
                 </Box>
