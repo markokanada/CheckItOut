@@ -80,4 +80,20 @@ class TaskApiTest extends TestCase
         $resp->assertJsonPath("data.title", "newTitle");
         $resp->assertJsonPath("data.due", $task->last()->due_date);
     }
+
+    public function test_task_show() : void {
+        $n = 5;
+        $tasks = Task::factory($n)->create();
+
+        $task = $tasks->get(1);
+
+        $resp = $this->getJson("/api/tasks/2");
+
+        $resp->assertStatus(200);
+
+        $resp->assertJsonPath("data.id", $task->id);
+        $resp->assertJsonPath("data.descreption", $task->descreption);
+        $resp->assertJsonPath("data.title", $task->title);
+        $resp->assertJsonPath("data.due", $task->due_date);
+    }
 }
