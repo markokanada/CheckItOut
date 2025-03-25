@@ -64,18 +64,20 @@ class TaskApiTest extends TestCase
     }
 
     public function test_task_update() : void {
-        $task = Task::factory(1)->create()->first();
-        $id = $task->id;
+        $task = Task::factory(1)->create();
+        $id = $task->last()->id;
 
         $resp = $this->putJson("/api/tasks/$id", Task::factory()->make([
-            "title" => "newTitle"
+            "title" => "newTitle",
+            "due_date" => $task->last()->due_date,
+            "descreption" => $task->last()->descreption
         ])->toArray());
 
         $resp->assertStatus(200);
 
-        $resp->assertJsonPath("data.0.id", $task->id);
-        $resp->assertJsonPath("data.0.descreption", $task->descreption);
-        $resp->assertJsonPath("data.0.title", "newTitle");
-        $resp->assertJsonPath("data.0.due", $task->due_date);
+        $resp->assertJsonPath("data.id", $task->last()->id);
+        $resp->assertJsonPath("data.descreption", $task->last()->descreption);
+        $resp->assertJsonPath("data.title", "newTitle");
+        $resp->assertJsonPath("data.due", $task->last()->due_date);
     }
 }
