@@ -10,6 +10,14 @@ use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
+    public function index()
+    {
+        Gate::authorize('list-users');
+
+        return UserResource::collection(User::all());
+    }
+
+
     public function listUsers()
     {
         $users = User::all();
