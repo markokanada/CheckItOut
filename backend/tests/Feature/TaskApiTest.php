@@ -52,4 +52,14 @@ class TaskApiTest extends TestCase
                 "due" => $task->due_date
             ]);
     }
+
+    public function test_task_delete() : Void {
+        $tasks = Task::factory(5);
+        $id = $tasks->last()->id;
+
+        $resp = $this->deleteJson("/api/tasks/$id");
+
+        $resp->assertStatus(204);
+        $this->assertDatabaseMissing(Task::class, ["id" => $id]);
+    }
 }
