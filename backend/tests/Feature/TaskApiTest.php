@@ -27,7 +27,7 @@ class TaskApiTest extends TestCase
         $resp->assertJsonPath("data.0.id", $firstTask->id);
         $resp->assertJsonPath("data.0.descreption", $firstTask->descreption);
         $resp->assertJsonPath("data.0.title", $firstTask->title);
-        $resp->assertJsonPath("data.0.due_date", $firstTask->due_date);
+        $resp->assertJsonPath("data.0.due", $firstTask->due_date);
         
     }
 }
