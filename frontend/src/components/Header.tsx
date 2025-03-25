@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Box, Heading, HStack, VStack } from "@chakra-ui/react";
+import { Box, Heading, HStack, Stack, useBreakpointValue, useMediaQuery } from "@chakra-ui/react";
 import { useState } from "react";
 import { IoIosMenu } from "react-icons/io";
 
@@ -10,6 +10,9 @@ const Header = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   }
+
+  const [isLargerThan480] = useMediaQuery(["(min-width: 480px)"], {ssr: false});
+
   return (
     <Box backgroundColor="#0044D7" top="0" position="sticky" padding={5}>
       <HStack display='flex' justifyContent='space-between'>
@@ -22,12 +25,12 @@ const Header = () => {
       {
         isOpen
         &&
-        <VStack marginTop={5}>
+        <Stack direction={isLargerThan480 ? "row" : "column"} align={isLargerThan480 ? "center" : "center"} marginTop={5}>
           <Link to="/home"><button onClick={toggleMenu}>Főoldal<br />megtekintése</button></Link>
           <Link to="/newTask"><button onClick={toggleMenu}>Új feladat<br />felvétele</button></Link>
           <Link to="/profile"><button onClick={toggleMenu}>Profil<br />megtekintése</button></Link>
           <Link to="/"><button onClick={toggleMenu}>Kijelentkezés</button></Link>
-        </VStack>
+        </Stack>
       }
 
 
