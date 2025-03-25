@@ -30,4 +30,26 @@ class TaskApiTest extends TestCase
         $resp->assertJsonPath("data.0.due", $firstTask->due_date);
         
     }
+
+    public function test_task_store() : void {
+        $task = Task::factory()->make();
+
+        $resp = $this->postJson("/api/tasks", $task->toArray());
+
+        $resp->assertStatus(201);
+        $resp->assertJsonCount(1);
+
+        $resp->assertJsonStructure([
+            "data" => [
+                "id",
+                "title",
+                "description",
+                "due"
+            ]
+            ])
+            ->assertJsonFragment([
+                "title" => $task->title,
+                "due" => $task->due_date
+            ]);
+    }
 }
