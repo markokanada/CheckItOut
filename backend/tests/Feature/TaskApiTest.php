@@ -54,7 +54,7 @@ class TaskApiTest extends TestCase
     }
 
     public function test_task_delete() : Void {
-        $tasks = Task::factory(5);
+        $tasks = Task::factory(5)->create();
         $id = $tasks->last()->id;
 
         $resp = $this->deleteJson("/api/tasks/$id");
