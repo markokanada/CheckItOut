@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -73,7 +74,7 @@ class AuthController extends Controller
 
 
 
-    public function authenticate(LoginRequest $request)
+    public function login(LoginRequest $request)
     {
         $cred = $request->validated();
 
@@ -92,5 +93,18 @@ class AuthController extends Controller
                 ]
             ], 401);
         }
+    }
+
+    public function register(StoreUserRequest $request)
+    {
+        $data = $request->validated();
+
+        $user = User::create($data);
+
+        return response()->json([
+            "data" => [
+                "message" => "Sikeresen regisztrál $user->email."
+            ]
+        ]);
     }
 }
