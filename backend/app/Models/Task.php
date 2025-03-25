@@ -18,7 +18,9 @@ class Task extends Model
         "due_date",
         "priority",
         "status",
-        "category_id"
+        "category_id",
+        "user_id",
+        "title"
     ];
 
     public static function getStatuses() {
