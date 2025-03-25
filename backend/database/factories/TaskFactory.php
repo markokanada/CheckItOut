@@ -21,7 +21,7 @@ class TaskFactory extends Factory
         return [
             "title" => fake()->title,
             "description" => fake()->text(255),
-            "due_date" => fake()->date(),
+            "due_date" => fake()->date('Y-m-d H:i:s'),
             "priority" => fake()->numberBetween(1,10),
             "category_id" => Category::factory(),
             "user_id" => User::factory(),
