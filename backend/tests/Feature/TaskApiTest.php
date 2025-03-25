@@ -53,7 +53,7 @@ class TaskApiTest extends TestCase
             ]);
     }
 
-    public function test_task_delete() : Void {
+    public function test_task_delete() : void {
         $tasks = Task::factory(5)->create();
         $id = $tasks->last()->id;
 
@@ -61,5 +61,21 @@ class TaskApiTest extends TestCase
 
         $resp->assertStatus(204);
         $this->assertDatabaseMissing(Task::class, ["id" => $id]);
+    }
+
+    public function test_task_update() : void {
+        $task = Task::factory(1)->create()->first();
+        $id = $task->id;
+
+        $resp = $this->putJson("/api/tasks/$id", Task::factory()->make([
+            "title" => "newTitle"
+        ])->toArray());
+
+        $resp->assertStatus(200);
+
+        $resp->assertJsonPath("data.0.id", $task->id);
+        $resp->assertJsonPath("data.0.descreption", $task->descreption);
+        $resp->assertJsonPath("data.0.title", "newTitle");
+        $resp->assertJsonPath("data.0.due", $task->due_date);
     }
 }
