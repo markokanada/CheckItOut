@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Landing from './pages/Landing';
 import { computed, makeObservable } from 'mobx';
 import ViewComponent from './interfaces/ViewComponent';
+import GlobalEntities from './store/GlobalEntities';
 
 export default class App implements ViewComponent{
   constructor(private navigate: NavigateFunction ) {
@@ -26,12 +27,16 @@ export default class App implements ViewComponent{
     return new Home(this.navigate);
   }
 
+  @computed get isLoggedIn() : boolean {
+    return (GlobalEntities.user.id != undefined)
+  }
+
   View = () =>
      (
       <Layout>
         <Routes>
           <Route path='/' element={<this.landing.View/>} />
-          <Route path='/home' element={<this.home.View />} />
+          <Route path='/home' element={this.isLoggedIn ? <this.home.View /> : <></>} />
           <Route path='/newTask' element={<TaskRecording />} />
           <Route path='/profile' element={<main><h1>In development - profile</h1></main>} />
           <Route path='/register' element={<Register />} />
