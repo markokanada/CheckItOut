@@ -11,6 +11,10 @@ const Header = () => {
     setIsOpen(!isOpen);
   }
 
+  const logOut = () => {
+    localStorage.clear();
+  }
+
   const [isLargerThan480] = useMediaQuery(["(min-width: 480px)"], {ssr: false});
 
   return (
@@ -29,7 +33,7 @@ const Header = () => {
           <Link to="/home"><button onClick={toggleMenu}>Főoldal<br />megtekintése</button></Link>
           <Link to="/newTask"><button onClick={toggleMenu}>Új feladat<br />felvétele</button></Link>
           <Link to="/profile"><button onClick={toggleMenu}>Profil<br />megtekintése</button></Link>
-          <Link to="/"><button onClick={toggleMenu}>Kijelentkezés</button></Link>
+          <Link to="/"><button onClick={logOut}>Kijelentkezés</button></Link>
         </Stack>
       }
 
