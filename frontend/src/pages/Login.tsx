@@ -5,6 +5,7 @@ import "./css/Login.css";
 import ViewComponent from "../interfaces/ViewComponent";
 import { Box, Heading, Input, Button, Text, Link } from "@chakra-ui/react";
 import { FormControl, FormLabel } from "@mui/material";
+import GlobalEntities from "../store/GlobalEntities";
 
 export default class Login implements ViewComponent {
     formData = {
@@ -19,6 +20,7 @@ export default class Login implements ViewComponent {
             formData: observable,
             errors: observable,
             handleChange: action,
+            validateForm: action,
             isValidForm: computed,
             handleSubmit: action
         });
@@ -29,19 +31,27 @@ export default class Login implements ViewComponent {
     };
 
     @computed get isValidForm() {
-        const newErrors: { [key: string]: string } = {};
+        return Object.keys(this.errors).length === 0;
+    }
+
+    @action validateForm = () => {
+      const newErrors: { [key: string]: string } = {};
         if (!this.formData.email.includes("@")) newErrors.email = "Érvényes e-mail szükséges!";
         if (this.formData.password.length < 6) newErrors.password = "A jelszónak legalább 6 karakterből kell állnia!";
         
         this.errors = newErrors;
-        return Object.keys(newErrors).length === 0;
+
+        return Object.keys(this.errors).length === 0;
     }
 
-    @action handleSubmit = (e: FormEvent) => {
+    @action handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        if (this.isValidForm) {
+        this.validateForm();
+
+        if (this.validateForm()) {
+            await GlobalEntities.login(this.formData.email, this.formData.password);
             alert("Sikeres bejelentkezés!");
-            this.navigate("/");
+            this.navigate("/home");
         }
     };
 
