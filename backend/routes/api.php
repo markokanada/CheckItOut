@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -22,6 +23,8 @@ Route::get("/scheduleComposer/{user}", [ScheduleController::class, 'scheduleComp
 ->name("schedule.compose")->middleware('auth:sanctum');
 
 Route::apiResource("tasks", TaskController::class);
+
+Route::apiResource("categories", CategoryController::class);
 
 
 Route::middleware(['auth:sanctum', 'admin'])->group(function () {
