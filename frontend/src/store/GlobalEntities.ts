@@ -54,6 +54,12 @@ class Entities {
         this.categories = resp.data.data;
     }
 
+    @action createTask = async (data: Object) => {
+        const resp = await GlobalApiHandlerInstance.post('/tasks', data);
+
+        return resp;
+    }
+
 }
 
 const GlobalEntities = new Entities();
