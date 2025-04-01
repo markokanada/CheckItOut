@@ -31,7 +31,7 @@ class Entities {
 
     @action loadTasks = async () => {
         const resp = await GlobalApiHandlerInstance.get(`/users/${this.user.id}`)
-        this._tasks = await resp.data.data.tasks
+        this.Tasks(resp.data.data.tasks);
     }
 
     @action login = async (email: string, password: string) => {
@@ -68,6 +68,10 @@ class Entities {
             await this.loadTasks();
         }
         return resp;
+    }
+
+    @action Tasks = (tasks: Task[]) => {
+        this._tasks = tasks
     }
 
 }
