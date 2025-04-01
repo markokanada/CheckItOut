@@ -1,4 +1,4 @@
-import { action, makeObservable, observable } from "mobx";
+import { action, computed, makeObservable, observable } from "mobx";
 import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
 import { Task } from "@mui/icons-material";
 
@@ -20,7 +20,8 @@ class Entities {
             _tasks: observable,
             loadTasks: action,
             user: observable,
-            categories: observable
+            categories: observable,
+            tasks: computed
         });        
     }
 
@@ -57,6 +58,15 @@ class Entities {
     @action createTask = async (data: Object) => {
         const resp = await GlobalApiHandlerInstance.post('/tasks', data);
 
+        return resp;
+    }
+
+    @action updateTask = async (data: Task) => {
+        const resp = await GlobalApiHandlerInstance.put(`/tasks/${data.id}`, data);
+
+        if(resp.status === 200) {
+            await this.loadTasks();
+        }
         return resp;
     }
 
