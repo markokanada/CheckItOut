@@ -4,5 +4,6 @@ interface Task {
     description: string,
     due_date: Date,
     priority: number,
-    status: string
+    status: string,
+    category_id: number
 }

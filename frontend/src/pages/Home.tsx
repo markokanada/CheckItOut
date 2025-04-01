@@ -14,7 +14,7 @@ export default class Home implements ViewComponent {
         makeObservable(this, {});
     }
 
-    card = new BaseCard(toJS(GlobalEntities.tasks)[0].title, toJS(GlobalEntities.tasks)[0].description);
+    card = new BaseCard(toJS(GlobalEntities.tasks[0]));
 
     View = () => (
         <Container>
@@ -31,7 +31,7 @@ export default class Home implements ViewComponent {
                     </h1>
                     
                     {toJS(GlobalEntities.tasks).map((task: Task, index) => {
-                        const card = new BaseCard(task.title, task.description);
+                        const card = new BaseCard(toJS(GlobalEntities.tasks[index]));
 
                         return (
                             < card.View key={index}/>
