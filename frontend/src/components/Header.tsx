@@ -18,7 +18,7 @@ const Header = () => {
   const [isLargerThan480] = useMediaQuery(["(min-width: 480px)"], {ssr: false});
 
   return (
-    <Box backgroundColor="#0044D7" top="0" position="sticky" padding={5}>
+    <Box zIndex={1} backgroundColor="#0044D7" top="0" position="sticky" padding={5}>
       <HStack display='flex' justifyContent='space-between'>
         <Heading margin={0} color="#F5F5DC">CheckItOut</Heading>
         
