@@ -5,5 +5,6 @@ interface Task {
     due_date: Date,
     priority: number,
     status: string,
-    category_id: number
+    category_id: number,
+    user_id: number | object
 }
