@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\changePasswordRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\TaskResource;
 use App\Http\Resources\UserResource;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 
@@ -78,6 +81,11 @@ class UserController extends Controller
         return response()->json(['message' => 'User deleted successfully']);
     }
 
+    public function taskDoneToday(User $user){
+        $tasks = Task::whereDate("due_date", Date::today()->toDateString())->get()->where("status", "=", "kész")->where("user_id", "=", $user->id);
 
+
+        return TaskResource::collection($tasks);
+    }
 
 }
