@@ -20,38 +20,45 @@ export default class Home implements ViewComponent {
     View = () => (
         <Container>
             <Stack>
-                <Box padding={{md:"5rem", base:"2rem"}}>
+                <Box padding={{ md: "5rem", base: "2rem" }}>
                     <h1>
                         Következő teendő
                     </h1>
                     < this.card.View />
                 </Box>
-                <Box  padding={{md:"5rem", base:"2rem"}}>
+                <Box padding={{ md: "5rem", base: "2rem" }}>
                     <h1>
                         Mai teendő
                     </h1>
-                    
+
                     {toJS(GlobalEntities.tasks).map((task: Task, index) => {
                         const card = new BaseCard(toJS(GlobalEntities.tasks[index]));
 
                         return (
-                            < card.View key={index}/>
+                            < card.View key={index} />
                         )
                     })}
 
 
                 </Box>
-                <Box padding={{md:"5rem", base:"2rem"}}>
+                <Box padding={{ md: "5rem", base: "2rem" }}>
                     <h1>
                         Ma elvégzett teendők
                     </h1>
-                    <Card.Root css={{ "boxShadow": "7px 7px 7px rgb(0,0,0,0.5)", "borderRadius": "0.5rem", "margin": "5rem" }}>
-                        <Card.Body>
-                            <Card.Description>
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus sunt nostrum eos recusandae fugit quod est nemo explicabo quos obcaecati maiores, cumque neque nihil optio suscipit vero sed molestias iure!
-                            </Card.Description>
-                        </Card.Body>
-                    </Card.Root>
+                    {
+                        GlobalEntities.doneTasks.length != 0 ?
+                            toJS(GlobalEntities.doneTasks).map((task: Task, index) => {
+                                const card = new BaseCard(task);
+
+                                return (
+                                    <card.View key={index} />
+                                )
+                            }) 
+                            : 
+                            (
+                                <h3>Ma még nincs kész feladatot</h3>
+                            )
+                    }
                 </Box>
             </Stack>
             <Button

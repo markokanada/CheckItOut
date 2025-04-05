@@ -4,6 +4,7 @@ import { Task } from "@mui/icons-material";
 
 class Entities {
     public _tasks: Task[] = [];
+    public doneTasks: Task[] = [];
     public categories: Category[] = [];
     public userToken: string = "";
     public user: User = {
@@ -18,9 +19,10 @@ class Entities {
     constructor() {
         makeObservable(this, {
             _tasks: observable,
-            loadTasks: action,
+            doneTasks: observable,
             user: observable,
             categories: observable,
+            loadTasks: action,
             tasks: computed
         });        
     }
@@ -47,6 +49,7 @@ class Entities {
 
         this.user = userDataResponse.data;
         await GlobalEntities.loadTasks();
+        await GlobalEntities.loadDoneTasks();
     }
 
     @action loadCategories = async () => {
@@ -74,6 +77,18 @@ class Entities {
         this._tasks = tasks
     }
 
+    @action loadDoneTasks = async () => {
+        const resp = await GlobalApiHandlerInstance.get(`/tasks/today/${this.user.id}`);
+
+        if(resp.data.data.length != 0) {
+            this.setDoneTasks(resp.data.data);
+        }
+    }
+
+    @action setDoneTasks = (tasks: Task[]) => {
+        this.doneTasks = tasks;
+    }
+
 }
 
 const GlobalEntities = new Entities();
@@ -87,6 +102,7 @@ if (localStorage.getItem("userToken")) {
 
     GlobalEntities.user = userDataResponse.data;
     await GlobalEntities.loadTasks();
+    await GlobalEntities.loadDoneTasks();
 }
 
 await GlobalEntities.loadCategories();
