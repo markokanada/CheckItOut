@@ -75,7 +75,9 @@ class Entities {
     }
 
     @action Tasks = (tasks: Task[]) => {
-        this._tasks = tasks
+        this._tasks = tasks.filter((element) => {
+            return element.status != "kész"
+        })
     }
 
     @action loadDoneTasks = async () => {
