@@ -7,6 +7,7 @@ import GlobalEntities from "../store/GlobalEntities";
 import { getElementRef } from "@chakra-ui/react/dist/types/utils";
 import { BaseCard } from "../components/Card";
 import { ReactNode } from "react";
+import { observer } from "mobx-react-lite";
 
 
 
@@ -17,7 +18,7 @@ export default class Home implements ViewComponent {
 
     card = new BaseCard(toJS(GlobalEntities.tasks[0]));
 
-    View = () => (
+    View = observer(() => (
         <Container>
             <Stack>
                 <Box padding={{ md: "5rem", base: "2rem" }}>
@@ -69,5 +70,5 @@ export default class Home implements ViewComponent {
             </Button>
         </Container>
 
-    )
+    ))
 }

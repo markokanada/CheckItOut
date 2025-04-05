@@ -69,6 +69,7 @@ class Entities {
 
         if(resp.status === 200) {
             await this.loadTasks();
+            await this.loadDoneTasks();
         }
         return resp;
     }
@@ -80,9 +81,7 @@ class Entities {
     @action loadDoneTasks = async () => {
         const resp = await GlobalApiHandlerInstance.get(`/tasks/today/${this.user.id}`);
 
-        if(resp.data.data.length != 0) {
-            this.setDoneTasks(resp.data.data);
-        }
+        this.setDoneTasks(resp.data.data);
     }
 
     @action setDoneTasks = (tasks: Task[]) => {
