@@ -54,7 +54,7 @@ export class BaseCard implements ViewComponent {
     }
 
     View = observer( () => (
-        <Card.Root css={{ "boxShadow": "7px 7px 7px 7px rgb(0,0,0,0.5)", "borderRadius": "0.5rem", "margin": "5rem" }}>
+        <Card.Root css={{ "boxShadow": "7px 7px 7px 7px rgb(0,0,0,0.5)", "borderRadius": "0.5rem", "max-width":"720px", "margin":"5rem auto" }}>
             <Card.Body>
                 <Card.Header>
                     <Heading size="md">{this.task.title}</Heading>
@@ -71,9 +71,9 @@ export class BaseCard implements ViewComponent {
                 </Card.Description>
             </Card.Body>
             <Card.Footer display="flex" justifyContent="flex-end" >
-                <Stack spacing={2.5} direction="row" margin={"1rem"}>
-                    <Button onClick={() => this.toggleStatus("folyamatban")} variant="contained" color="warning">Folyamatban</Button>
-                    <Button onClick={() => this.toggleStatus("kész")} variant="contained" color="success">Kész</Button>
+                <Stack sx={{flexWrap: 'wrap'}} spacing={2.5} direction="row" margin={"1rem"} useFlexGap>
+                    <Button sx={{margin: 'auto!important'}} onClick={() => this.toggleStatus("folyamatban")} variant="contained" color="warning">Folyamatban</Button>
+                    <Button sx={{margin: 'auto!important', xs:{marginTop: '1rem!important'}}} onClick={() => this.toggleStatus("kész")} variant="contained" color="success">Kész</Button>
                 </Stack>
 
             </Card.Footer>

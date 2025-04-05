@@ -1,4 +1,5 @@
-import { Box, Button, Card, Container, Stack } from "@chakra-ui/react"
+import { Box, Button, Card, Container } from "@chakra-ui/react"
+import { Stack } from "@mui/material";
 import { NavigateFunction } from "react-router-dom"
 import ViewComponent from "../interfaces/ViewComponent";
 import { makeObservable, toJS } from "mobx";
@@ -19,13 +20,13 @@ export default class Home implements ViewComponent {
     View = () => (
         <Container>
             <Stack>
-                <Box>
+                <Box padding={{md:"5rem", base:"2rem"}}>
                     <h1>
                         Következő teendő
                     </h1>
                     < this.card.View />
                 </Box>
-                <Box>
+                <Box  padding={{md:"5rem", base:"2rem"}}>
                     <h1>
                         Mai teendő
                     </h1>
@@ -40,7 +41,7 @@ export default class Home implements ViewComponent {
 
 
                 </Box>
-                <Box>
+                <Box padding={{md:"5rem", base:"2rem"}}>
                     <h1>
                         Ma elvégzett teendők
                     </h1>
