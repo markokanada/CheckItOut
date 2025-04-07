@@ -15,6 +15,7 @@ class Entities {
         created_at: undefined,
         updated_at: undefined
     };
+    public firstTask: Task | undefined = undefined;
 
     constructor() {
         makeObservable(this, {
@@ -22,6 +23,8 @@ class Entities {
             doneTasks: observable,
             user: observable,
             categories: observable,
+            firstTask: observable,
+            setFirstTask: action,
             loadTasks: action,
             tasks: computed
         });        
@@ -77,7 +80,13 @@ class Entities {
     @action Tasks = (tasks: Task[]) => {
         this._tasks = tasks.filter((element) => {
             return element.status != "kész"
-        })
+        });
+
+        this.setFirstTask();
+    }
+
+    @action setFirstTask = () => {
+        this.firstTask = this._tasks[0];
     }
 
     @action loadDoneTasks = async () => {
