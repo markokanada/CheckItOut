@@ -18,9 +18,13 @@ const chrome = require('selenium-webdriver/chrome');
     await driver.findElement(By.id('descreption')).sendKeys('Description, Lorem...');
 
     // Enter the future deadline
-     const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 16); 
-     await driver.findElement(By.id('due_date')).sendKeys(tomorrow);
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 16); 
+    await driver.findElement(By.id('due_date')).sendKeys(tomorrow);
 
+    // Select a category 
+    await driver.findElement(By.id('category')).click();
+    const categoryOption = await driver.findElement(By.css('#category .MuiMenuItem-root'));
+    await categoryOption.click();
 
 
 
