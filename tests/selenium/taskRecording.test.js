@@ -21,6 +21,26 @@ const chrome = require('selenium-webdriver/chrome');
     const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 16); 
     await driver.findElement(By.id('due_date')).sendKeys(tomorrow);
 
+    // Past date validation
+    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 16);
+    await driver.findElement(By.id('due_date')).sendKeys(yesterday);
+
+    await driver.findElement(By.id('priority')).sendKeys('3');
+
+    await driver.findElement(By.id('category')).click();
+    await driver.sleep(500);
+    const categoryOptions = await driver.findElements(By.css('li.MuiMenuItem-root'));
+    if (categoryOptions.length > 0) {
+      await categoryOptions[0].click();
+    }
+    const dueDateError = await driver.findElement(By.css('#due_date-helper-text')).getText();
+
+    if (dueDateError.includes('nem lehet korábban')) {
+      console.log('Working');
+    } else {
+      console.error('Not working');
+    }
+
     // Select a category 
     await driver.findElement(By.id('category')).click();
     await driver.sleep(500); 
