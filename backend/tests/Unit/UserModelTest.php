@@ -31,4 +31,14 @@ class UserModelTest extends TestCase
 
         $this->assertInstanceOf(BelongsToMany::class, $user->shared_tasks());
     }
+    public function test_shared_tasklists_guests_relationship_returns_belongs_to_many()
+    {
+        $user = new User();
+
+        $relation = $user->shared_tasklists_guests();
+        $this->assertInstanceOf(BelongsToMany::class, $relation);
+        $this->assertEquals('users_users', $relation->getTable());
+        $this->assertEquals('owner_id', $relation->getForeignPivotKeyName());
+        $this->assertEquals('guest_id', $relation->getRelatedPivotKeyName());
+    }
 }
