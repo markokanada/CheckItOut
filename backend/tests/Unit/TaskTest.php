@@ -13,5 +13,14 @@ use PHPUnit\Framework\TestCase;
 
 class TaskTest extends TestCase
 {
-    
+    public function test_get_statuses_returns_expected_array(): void
+    {
+        $expectedStatuses = [
+            "új",
+            "folyamatban",
+            "kész"
+        ];
+
+        $this->assertEquals($expectedStatuses, Task::getStatuses());
+    }
 }
