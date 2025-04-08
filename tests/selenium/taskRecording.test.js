@@ -33,9 +33,23 @@ const chrome = require('selenium-webdriver/chrome');
     await driver.findElement(By.css('button[type="submit"]')).click();
 
 
+    // Check if it is successful
+    await driver.wait(until.alertIsPresent(), 5000);
+    const alert = await driver.switchTo().alert();
+    const alertText = await alert.getText();
+
+    if (alertText.includes('Successfully created')) {
+      console.log('Successfull');
+    } else {
+      console.error('Error:', alertText);
+    }
+
+    await alert.accept();
+
+
 
   } catch (err) {
-    console.error('Hiba:', err);
+    console.error('Error:', err);
   } finally {
     await driver.quit(); 
   }
