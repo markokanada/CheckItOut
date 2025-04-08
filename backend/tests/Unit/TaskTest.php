@@ -23,4 +23,13 @@ class TaskTest extends TestCase
 
         $this->assertEquals($expectedStatuses, Task::getStatuses());
     }
+    public function test_user_relationship_returns_belongs_to(): void
+    {
+        $task = new Task();
+
+        $relation = $task->user();
+
+        $this->assertInstanceOf(BelongsTo::class, $relation);
+        $this->assertEquals('user_id', $relation->getForeignKeyName());
+    }
 }
