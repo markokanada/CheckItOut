@@ -54,4 +54,19 @@ class ScheduleApiTest extends TestCase
         $response->assertJsonPath('data.title', $schedule->title);
         $response->assertJsonPath('data.deadline', $schedule->deadline);
     }
+    public function test_schedule_update(): void
+    {
+        $schedule = Schedule::factory()->create();
+
+        $updatedData = [
+            'title' => 'Updated Title',
+            'deadline' => $schedule->deadline,
+        ];
+
+        $response = $this->putJson("/api/schedules/{$schedule->id}", $updatedData);
+
+        $response->assertStatus(200);
+        $response->assertJsonPath('data.id', $schedule->id);
+        $response->assertJsonPath('data.title', 'Updated Title');
+    }
 }
