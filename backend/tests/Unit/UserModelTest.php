@@ -19,4 +19,10 @@ class UserModelTest extends TestCase
         $this->assertEquals('user_id', $user->tasks()->getForeignKeyName());
         $this->assertEquals('id', $user->tasks()->getLocalKeyName());
     }
+    public function test_schedules_relationship_returns_has_many()
+    {
+        $user = new User();
+
+        $this->assertInstanceOf(HasMany::class, $user->schedules());
+    }
 }
