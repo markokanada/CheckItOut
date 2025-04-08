@@ -69,4 +69,13 @@ class ScheduleApiTest extends TestCase
         $response->assertJsonPath('data.id', $schedule->id);
         $response->assertJsonPath('data.title', 'Updated Title');
     }
+    public function test_schedule_delete(): void
+    {
+        $schedule = Schedule::factory()->create();
+
+        $response = $this->deleteJson("/api/schedules/{$schedule->id}");
+
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing(Schedule::class, ['id' => $schedule->id]);
+    }
 }
