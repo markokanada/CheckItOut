@@ -11,5 +11,12 @@ use PHPUnit\Framework\TestCase;
 
 class UserModelTest extends TestCase
 {
+    public function test_tasks_relationship_returns_has_many()
+    {
+        $user = new User();
 
+        $this->assertInstanceOf(HasMany::class, $user->tasks());
+        $this->assertEquals('user_id', $user->tasks()->getForeignKeyName());
+        $this->assertEquals('id', $user->tasks()->getLocalKeyName());
+    }
 }
