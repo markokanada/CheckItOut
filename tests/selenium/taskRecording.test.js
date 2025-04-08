@@ -14,8 +14,14 @@ const chrome = require('selenium-webdriver/chrome');
     // Fill in the "Task name" field
     await driver.findElement(By.id('title')).sendKeys('Teszt');
 
-     // Fill in the "Description" field
-     await driver.findElement(By.id('descreption')).sendKeys('Description, Lorem...');
+    // Fill in the "Description" field
+    await driver.findElement(By.id('descreption')).sendKeys('Description, Lorem...');
+
+    // Enter the future deadline
+     const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 16); 
+     await driver.findElement(By.id('due_date')).sendKeys(tomorrow);
+
+
 
 
   } catch (err) {
