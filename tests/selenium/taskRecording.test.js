@@ -14,6 +14,8 @@ const chrome = require('selenium-webdriver/chrome');
     // Fill in the "Task name" field
     await driver.findElement(By.id('title')).sendKeys('Teszt');
 
+     // Fill in the "Description" field
+     await driver.findElement(By.id('descreption')).sendKeys('Description, Lorem...');
 
 
   } catch (err) {
