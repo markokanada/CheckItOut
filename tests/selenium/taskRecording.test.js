@@ -26,9 +26,11 @@ const chrome = require('selenium-webdriver/chrome');
     const categoryOption = await driver.findElement(By.css('#category .MuiMenuItem-root'));
     await categoryOption.click();
 
-
     // Enter the priority 
     await driver.findElement(By.id('priority')).sendKeys('5');
+
+    //Submit the form
+    await driver.findElement(By.css('button[type="submit"]')).click();
 
 
 
