@@ -23,8 +23,13 @@ const chrome = require('selenium-webdriver/chrome');
 
     // Select a category 
     await driver.findElement(By.id('category')).click();
-    const categoryOption = await driver.findElement(By.css('#category .MuiMenuItem-root'));
-    await categoryOption.click();
+    await driver.sleep(500); 
+    const categories = await driver.findElements(By.css('li.MuiMenuItem-root'));
+    if (categories.length > 0) {
+      await categories[0].click(); 
+    } else {
+      console.log('There is no category available');
+    }
 
     // Enter the priority 
     await driver.findElement(By.id('priority')).sendKeys('5');
