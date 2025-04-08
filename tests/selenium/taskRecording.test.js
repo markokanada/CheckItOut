@@ -9,9 +9,13 @@ const chrome = require('selenium-webdriver/chrome');
 
     await driver.wait(until.elementLocated(By.id('title')), 10000);
 
-    console.log('Az oldal sikeresen betöltődött és a "title" mező megtalálható.');
+    console.log('The page has loaded successfully and the "title" field is found.');
+    
+    // Fill in the "Task name" field
+    await driver.findElement(By.id('title')).sendKeys('Teszt');
 
- 
+
+
   } catch (err) {
     console.error('Hiba:', err);
   } finally {
