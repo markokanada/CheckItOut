@@ -25,4 +25,10 @@ class UserModelTest extends TestCase
 
         $this->assertInstanceOf(HasMany::class, $user->schedules());
     }
+    public function test_shared_tasks_relationship_returns_belongs_to_many()
+    {
+        $user = new User();
+
+        $this->assertInstanceOf(BelongsToMany::class, $user->shared_tasks());
+    }
 }
