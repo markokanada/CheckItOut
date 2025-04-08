@@ -43,4 +43,15 @@ class ScheduleApiTest extends TestCase
             'deadline' => $schedule->deadline,
         ]);
     }
+    public function test_schedule_show(): void
+    {
+        $schedule = Schedule::factory()->create();
+
+        $response = $this->getJson("/api/schedules/{$schedule->id}");
+
+        $response->assertStatus(200);
+        $response->assertJsonPath('data.id', $schedule->id);
+        $response->assertJsonPath('data.title', $schedule->title);
+        $response->assertJsonPath('data.deadline', $schedule->deadline);
+    }
 }
