@@ -27,6 +27,10 @@ const chrome = require('selenium-webdriver/chrome');
     await categoryOption.click();
 
 
+    // Enter the priority 
+    await driver.findElement(By.id('priority')).sendKeys('5');
+
+
 
   } catch (err) {
     console.error('Hiba:', err);
