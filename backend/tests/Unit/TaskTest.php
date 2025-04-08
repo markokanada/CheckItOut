@@ -40,4 +40,12 @@ class TaskTest extends TestCase
 
         $this->assertInstanceOf(BelongsTo::class, $relation);
     }
+    public function test_schedules_relationship_returns_belongs_to_many(): void
+    {
+        $task = new Task();
+
+        $relation = $task->schedules();
+
+        $this->assertInstanceOf(BelongsToMany::class, $relation);
+    }
 }
