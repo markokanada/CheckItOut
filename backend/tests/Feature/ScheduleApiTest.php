@@ -24,4 +24,23 @@ class ScheduleApiTest extends TestCase
         $response->assertJsonPath('data.0.title', $firstSchedule->title);
         $response->assertJsonPath('data.0.deadline', $firstSchedule->deadline);
     }
+    public function test_schedule_store(): void
+    {
+        $schedule = Schedule::factory()->make();
+
+        $response = $this->postJson('/api/schedules', $schedule->toArray());
+
+        $response->assertStatus(201);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'title',
+                'deadline',
+            ]
+        ]);
+        $response->assertJsonFragment([
+            'title' => $schedule->title,
+            'deadline' => $schedule->deadline,
+        ]);
+    }
 }
