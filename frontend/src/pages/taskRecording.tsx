@@ -1,131 +1,200 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import './css/taskRecording.css';
-
-interface Task {
-  type: string;
-  name: string;
-  duration: string;
-  deadline: string;
-  description: string;
-}
+import ViewComponent from '../interfaces/ViewComponent';
+import { FormControl, FormLabel, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
+import { Box, Button, Card, For, Input, Stack, VStack } from '@chakra-ui/react';
+import { action, computed, makeObservable, observable, toJS } from 'mobx';
+import { NavigateFunction } from 'react-router-dom';
+import GlobalEntities from '../store/GlobalEntities';
 
 
-const TaskRecording: React.FC = () => {
-  const [taskType, setTaskType] = useState<string>("Egyszeri");
-  const [taskName, setTaskName] = useState<string>("");
-  const [duration, setDuration] = useState<string>("");
-  const [deadline, setDeadline] = useState<string>("");
-  const [description, setDescription] = useState<string>("");
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  
-  const handleAddTask = () => {
-    if (taskName.trim()) {
-      setTasks([...tasks, {
-        type: taskType,
-        name: taskName,
-        duration,
-        deadline,
-        description
-      }]);
-      setTaskName('');
-      setDuration('');
-      setDeadline('');
-      setDescription('');
-    }
+export default class TaskRecording implements ViewComponent {
+  category: Category = {
+    id: undefined,
+    name: undefined
   };
 
-  return (
-    <div className="task-recording-container-main">
+  formData: {
+    title: string,
+    description: string,
+    due_date: Date | string,
+    category_id: number,
+    priority: number,
+    status: string,
+    user_id: number
+  } = {
+    title: "",
+    description: "",
+    due_date: new Date(Date.now()),
+    category_id: 0,
+    priority: 0,
+    status: "új",
+    user_id: (GlobalEntities.user.id as number)
+  }
+  errors: { [key: string]: string } = {};
 
-      <div className="task-recording-container">
-        <h1 className="task-recording-header">Feladat Hozzáadás</h1>
-        <div className="task-recording-type">
-          <label>
-            <input
-              type="radio"
-              value="Egyszeri"
-              checked={taskType === 'Egyszeri'}
-              onChange={() => setTaskType('Egyszeri')}
-            />
-            Egyszeri
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="Ismétlődő"
-              checked={taskType === 'Ismétlődő'}
-              onChange={() => setTaskType('Ismétlődő')}
-            />
-            Ismétlődő
-          </label>
-        </div>
+  constructor(public navigate: NavigateFunction) {
+    makeObservable(this, {
+      category: observable,
+      handleSelectChange: action,
+      validateForm: action,
+      submitForm: action,
+      errors: observable,
+      formData: observable
+    });
+  }
 
-        <div className="task-recording-field">
-          <label htmlFor="" className='task-recording-label-name'>Feladat neve</label>
-          <input
-            type="text"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-            placeholder="Gipsz Jakap"
-            className="task-recording-input"
-          />
-        </div>
+  @action validateForm = () => {
+    let newErrors: { [key: string]: string } = {};
+    if (this.formData.title.length > 50) {
+      newErrors.title = "A feladat neve nem lehethosszabb 50 karakternél!";
+    }
+    if (this.formData.description.length > 255) {
+      newErrors.title = "A feladat leírása nem lehethosszabb 255 karakternél!";
+    }
+    if (this.formData.due_date <= new Date(Date.now())) {
+      newErrors.due_date = "A feladat határideje nem lehet korábban mint holnap!";
+    }
+    this.errors = newErrors;
 
-        <div className="task-recording-field">
-          <label htmlFor="" className='task-recording-label-name'>Időtartama</label>
-          <input
-            type="time"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            placeholder="Időtartam"
-            className="task-recording-input"
-          />
-        </div>
+    return Object.keys(this.errors).length === 0;
+  }
 
-        <div className="task-recording-field">
-          <label htmlFor="" className='task-recording-label-name'>Határidő</label>
-          <input
-            type="datetime-local"
-            value={deadline}
-            onChange={(e) => setDeadline(e.target.value)}
-            placeholder="Határidő"
-            className="task-recording-input"
-          />
-        </div>
+  @action handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target;
+    
+    if (name === "category_id") {
+      this.formData.category_id = Number(value);
+    }
+    if (name === "priority") {
+      this.formData.priority = Number(value);
+    }
+    if (name === "due_date") {
+      this.formData.due_date = new Date(value)
+    }
+    if (name === "title") this.formData.title = value;
+    if (name === "description") this.formData.description = value;
+  };
 
-        <div className="task-recording-field">
-          <label htmlFor="" className='task-recording-label-name'>Leírás</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Ide tudod írni a leírást"
-            className="task-recording-textarea"
-          />
-        </div>
+  @action submitForm = async (event: FormEvent) => {
+    event.preventDefault();
+    this.errors = {}
+    this.validateForm();
+    if (this.validateForm()) {
+      this.formData.due_date = (this.formData.due_date as Date).toISOString().slice(0,19).replace("T", " ")
+      const resp = await GlobalEntities.createTask(this.formData);
+      if (resp.status === 201) {
+        alert("Sikeresen létrehozva");
+        this.navigate("home")
+      }
+    }
+  }
 
-        <button
-          onClick={handleAddTask}
-          className="task-recording-button"
-        >
-          Hozzáadás
-        </button>
+  @action handleSelectChange = (event: SelectChangeEvent) => {
+    this.category.id = Number(event.target.value);
+    this.category.name = GlobalEntities.categories.find((element) => element.id === this.category.id)?.name;
 
-        <ul className="task-recording-list">
-          {tasks.map((task, index) => (
-            <li key={index} className="task-recording-item">
-              <strong>Típus:</strong> {task.type} <br />
-              <strong>Neve:</strong> {task.name} <br />
-              <strong>Időtartama:</strong> {task.duration} <br />
-              <strong>Határidő:</strong> {task.deadline} <br />
-              <strong>Leírás:</strong> {task.description}
-            </li>
-          ))}
-        </ul>
-      </div>
+    this.formData.category_id = Number(event.target.value);
+  }
 
-    </div>
+  @computed get categoryName() {
+    return this.category.name === undefined ? "" : this.category.name;
+  }
+
+  @computed get errorTitle() {
+    return this.errors.title === undefined ? false : true;
+  }
+
+  View = () => (
+    <Stack maxWidth={720} padding={20} margin={"auto"}>
+      <Card.Root variant='outline' >
+        <Card.Header>
+          <Card.Title>Feladat Hozzáadás</Card.Title>
+          <Card.Description>Töltsd ki az űrlapot a feladat felvételéhez</Card.Description>
+        </Card.Header>
+        <Card.Body>
+          <form onSubmit={this.submitForm}>
+            <VStack>
+              <FormControl fullWidth>
+                <TextField
+                  label='Feladat neve'
+                  type='text'
+                  name='title'
+                  id='title'
+                  fullWidth
+                  required
+                  error={this.errorTitle}
+                  helperText={this.errors.title}
+                  onChange={this.handleChange}
+                />
+              </ FormControl>
+              <FormControl fullWidth>
+                <TextField
+                  label='Leírás'
+                  type='text'
+                  name='description'
+                  id='descreption'
+                  fullWidth
+                  required
+                  onChange={this.handleChange}
+                />
+              </ FormControl>
+              <FormControl fullWidth>
+                <TextField
+                  label='Határidő'
+                  type='datetime-local'
+                  name='due_date'
+                  id='due_date'
+                  slotProps={
+                    { inputLabel: { shrink: true } }
+                  }
+                  fullWidth
+                  required
+                  onChange={this.handleChange}
+                />
+              </ FormControl>
+              <FormControl fullWidth>
+                <InputLabel id="categoryLabel">Kategória</InputLabel>
+                <Select
+                  fullWidth
+                  labelId='categoryLabel'
+                  label='Kategória'
+                  id='category'
+                  value={this.category.name}
+                  onChange={this.handleSelectChange}
+                  required
+                >
+
+                  {toJS(GlobalEntities.categories).map((category: Category) => {
+                    return (
+                      <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
+                    )
+                  })}
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
+                <TextField
+                  fullWidth
+                  label="Prioritás"
+                  type='number'
+                  id='priority'
+                  name='priority'
+                  slotProps={
+                    { htmlInput: { 'max': 10, 'min': 0 } }
+                  }
+                  required
+                  onChange={this.handleChange}
+                />
+              </FormControl>
+            </VStack>
+            <Box display='flex' justifyContent='end'>
+              <Button type='submit' marginTop={5}>Felvétel</Button>
+            </Box>
+
+          </form>
+        </Card.Body>
+      </Card.Root>
+
+    </Stack>
   );
-};
-
-export default TaskRecording;
+}

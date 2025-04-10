@@ -32,6 +32,10 @@ export default class App implements ViewComponent{
     return (GlobalEntities.user.id != undefined)
   }
 
+  @computed get taskRecording() : ViewComponent {
+    return new TaskRecording(this.navigate)
+  }
+
   @computed get profile(): ViewComponent {
     return new Profile(this.navigate);
   }
@@ -42,7 +46,7 @@ export default class App implements ViewComponent{
         <Routes>
           <Route path='/' element={<this.landing.View/>} />
           <Route path='/home' element={this.isLoggedIn ? <this.home.View /> : <></>} />
-          <Route path='/newTask' element={<TaskRecording />} />
+          <Route path='/newTask' element={<this.taskRecording.View />} />
           <Route path='/profile' element={/*<main><h1>In development - profile</h1></main>*/ <this.profile.View />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<this.login.View/>} />
