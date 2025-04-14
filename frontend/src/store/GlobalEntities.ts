@@ -39,6 +39,16 @@ class Entities {
         this.Tasks(resp.data.data.tasks);
     }
 
+    @action register = async (data: Object) => {
+        try{
+            const resp = await GlobalApiHandlerInstance.put('/register', data);
+            return resp.data.data.message
+        }
+        catch {
+            return "Sikertelen regisztráció"
+        }
+    }
+
     @action login = async (email: string, password: string) => {
         const loginResponse = await GlobalApiHandlerInstance.post(`/login`, {email, password});
         
