@@ -2,11 +2,9 @@ import { Box, Button, Card, Container } from "@chakra-ui/react"
 import { Stack } from "@mui/material";
 import { NavigateFunction } from "react-router-dom"
 import ViewComponent from "../interfaces/ViewComponent";
-import { action, computed, makeObservable, observable, toJS } from "mobx";
+import { action, computed, makeObservable, toJS } from "mobx";
 import GlobalEntities from "../store/GlobalEntities";
-import { getElementRef } from "@chakra-ui/react/dist/types/utils";
 import { BaseCard } from "../components/Card";
-import { ReactNode } from "react";
 import { observer } from "mobx-react-lite";
 
 
@@ -16,15 +14,12 @@ export default class Home implements ViewComponent {
     constructor(public navigate: NavigateFunction) {
         
         makeObservable(this, {
-            //card: observable,
             showCard: action,
             card: computed
         });
     }
 
     @action showCard = () => {
-        //this.card = GlobalEntities.firstTask === undefined ? null : new BaseCard(toJS(GlobalEntities.firstTask));
-        //console.log(this.card);
         return GlobalEntities.firstTask  != undefined;
     }
 
