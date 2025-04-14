@@ -26,6 +26,7 @@ class Entities {
             firstTask: observable,
             setFirstTask: action,
             loadTasks: action,
+            createTask: action,
             tasks: computed
         });        
     }
@@ -74,6 +75,9 @@ class Entities {
     @action createTask = async (data: Object) => {
         const resp = await GlobalApiHandlerInstance.post('/tasks', data);
 
+        await this.loadTasks();
+        await this.loadDoneTasks();
+        
         return resp;
     }
 
