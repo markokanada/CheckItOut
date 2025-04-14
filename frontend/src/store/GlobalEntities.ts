@@ -100,14 +100,24 @@ class Entities {
     }
 
     @action updateUser = async (name: string, email: string, password: string) => {
-        this.user.name = name;
-        this.user.email = email;
+        
         const data = {
             "name" : name,
             "email": email,
-            "password": password
         }
-        const resp = await GlobalApiHandlerInstance.put(`/users/${this.user.id}`, data);
+
+        const oldemail = this.user.email;
+
+        try {
+            await GlobalApiHandlerInstance.post(`/login`, {email:oldemail, password});
+            const resp = await GlobalApiHandlerInstance.put(`/users/${this.user.id}`, data);
+            this.user = resp.data.user;
+            return resp.data.message;
+        }
+        catch {
+            return 0;
+        }
+
     }
 
 }
