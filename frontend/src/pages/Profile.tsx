@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import ViewComponent from "../interfaces/ViewComponent";
-import { Button, Container, FormControl, Stack, TextField } from "@mui/material";
+import { Button, Container, FormControl, Modal, Stack, TextField } from "@mui/material";
 import GlobalEntities from "../store/GlobalEntities";
 import { NavigateFunction } from "react-router-dom";
 import { action, makeObservable, observable } from "mobx";
@@ -8,27 +8,44 @@ import { FormEvent } from "react";
 
 export default class Profile implements ViewComponent {
 
+    style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+
     constructor(public naviagte: NavigateFunction) {
         makeObservable(this, {
+            showModal: observable,
             editable: observable,
             toggleEdit: action,
-            
+
         })
     }
 
     public editable: boolean = false;
+    public showModal: boolean = false;
 
     @action toggleEdit = () => {
         this.editable = !this.editable;
     }
 
+    @action toggleModal = () => {
+        this.showModal = !this.showModal
+    }
 
 
     @action submitEdit = (e: any) => {
         e.preventDefault();
-       
+
         console.log(e.target.name.value);
-        
+
     }
 
     View = observer(() => (
@@ -46,7 +63,7 @@ export default class Profile implements ViewComponent {
                             ?
                             <><Button sx={{ margin: "auto" }} variant='contained' onClick={this.toggleEdit}>
                                 Mégse
-                            </Button><Button sx={{ margin: "auto" }} variant='contained' type="submit">
+                            </Button><Button sx={{ margin: "auto" }} variant='contained' onClick={this.toggleModal}>
                                     Mentés
                                 </Button></>
                             :
@@ -57,6 +74,14 @@ export default class Profile implements ViewComponent {
 
                 </Stack>
             </form>
+            <Modal
+                open={this.showModal}
+                onClose={this.toggleModal}
+            >
+                <Stack sx={this.style}>
+                    <h1>Modal</h1>
+                </Stack>
+            </Modal>
         </Container>
     ));
 }
