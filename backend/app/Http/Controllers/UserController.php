@@ -53,7 +53,6 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $user = $request->user();
         $user->update($request->validated());
 
         return response()->json(['message' => 'Profil sikeresen frissítve', 'user' => $user]);
