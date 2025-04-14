@@ -99,6 +99,17 @@ class Entities {
         this.doneTasks = tasks;
     }
 
+    @action updateUser = async (name: string, email: string, password: string) => {
+        this.user.name = name;
+        this.user.email = email;
+        const data = {
+            "name" : name,
+            "email": email,
+            "password": password
+        }
+        const resp = await GlobalApiHandlerInstance.put(`/users/${this.user.id}`, data);
+    }
+
 }
 
 const GlobalEntities = new Entities();
