@@ -40,6 +40,10 @@ export default class App implements ViewComponent{
     return new Profile(this.navigate);
   }
 
+  @computed get register(): ViewComponent {
+    return new Register(this.navigate);
+  }
+
   View = () =>
      (
       <Layout>
@@ -48,7 +52,7 @@ export default class App implements ViewComponent{
           <Route path='/home' element={this.isLoggedIn ? <this.home.View /> : <></>} />
           <Route path='/newTask' element={<this.taskRecording.View />} />
           <Route path='/profile' element={/*<main><h1>In development - profile</h1></main>*/ <this.profile.View />} />
-          <Route path='/register' element={<Register />} />
+          <Route path='/register' element={<this.register.View />} />
           <Route path='/login' element={<this.login.View/>} />
         </Routes>
       </Layout>

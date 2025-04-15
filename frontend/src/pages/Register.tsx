@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import "./css/Register.css";
+import ViewComponent from "../interfaces/ViewComponent";
+import { observer } from "mobx-react-lite";
+import { Container } from "@mui/material";
 
-const Register: React.FC = () => {
+const _Register: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
@@ -69,4 +72,18 @@ const Register: React.FC = () => {
   );
 };
 
-export default Register;
+
+
+
+export default class Register implements ViewComponent {
+
+  constructor(public navigate: NavigateFunction) {
+
+  }
+
+  View = observer(() =>
+    <Container>
+
+    </Container>
+  );
+}
