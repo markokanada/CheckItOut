@@ -3,7 +3,8 @@ import { NavigateFunction, useNavigate } from "react-router-dom";
 import "./css/Register.css";
 import ViewComponent from "../interfaces/ViewComponent";
 import { observer } from "mobx-react-lite";
-import { Container } from "@mui/material";
+import { Box, Button, Container, FormControl, Stack, TextField } from "@mui/material";
+import { action, makeObservable } from "mobx";
 
 const _Register: React.FC = () => {
   const navigate = useNavigate();
@@ -78,12 +79,53 @@ const _Register: React.FC = () => {
 export default class Register implements ViewComponent {
 
   constructor(public navigate: NavigateFunction) {
+    makeObservable(this, {
 
+    });
   }
 
   View = observer(() =>
     <Container>
-
+      <Stack>
+        <h1>Regisztráció</h1>
+        <Box
+          component="form"
+        >
+          <Stack direction={"column"} gap={4}>
+            <FormControl>
+              <TextField 
+                label="Felhasználó név"
+                id="name"
+                name="name"
+              />
+            </FormControl>
+            <FormControl>
+              <TextField 
+                label="E-mail cím"
+                id="email"
+                name="email"
+              />
+            </FormControl>
+            <FormControl>
+              <TextField 
+                label="Jelszó"
+                id="password"
+                name="password"
+              />
+            </FormControl>
+            <FormControl>
+              <TextField 
+                label="Jelszó újra"
+                id="password_confirmation"
+                name="password_confirmation"
+              />
+            </FormControl>
+            <Stack direction={{sx:"column", sm:"row"}} justifyContent={"end"}>
+              <Button type="submit" variant="contained" >Regisztrálok</Button>
+            </Stack>
+          </Stack>
+        </Box>
+      </Stack>
     </Container>
   );
 }
