@@ -3,3 +3,4 @@
 .DS_Store
 backend/testdb.sqlite
 backend/.env.testing
+frontend/pnpm-lock.yaml
