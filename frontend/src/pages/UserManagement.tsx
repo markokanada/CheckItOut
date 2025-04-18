@@ -69,7 +69,7 @@ export default class UserManagement implements ViewComponent {
     this.users = this.users.filter((u) => u.id !== id);
   }
 
-  View = () => (
+  View = observer(() => (
     <Container>
       <h2>Felhasználók kezelése</h2>
       <Table>
@@ -149,5 +149,5 @@ export default class UserManagement implements ViewComponent {
         </TableBody>
       </Table>
     </Container>
-  );
+  ));
 }
