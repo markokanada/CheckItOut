@@ -49,7 +49,7 @@ export default class Register implements ViewComponent {
     this.snackbarOpen = false;
   };
 
-  View = () => (
+  View = observer(() => (
     <Container maxWidth="sm">
       <Stack spacing={4} mt={6}>
         <Typography variant="h4" align="center">
@@ -128,5 +128,5 @@ export default class Register implements ViewComponent {
         </Snackbar>
       </Stack>
     </Container>
-  );
+  ));
 }
