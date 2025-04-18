@@ -17,20 +17,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 export default class Profile implements ViewComponent {
-  style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: "40vw",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    borderRadius: "12px",
-    boxShadow: 24,
-    p: 4,
-    margin: "auto"
-  };
-
+  
   constructor(public navigate: NavigateFunction) {
     this.name = GlobalEntities.user.name as string;
     this.email = GlobalEntities.user.email as string;
@@ -148,8 +135,22 @@ export default class Profile implements ViewComponent {
       </Formik>
 
       <Modal open={this.showModal} onClose={this.toggleModal}>
-        <Stack sx={this.style} textAlign={"center"}>
-          <h1>Biztosan menti?</h1>
+      <Stack
+  textAlign="center"
+  sx={{
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "40vw",
+    bgcolor: "background.paper",
+    border: "2px solid #000",
+    borderRadius: "12px",
+    boxShadow: 24,
+    p: 4,
+    margin: "auto"
+  }}
+>          <h1>Biztosan menti?</h1>
           <Stack>
             <p>Felhasználó név: {this.name}</p>
             <p>E-mail cím: {this.email}</p>
