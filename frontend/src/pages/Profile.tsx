@@ -5,14 +5,15 @@ import {
   Container,
   FormControl,
   Modal,
+  Snackbar,
   Stack,
-  TextField
+  TextField,
+  Alert
 } from "@mui/material";
 import GlobalEntities from "../store/GlobalEntities";
 import { NavigateFunction } from "react-router-dom";
 import { action, makeObservable, observable } from "mobx";
-import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 export default class Profile implements ViewComponent {
@@ -40,6 +41,9 @@ export default class Profile implements ViewComponent {
   @observable accessor showModal: boolean = false;
   @observable accessor name: string;
   @observable accessor email: string;
+  @observable accessor snackbarOpen: boolean = false;
+  @observable accessor snackbarMessage: string = "";
+  @observable accessor snackbarSeverity: "success" | "error" = "success";
 
   @action toggleEdit() {
     this.editable = !this.editable;
@@ -56,12 +60,22 @@ export default class Profile implements ViewComponent {
     this.toggleEdit();
   }
 
+  @action showSnackbar(message: string, severity: "success" | "error") {
+    this.snackbarMessage = message;
+    this.snackbarSeverity = severity;
+    this.snackbarOpen = true;
+  }
+
+  @action handleSnackbarClose () {
+    this.snackbarOpen = false;
+  };
+
   @action async confirmEdit(password: string) {
     const resp = await GlobalEntities.updateUser(this.name, this.email, password);
     if (resp !== 0) {
-      alert(resp);
+      this.showSnackbar(resp, "success");
     } else {
-      alert("Hibás jelszó");
+      this.showSnackbar("Hibás jelszó", "error");
     }
     this.abortEdit();
   }
@@ -177,6 +191,17 @@ export default class Profile implements ViewComponent {
           </Formik>
         </Stack>
       </Modal>
+
+      <Snackbar
+        open={this.snackbarOpen}
+        autoHideDuration={4000}
+        onClose={this.handleSnackbarClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert onClose={this.handleSnackbarClose} severity={this.snackbarSeverity} sx={{ width: "100%" }}>
+          {this.snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   ));
 }
