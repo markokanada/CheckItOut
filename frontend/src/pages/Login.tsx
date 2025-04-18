@@ -1,143 +1,126 @@
-import React, { Component, FormEvent, ChangeEvent } from "react";
-import { makeObservable, observable, action, computed } from "mobx";
-import {  NavigateFunction } from "react-router-dom";
+import React from "react";
+import { NavigateFunction } from "react-router-dom";
 import ViewComponent from "../interfaces/ViewComponent";
-import { Box, Heading, Input, Button, Text, Link } from "@chakra-ui/react";
-import { FormControl, FormLabel } from "@mui/material";
+import { observer } from "mobx-react-lite";
+import {
+  Alert,
+  Box,
+  Button,
+  Container,
+  FormControl,
+  Snackbar,
+  Stack,
+  TextField,
+  Typography,
+  Link
+} from "@mui/material";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { action, makeObservable, observable } from "mobx";
 import GlobalEntities from "../store/GlobalEntities";
 
 export default class Login implements ViewComponent {
-    formData = {
-        email: "",
-        password: "",
-    };
+  constructor(public navigate: NavigateFunction) {
+    makeObservable(this);
+  }
 
-    errors: { [key: string]: string } = {};
+  @observable private accessor snackbarOpen = false;
 
-    constructor(public navigate: NavigateFunction) {
-        makeObservable(this, {
-            formData: observable,
-            errors: observable,
-            handleChange: action,
-            validateForm: action,
-            isValidForm: computed,
-            handleSubmit: action
-        });
-    }
+  @observable private accessor  initialValues = {
+    email: "",
+    password: "",
+  };
 
-    @action handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        this.formData[e.target.name as keyof typeof this.formData] = e.target.value;
-    };
+  @observable  private  accessor  validationSchema = Yup.object({
+    email: Yup.string()
+      .email("Érvényes e-mail szükséges!")
+      .required("E-mail megadása kötelező!"),
+    password: Yup.string()
+      .min(6, "A jelszónak legalább 6 karakterből kell állnia!")
+      .required("Jelszó megadása kötelező!"),
+  });
 
-    @computed get isValidForm() {
-        return Object.keys(this.errors).length === 0;
-    }
+  @action  private async handleSubmit(values: typeof this.initialValues) {
+    await GlobalEntities.login(values.email, values.password);
+    this.snackbarOpen = true;
+    setTimeout(() => this.navigate("/home"), 1500);
+  };
 
-    @action validateForm = () => {
-      const newErrors: { [key: string]: string } = {};
-        if (!this.formData.email.includes("@")) newErrors.email = "Érvényes e-mail szükséges!";
-        if (this.formData.password.length < 6) newErrors.password = "A jelszónak legalább 6 karakterből kell állnia!";
-        
-        this.errors = newErrors;
+  @action private handleCloseSnackbar() {
+    this.snackbarOpen = false;
+  };
 
-        return Object.keys(this.errors).length === 0;
-    }
-
-    @action handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        this.validateForm();
-
-        if (this.validateForm()) {
-            await GlobalEntities.login(this.formData.email, this.formData.password);
-            alert("Sikeres bejelentkezés!");
-            this.navigate("/home");
-        }
-    };
-
-    View = () => (
-<Box
-      maxWidth="400px"
-      margin="0 auto"
-      padding="2rem"
-      backgroundColor="#242424"
-      color="rgba(255, 255, 255, 0.87)"
-      borderRadius="8px"
-      fontFamily="Inter, system-ui, Avenir, Helvetica, Arial, sans-serif"
-    >
-      <Heading as="h1" fontSize="3.2em" lineHeight="1.1" marginBottom="1rem">
-        Bejelentkezés
-      </Heading>
-      <form onSubmit={this.handleSubmit}>
-        <FormControl sx={{marginBottom:"1rem"}}>
-          <FormLabel>E-mail</FormLabel>
-          <Input
-            type="email"
-            name="email"
-            onChange={this.handleChange}
-            backgroundColor="#1a1a1a"
-            color="rgba(255, 255, 255, 0.87)"
-            border="1px solid transparent"
-            borderRadius="8px"
-            padding="0.6em 1.2em"
-            fontSize="1em"
-            fontFamily="inherit"
-            _hover={{
-              borderColor: '#646cff',
-            }}
-          />
-        </FormControl>
-        <FormControl sx={{marginBottom:"1rem"}}>
-          <FormLabel>Jelszó</FormLabel>
-          <Input
-            type="password"
-            name="password"
-            onChange={this.handleChange}
-            backgroundColor="#1a1a1a"
-            color="rgba(255, 255, 255, 0.87)"
-            border="1px solid transparent"
-            borderRadius="8px"
-            padding="0.6em 1.2em"
-            fontSize="1em"
-            fontFamily="inherit"
-            _hover={{
-              borderColor: '#646cff',
-            }}
-          />
-        </FormControl>
-        <Button
-          type="submit"
-          backgroundColor="#1a1a1a"
-          color="rgba(255, 255, 255, 0.87)"
-          border="1px solid transparent"
-          borderRadius="8px"
-          padding="0.6em 1.2em"
-          fontSize="1em"
-          fontFamily="inherit"
-          cursor="pointer"
-          _hover={{
-            borderColor: '#646cff',
-          }}
-        >
+  View = observer(() => (
+    <Container maxWidth="sm">
+      <Stack spacing={4} mt={6}>
+        <Typography variant="h4" align="center">
           Bejelentkezés
-        </Button>
-      </form>
-      <Text marginTop="1rem">
-        Még nincs fiókod?{' '}
-        <Link
-          onClick={() => this.navigate('/register')}
-          color="white"
-          textDecoration="none"
-          padding="0.5rem"
-          backgroundColor="#007bff"
-          borderRadius="10px"
-          cursor="pointer"
-          _hover={{
-            color: '#535bf2',
-          }}
+        </Typography>
+
+        <Formik
+          initialValues={this.initialValues}
+          validationSchema={this.validationSchema}
+          onSubmit={this.handleSubmit}
         >
-          Regisztrálj itt
-        </Link>
-      </Text>
-    </Box>
-    );
+          {({ handleChange, values, touched, errors }) => (
+            <Form>
+              <Stack spacing={3}>
+                <FormControl>
+                  <TextField
+                    label="E-mail"
+                    name="email"
+                    type="email"
+                    value={values.email}
+                    onChange={handleChange}
+                    error={touched.email && Boolean(errors.email)}
+                    helperText={touched.email && errors.email}
+                    fullWidth
+                  />
+                </FormControl>
+                <FormControl>
+                  <TextField
+                    label="Jelszó"
+                    name="password"
+                    type="password"
+                    value={values.password}
+                    onChange={handleChange}
+                    error={touched.password && Boolean(errors.password)}
+                    helperText={touched.password && errors.password}
+                    fullWidth
+                  />
+                </FormControl>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <Link
+                    component="button"
+                    variant="body2"
+                    onClick={() => this.navigate("/register")}
+                  >
+                    Még nincs fiókod? Regisztrálj
+                  </Link>
+                  <Button type="submit" variant="contained" color="primary">
+                    Bejelentkezés
+                  </Button>
+                </Stack>
+              </Stack>
+            </Form>
+          )}
+        </Formik>
+
+        <Snackbar
+          open={this.snackbarOpen}
+          autoHideDuration={3000}
+          onClose={this.handleCloseSnackbar}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert
+            onClose={this.handleCloseSnackbar}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Sikeres bejelentkezés!
+          </Alert>
+        </Snackbar>
+      </Stack>
+    </Container>
+  ));
 }
