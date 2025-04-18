@@ -3,10 +3,12 @@ import { NavigateFunction } from "react-router-dom";
 import ViewComponent from "../interfaces/ViewComponent";
 import { observer } from "mobx-react-lite";
 import {
+  Alert,
   Box,
   Button,
   Container,
   FormControl,
+  Snackbar,
   Stack,
   TextField,
   Typography
@@ -26,6 +28,8 @@ export default class Register implements ViewComponent {
     password: "",
     confirmPassword: ""
   };
+  @observable private accessor snackbarOpen = false;
+
 
   @observable private accessor validationSchema = Yup.object({
     fullName: Yup.string().required("Név megadása kötelező!"),
@@ -37,8 +41,12 @@ export default class Register implements ViewComponent {
   });
 
   @action private handleSubmit (values: typeof this.initialValues) {
-    alert("Sikeres regisztráció!");
-    this.navigate("/");
+    this.snackbarOpen = true;
+    setTimeout(() => this.navigate("/"), 1500);
+  };
+
+  @action private handleCloseSnackbar()  {
+    this.snackbarOpen = false;
   };
 
   View = () => (
@@ -107,6 +115,17 @@ export default class Register implements ViewComponent {
             </Form>
           )}
         </Formik>
+
+        <Snackbar
+          open={this.snackbarOpen}
+          autoHideDuration={3000}
+          onClose={this.handleCloseSnackbar}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        >
+          <Alert onClose={this.handleCloseSnackbar} severity="success" sx={{ width: "100%" }}>
+            Sikeres regisztráció!
+          </Alert>
+        </Snackbar>
       </Stack>
     </Container>
   );
