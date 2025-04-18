@@ -1,6 +1,5 @@
 import React from "react";
 import { NavigateFunction } from "react-router-dom";
-import "./css/Login.css";
 import ViewComponent from "../interfaces/ViewComponent";
 import { Box, Container, Heading, Text, Button, Stack, Flex, Icon } from "@chakra-ui/react";
 import { FaCheckCircle, FaClock, FaListUl, FaBell } from "react-icons/fa";
