@@ -16,13 +16,7 @@ import {
   Button
 } from "@mui/material";
 import { Edit, Delete, Save, Cancel } from "@mui/icons-material";
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  role: "user" | "admin";
-}
+import { User } from "../model/User";
 
 const UserManagement: React.FC = observer(() => {
   const [users, setUsers] = useState<User[]>([]);
