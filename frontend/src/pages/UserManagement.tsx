@@ -18,21 +18,23 @@ import {
 import { Edit, Delete, Save, Cancel } from "@mui/icons-material";
 import { User } from "../model/User";
 import ViewComponent from "../interfaces/ViewComponent";
+import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
+import { NavigateFunction } from "react-router-dom";
 
 export default class UserManagement implements ViewComponent {
   @observable accessor users: User[] = [];
   @observable accessor editingId: number | null = null;
   @observable accessor editedUser: Partial<User> = {};
 
-  constructor() {
+  constructor(public navigate: NavigateFunction) {
     makeObservable(this);
 
     this.fetchUsers();
   }
 
   @action async fetchUsers() {
-    const response = await axios.get("/api/users");
-    this.users = response.data;
+    //const response = await GlobalApiHandlerInstance.get("/users");
+    //this.users = response.data;
   }
 
   @action handleEdit(user: User) {
@@ -57,7 +59,7 @@ export default class UserManagement implements ViewComponent {
   @action async handleSave() {
     if (!this.editedUser.id) return;
 
-    await axios.put(`/api/users/${this.editedUser.id}`, this.editedUser);
+    await GlobalApiHandlerInstance.put(`/users/${this.editedUser.id}`, this.editedUser);
     this.users = this.users.map((u) =>
       u.id === this.editedUser.id ? ({ ...u, ...this.editedUser } as User) : u
     );
@@ -65,7 +67,7 @@ export default class UserManagement implements ViewComponent {
   }
 
   @action async handleDelete(id: number) {
-    await axios.delete(`/api/users/${id}`);
+    await GlobalApiHandlerInstance.delete(`/users/${id}`);
     this.users = this.users.filter((u) => u.id !== id);
   }
 
