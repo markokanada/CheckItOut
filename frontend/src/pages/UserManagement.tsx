@@ -1,6 +1,6 @@
 import React, { ChangeEvent } from "react";
 import axios from "axios";
-import { makeObservable, observable, action } from "mobx";
+import { makeObservable, observable, action, makeAutoObservable } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
   Container,
@@ -21,22 +21,12 @@ import ViewComponent from "../interfaces/ViewComponent";
 
 
 export default class UserManagement implements ViewComponent {
-  @observable users: User[] = [];
-  @observable editingId: number | null = null;
-  @observable editedUser: Partial<User> = {};
+  @observable accessor users: User[] = [];
+  @observable accessor  editingId: number | null = null;
+  @observable accessor  editedUser: Partial<User> = {};
 
   constructor() {
-    makeObservable(this, {
-      users: observable,
-      editingId: observable,
-      editedUser: observable,
-      fetchUsers: action,
-      handleEdit: action,
-      handleCancel: action,
-      handleChange: action,
-      handleSave: action,
-      handleDelete: action
-    });
+    makeObservable(this);
 
     this.fetchUsers();
   }
