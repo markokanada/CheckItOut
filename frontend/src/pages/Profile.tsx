@@ -23,7 +23,7 @@ export default class Profile implements ViewComponent {
         margin: 'auto'
     };
 
-    constructor(public naviagte: NavigateFunction) {
+    constructor(public navigate: NavigateFunction) {
         this.name = (GlobalEntities.user.name as string);
         this.email = (GlobalEntities.user.email as string);
         makeObservable(this)
