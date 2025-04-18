@@ -9,12 +9,12 @@ import GlobalEntities from '../store/GlobalEntities';
 
 
 export default class TaskRecording implements ViewComponent {
-  category: Category = {
+  @observable accessor category: Category = {
     id: undefined,
     name: undefined
   };
 
-  formData: {
+  @observable accessor formData: {
     title: string,
     description: string,
     due_date: Date | string,
@@ -31,17 +31,10 @@ export default class TaskRecording implements ViewComponent {
     status: "új",
     user_id: (GlobalEntities.user.id as number)
   }
-  errors: { [key: string]: string } = {};
+  @observable accessor errors: { [key: string]: string } = {};
 
   constructor(public navigate: NavigateFunction) {
-    makeObservable(this, {
-      category: observable,
-      handleSelectChange: action,
-      validateForm: action,
-      submitForm: action,
-      errors: observable,
-      formData: observable
-    });
+    makeObservable(this);
   }
 
   @action validateForm = () => {
