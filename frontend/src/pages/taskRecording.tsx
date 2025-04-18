@@ -6,6 +6,7 @@ import { Box, Button, Card, For, Input, Stack, VStack } from '@chakra-ui/react';
 import { action, computed, makeObservable, observable, toJS } from 'mobx';
 import { NavigateFunction } from 'react-router-dom';
 import GlobalEntities from '../store/GlobalEntities';
+import { observer } from 'mobx-react-lite';
 
 
 export default class TaskRecording implements ViewComponent {
@@ -98,7 +99,7 @@ export default class TaskRecording implements ViewComponent {
     return this.errors.title === undefined ? false : true;
   }
 
-  View = () => (
+  View = observer(() => (
     <Stack maxWidth={720} padding={20} margin={"auto"}>
       <Card.Root variant='outline' >
         <Card.Header>
@@ -189,5 +190,5 @@ export default class TaskRecording implements ViewComponent {
       </Card.Root>
 
     </Stack>
-  );
+  ));
 }
