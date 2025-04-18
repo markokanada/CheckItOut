@@ -13,17 +13,16 @@ import {
   TextField,
   Select,
   MenuItem,
-  Stack
+  Stack,
 } from "@mui/material";
 import { Edit, Delete, Save, Cancel } from "@mui/icons-material";
 import { User } from "../model/User";
 import ViewComponent from "../interfaces/ViewComponent";
 
-
 export default class UserManagement implements ViewComponent {
   @observable accessor users: User[] = [];
-  @observable accessor  editingId: number | null = null;
-  @observable accessor  editedUser: Partial<User> = {};
+  @observable accessor editingId: number | null = null;
+  @observable accessor editedUser: Partial<User> = {};
 
   constructor() {
     makeObservable(this);
@@ -31,40 +30,44 @@ export default class UserManagement implements ViewComponent {
     this.fetchUsers();
   }
 
-   @action async fetchUsers () {
+  @action async fetchUsers() {
     const response = await axios.get("/api/users");
     this.users = response.data;
-  };
+  }
 
-  @action handleEdit (user: User) {
+  @action handleEdit(user: User) {
     this.editingId = user.id;
     this.editedUser = { ...user };
-  };
+  }
 
-  @action handleCancel  () {
+  @action handleCancel() {
     this.editingId = null;
     this.editedUser = {};
-  };
+  }
 
-  @action handleChange (e: ChangeEvent<HTMLInputElement> | ChangeEvent<{ name?: string; value: unknown }>) {
+  @action handleChange(
+    e:
+      | ChangeEvent<HTMLInputElement>
+      | ChangeEvent<{ name?: string; value: unknown }>
+  ) {
     const { name, value } = e.target;
     this.editedUser = { ...this.editedUser, [name as string]: value };
-  };
+  }
 
-  @action async handleSave () {
+  @action async handleSave() {
     if (!this.editedUser.id) return;
 
     await axios.put(`/api/users/${this.editedUser.id}`, this.editedUser);
     this.users = this.users.map((u) =>
-      u.id === this.editedUser.id ? { ...u, ...this.editedUser } as User : u
+      u.id === this.editedUser.id ? ({ ...u, ...this.editedUser } as User) : u
     );
     this.editingId = null;
-  };
+  }
 
-  @action async handleDelete (id: number) {
+  @action async handleDelete(id: number) {
     await axios.delete(`/api/users/${id}`);
     this.users = this.users.filter((u) => u.id !== id);
-  };
+  }
 
   View = () => (
     <Container>
@@ -110,7 +113,7 @@ export default class UserManagement implements ViewComponent {
                   <Select
                     name="role"
                     value={this.editedUser.role || "user"}
-                    onChange={()=>this.handleChange}
+                    onChange={() => this.handleChange}
                     size="small"
                   >
                     <MenuItem value="user">User</MenuItem>
