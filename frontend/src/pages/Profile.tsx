@@ -26,31 +26,23 @@ export default class Profile implements ViewComponent {
     constructor(public naviagte: NavigateFunction) {
         this.name = (GlobalEntities.user.name as string);
         this.email = (GlobalEntities.user.email as string);
-        makeObservable(this, {
-            showModal: observable,
-            editable: observable,
-            name: observable,
-            email: observable,
-            toggleEdit: action,
-            abortEdit: action,
-            toggleModal: action
-        })
+        makeObservable(this)
     }
 
-    public editable: boolean = false;
-    public showModal: boolean = false;
-    public name: string;
-    public email: string;
+    @observable accessor editable: boolean = false;
+    @observable accessor showModal: boolean = false;
+    @observable accessor name: string;
+    @observable accessor email: string;
 
-    @action toggleEdit = () => {
+    @action toggleEdit ()  {
         this.editable = !this.editable;
     }
 
-    @action toggleModal = () => {
+    @action toggleModal () {
         this.showModal = !this.showModal
     }
 
-    @action handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    @action handleChange (e: ChangeEvent<HTMLInputElement>) {
         const {name, value} = e.target;
 
         if (name === "name") {
@@ -61,14 +53,14 @@ export default class Profile implements ViewComponent {
         }
     }
 
-    @action abortEdit = () => {
+    @action abortEdit() {
         this.name = (GlobalEntities.user.name as string);
         this.email = (GlobalEntities.user.email as string);
         this.toggleModal();
         this.toggleEdit();
     }
 
-    @action submitEdit = async (e: any) => {
+    @action async submitEdit  (e: any) {
         e.preventDefault();
 
         const resp = await GlobalEntities.updateUser(this.name, this.email, e.target.password.value);
