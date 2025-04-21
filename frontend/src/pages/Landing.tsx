@@ -3,7 +3,6 @@ import { NavigateFunction } from "react-router-dom";
 import ViewComponent from "../interfaces/ViewComponent";
 import {
   Box,
-  Container,
   Heading,
   Text,
   Button,
@@ -29,6 +28,7 @@ import MissionContent from "../content/MissionContent.json";
 import ProductContent from "../content/ProductContent.json";
 import ContactContent from "../content/ContactContent.json";
 import Header from "../components/Header/index";
+import Container from "../common/Container";
 
 export default class Landing implements ViewComponent {
   constructor(public navigate: NavigateFunction) {}
@@ -36,9 +36,7 @@ export default class Landing implements ViewComponent {
   View = () => {    
 
     return (
-      // <>
-      //   <Styles />
-      //   <Header />
+
         <Container>
       <ScrollToTop />
       <ContentBlock
@@ -82,8 +80,7 @@ export default class Landing implements ViewComponent {
         id="contact"
       />
     </Container>  
-    // <Footer />
-    // </>
+
 
     );
   };
