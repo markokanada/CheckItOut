@@ -179,7 +179,9 @@ if (localStorage.getItem("userToken")) {
     GlobalEntities.user = userDataResponse.data;
     await GlobalEntities.loadTasks();
     await GlobalEntities.loadDoneTasks();
-    await GlobalEntities.fetchUsers();
+    if(GlobalEntities.user.role == "admin"){
+        await GlobalEntities.fetchUsers();
+    }
 }
 
 await GlobalEntities.loadCategories();
