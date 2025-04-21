@@ -27,5 +27,9 @@
     "Intro Title": "CheckItOut – Rendszerezd a napod egyszerűen!",
     "Intro Text": "Hatékony feladatkezelés, átlátható napi rutin és kevesebb stressz – mindezt egyetlen alkalmazásban. Kezdd el még ma!",
     "Intro Button1": "Mutasd",
-    "Intro Button2": "Tudj meg többet"
+    "Intro Button2": "Tudj meg többet",
+
+    "MiddleBlock Title": "CheckItOut – A napi teendőid legjobb segítőtársa",
+    "MiddleBlock Text": "A CheckItOut egy átlátható, magyar nyelvű feladatkezelő alkalmazás, amely segít rendszerezni a napi feladataid, és hatékonyabbá teszi a mindennapokat – programozói tudás nélkül is testreszabható.",
+    "MiddleBlock Button": "Kezdd el most"
 }
