@@ -33,5 +33,13 @@
 
     "MiddleBlock Title": "CheckItOut – Your smart daily task companion",
     "MiddleBlock Text": "CheckItOut helps you organize your day with a clean, customizable interface and full task tracking – all without needing any coding knowledge.",
-    "MiddleBlock Button": "Get started"
+    "MiddleBlock Button": "Get started",
+
+    "About Title": "Fast, simple & organized",
+    "About Text": "CheckItOut is ready to use out of the box – but you can easily tweak it to match your personal workflow and style if you want.",
+    "About Section Title 1": "Why CheckItOut?",
+    "About Section Content 1": "It’s a clean and intuitive task manager that helps you stay focused and organized – without the complexity.",
+    "About Section Title 2": "Why customizable?",
+    "About Section Content 2": "Everyone works differently. CheckItOut lets you shape your task flow and reminders to fit your unique daily rhythm."
+
 }

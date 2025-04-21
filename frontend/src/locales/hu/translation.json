@@ -31,5 +31,13 @@
 
     "MiddleBlock Title": "CheckItOut – A napi teendőid legjobb segítőtársa",
     "MiddleBlock Text": "A CheckItOut egy átlátható, magyar nyelvű feladatkezelő alkalmazás, amely segít rendszerezni a napi feladataid, és hatékonyabbá teszi a mindennapokat – programozói tudás nélkül is testreszabható.",
-    "MiddleBlock Button": "Kezdd el most"
+    "MiddleBlock Button": "Kezdd el most",
+
+    "About Title": "Gyors, egyszerű és átlátható",
+    "About Text": "A CheckItOut azonnal használható felületet kínál, így nem kell mélyebben belenyúlnod – hacsak nem szeretnéd teljesen a saját stílusodhoz igazítani.",
+    "About Section Title 1": "Miért a CheckItOut?",
+    "About Section Content 1": "Egyszerűen kezelhető, letisztult napi feladatkezelő, amely segít rendszerezni az életed – felesleges bonyodalmak nélkül.",
+    "About Section Title 2": "Miért testreszabható?",
+    "About Section Content 2": "Mert mindenki másként dolgozik. A CheckItOut lehetőséget ad arra, hogy a napi rutinodhoz igazítsd a felületeket és beállításokat."
+
 }
