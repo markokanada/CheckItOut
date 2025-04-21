@@ -69,6 +69,10 @@ class Entities {
         this.user = userDataResponse.data;
         await GlobalEntities.loadTasks();
         await GlobalEntities.loadDoneTasks();
+
+        if(this.user.role == "admin"){
+            await GlobalEntities.fetchUsers();
+        }
     }
 
     @action loadCategories = async () => {
@@ -146,7 +150,7 @@ class Entities {
                 Authorization: `Bearer ${localStorage.getItem("userToken")}`
             }
         });
-        this.users = response.data;
+        this.users = response.data.data;
 
 
     }
