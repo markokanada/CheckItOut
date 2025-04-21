@@ -28,7 +28,9 @@ export default class UserManagement implements ViewComponent {
 
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
-    GlobalEntities.fetchUsers();
+    // GlobalEntities.fetchUsers();
+    console.log(GlobalEntities.users);
+    console.log(GlobalEntities.user);
     
   }
 
@@ -66,7 +68,7 @@ export default class UserManagement implements ViewComponent {
           </TableRow>
         </TableHead>
         <TableBody>
-          {this.users.map((user) => (
+          {GlobalEntities.users.map((user) => (
             <TableRow key={user.id}>
               <TableCell>
                 {this.editingId === user.id ? (
