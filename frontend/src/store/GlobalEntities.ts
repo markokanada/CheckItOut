@@ -15,6 +15,9 @@ class Entities {
         created_at: undefined,
         updated_at: undefined
     };
+
+    public users: User[] = [];
+
     public firstTask: Task | undefined = undefined;
 
     constructor() {
@@ -27,8 +30,10 @@ class Entities {
             setFirstTask: action,
             loadTasks: action,
             createTask: action,
-            tasks: computed
-        });        
+            tasks: computed,
+            fetchUsers: action,
+            deleteUser: action,
+        });
     }
 
     get tasks() {
@@ -41,7 +46,7 @@ class Entities {
     }
 
     @action register = async (data: Object) => {
-        try{
+        try {
             const resp = await GlobalApiHandlerInstance.put('/register', data);
             return resp.data.data.message
         }
@@ -51,13 +56,13 @@ class Entities {
     }
 
     @action login = async (email: string, password: string) => {
-        const loginResponse = await GlobalApiHandlerInstance.post(`/login`, {email, password});
-        
+        const loginResponse = await GlobalApiHandlerInstance.post(`/login`, { email, password });
+
         localStorage.setItem("userToken", loginResponse.data.data.token);
-        
+
         const userDataResponse = await GlobalApiHandlerInstance.get('/user', {
-            headers:{
-               Authorization: `Bearer ${localStorage.getItem("userToken")}`
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("userToken")}`
             }
         })
 
@@ -77,14 +82,14 @@ class Entities {
 
         await this.loadTasks();
         await this.loadDoneTasks();
-        
+
         return resp;
     }
 
     @action updateTask = async (data: Task) => {
         const resp = await GlobalApiHandlerInstance.put(`/tasks/${data.id}`, data);
 
-        if(resp.status === 200) {
+        if (resp.status === 200) {
             await this.loadTasks();
             await this.loadDoneTasks();
         }
@@ -114,16 +119,16 @@ class Entities {
     }
 
     @action updateUser = async (name: string, email: string, password: string) => {
-        
+
         const data = {
-            "name" : name,
+            "name": name,
             "email": email,
         }
 
         const oldemail = this.user.email;
 
         try {
-            await GlobalApiHandlerInstance.post(`/login`, {email:oldemail, password});
+            await GlobalApiHandlerInstance.post(`/login`, { email: oldemail, password });
             const resp = await GlobalApiHandlerInstance.put(`/users/${this.user.id}`, data);
             this.user = resp.data.user;
             return resp.data.message;
@@ -134,14 +139,36 @@ class Entities {
 
     }
 
+
+    @action async fetchUsers() {
+        const response = await GlobalApiHandlerInstance.get("/users", {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("userToken")}`
+            }
+        });
+        this.users = response.data;
+
+
+    }
+
+    @action async deleteUser(id: number) {
+        await GlobalApiHandlerInstance.delete(`/users/${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("userToken")}`
+            }
+        });
+        this.users = this.users.filter((u) => u.id !== id);
+    }
+
+
 }
 
 const GlobalEntities = new Entities();
 
 if (localStorage.getItem("userToken")) {
     const userDataResponse = await GlobalApiHandlerInstance.get('/user', {
-        headers:{
-           Authorization: `Bearer ${localStorage.getItem("userToken")}`
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`
         }
     })
 

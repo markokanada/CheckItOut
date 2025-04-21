@@ -19,6 +19,7 @@ import { Edit, Delete, Save, Cancel } from "@mui/icons-material";
 import { User } from "../model/User";
 import ViewComponent from "../interfaces/ViewComponent";
 import { NavigateFunction } from "react-router-dom";
+import GlobalEntities from "../store/GlobalEntities";
 
 export default class UserManagement implements ViewComponent {
   @observable accessor users: User[] = [];
@@ -27,14 +28,10 @@ export default class UserManagement implements ViewComponent {
 
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
-
-    this.fetchUsers();
+    GlobalEntities.fetchUsers();
+    
   }
 
-  @action async fetchUsers() {
-    const response = await axios.get("/api/users");
-    this.users = response.data;
-  }
 
   @action handleEdit(user: User) {
     this.editingId = user.id;
@@ -55,20 +52,6 @@ export default class UserManagement implements ViewComponent {
     this.editedUser = { ...this.editedUser, [name as string]: value };
   }
 
-  @action async handleSave() {
-    if (!this.editedUser.id) return;
-
-    await axios.put(`/api/users/${this.editedUser.id}`, this.editedUser);
-    this.users = this.users.map((u) =>
-      u.id === this.editedUser.id ? ({ ...u, ...this.editedUser } as User) : u
-    );
-    this.editingId = null;
-  }
-
-  @action async handleDelete(id: number) {
-    await axios.delete(`/api/users/${id}`);
-    this.users = this.users.filter((u) => u.id !== id);
-  }
 
   View = observer(() => (
     <Container>
