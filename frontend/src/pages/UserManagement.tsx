@@ -18,13 +18,14 @@ import {
 import { Edit, Delete, Save, Cancel } from "@mui/icons-material";
 import { User } from "../model/User";
 import ViewComponent from "../interfaces/ViewComponent";
+import { NavigateFunction } from "react-router-dom";
 
 export default class UserManagement implements ViewComponent {
   @observable accessor users: User[] = [];
   @observable accessor editingId: number | null = null;
   @observable accessor editedUser: Partial<User> = {};
 
-  constructor() {
+  constructor(public navigate: NavigateFunction) {
     makeObservable(this);
 
     this.fetchUsers();
