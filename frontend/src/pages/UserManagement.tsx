@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from "react";
-import axios from "axios";
-import { makeObservable, observable, action, makeAutoObservable } from "mobx";
+import { makeObservable, observable, action } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
   Container,
@@ -18,25 +17,16 @@ import {
 import { Edit, Delete, Save, Cancel } from "@mui/icons-material";
 import { User } from "../model/User";
 import ViewComponent from "../interfaces/ViewComponent";
-import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
 import { NavigateFunction } from "react-router-dom";
 import GlobalEntities from "../store/GlobalEntities";
 
 export default class UserManagement implements ViewComponent {
-  @observable accessor users: User[] = [];
   @observable accessor editingId: number | null = null;
   @observable accessor editedUser: Partial<User> = {};
 
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
-    // GlobalEntities.fetchUsers();
-    console.log(GlobalEntities.users);
-    console.log(GlobalEntities.user);
-  }
-
-  @action async fetchUsers() {
-    //const response = await GlobalApiHandlerInstance.get("/users");
-    //this.users = response.data;
+    GlobalEntities.fetchUsers();
   }
 
   @action handleEdit(user: User) {
@@ -52,7 +42,7 @@ export default class UserManagement implements ViewComponent {
   @action handleChange(
     e:
       | ChangeEvent<HTMLInputElement>
-      | ChangeEvent<{ name?: string; value: unknown }>,
+      | ChangeEvent<{ name?: string; value: unknown }>
   ) {
     const { name, value } = e.target;
     this.editedUser = { ...this.editedUser, [name as string]: value };
@@ -61,19 +51,32 @@ export default class UserManagement implements ViewComponent {
   @action async handleSave() {
     if (!this.editedUser.id) return;
 
-    await GlobalApiHandlerInstance.put(
-      `/users/${this.editedUser.id}`,
-      this.editedUser,
-    );
-    this.users = this.users.map((u) =>
-      u.id === this.editedUser.id ? ({ ...u, ...this.editedUser } as User) : u,
-    );
-    this.editingId = null;
-  }
+    try {
+      const password = prompt("Kérlek add meg a jelszavad a mentéshez:");
+      if (!password) return;
 
+      await GlobalEntities.updateUser(
+        this.editedUser.name ?? "",
+        this.editedUser.email ?? "",
+        password
+      );
+
+      this.editingId = null;
+      this.editedUser = {};
+      await GlobalEntities.fetchUsers();
+    } catch (error) {
+      console.error("Mentés sikertelen:", error);
+    }
+  }
   @action async handleDelete(id: number) {
-    await GlobalApiHandlerInstance.delete(`/users/${id}`);
-    this.users = this.users.filter((u) => u.id !== id);
+    if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?")) return;
+
+    try {
+      await GlobalEntities.deleteUser(id);
+      await GlobalEntities.fetchUsers();
+    } catch (error) {
+      console.error("Törlés sikertelen:", error);
+    }
   }
 
   View = observer(() => (
@@ -120,7 +123,7 @@ export default class UserManagement implements ViewComponent {
                   <Select
                     name="role"
                     value={this.editedUser.role || "user"}
-                    onChange={() => this.handleChange}
+                    onChange={this.handleChange}
                     size="small"
                   >
                     <MenuItem value="user">User</MenuItem>
@@ -133,30 +136,19 @@ export default class UserManagement implements ViewComponent {
               <TableCell>
                 {this.editingId === user.id ? (
                   <Stack direction="row" spacing={1}>
-                    <IconButton onClick={this.handleSave}>
+                    <IconButton onClick={() => this.handleSave()}>
                       <Save />
                     </IconButton>
-                    <IconButton onClick={this.handleCancel}>
+                    <IconButton onClick={() => this.handleCancel()}>
                       <Cancel />
                     </IconButton>
                   </Stack>
                 ) : (
                   <Stack direction="row" spacing={1}>
-                    <IconButton
-                      onClick={
-                        () => {}
-
-                        // this.handleEdit(user)
-                      }
-                    >
+                    <IconButton onClick={() => this.handleEdit(user)}>
                       <Edit />
                     </IconButton>
-                    <IconButton
-                      onClick={
-                        () => {}
-                        // this.handleDelete(user.id)
-                      }
-                    >
+                    <IconButton onClick={() => this.handleDelete(user.id)}>
                       <Delete />
                     </IconButton>
                   </Stack>
