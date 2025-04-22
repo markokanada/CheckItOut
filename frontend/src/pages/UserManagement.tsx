@@ -49,7 +49,24 @@ export default class UserManagement implements ViewComponent {
   }
 
   @action async handleSave() {
+    if (!this.editedUser.id) return;
 
+    try {
+      const password = prompt("Kérlek add meg a jelszavad a mentéshez:");
+      if (!password) return;
+
+      await GlobalEntities.updateUser(
+        this.editedUser.name ?? "",
+        this.editedUser.email ?? "",
+        password
+      );
+
+      this.editingId = null;
+      this.editedUser = {};
+      await GlobalEntities.fetchUsers();
+    } catch (error) {
+      console.error("Mentés sikertelen:", error);
+    }
   }
   @action async handleDelete(id: number) {
     if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?")) return;
