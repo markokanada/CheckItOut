@@ -51,6 +51,12 @@
     "Name Error":"Name is required!",
     "Email Error1":"Email address is required!",
     "Email Error2":"Invalid Email address detected!",
-    "Message Error": "Message is required!"
+    "Message Error": "Message is required!",
+    "Notification Success Title": "Message sent",
+    "Notification Success Description": "Your message has been sent successfully!",
+    "Notification Error Title": "Error occurred",
+    "Notification Error Description": "There was an error sending your message, please try again later.",
+    "Notification Error Fallback": "Form submission failed. Please try again later."
+
 
 }

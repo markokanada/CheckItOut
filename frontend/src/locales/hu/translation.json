@@ -47,6 +47,11 @@
     "Name Error": "Név megadása kötelező!",
     "Email Error1": "Email cím megadása kötelező!",
     "Email Error2": "Érvénytelen email címet adtál meg!",
-    "Message Error": "Üzenet megadása kötelező!"
-
+    "Message Error": "Üzenet megadása kötelező!",
+    "Notification Success Title": "Sikeres küldés",
+    "Notification Success Description": "Az üzeneted sikeresen elküldve!",
+    "Notification Error Title": "Hiba történt",
+    "Notification Error Description": "Nem sikerült elküldeni az üzenetet, próbáld meg később.",
+    "Notification Error Fallback": "A beküldés sikertelen volt. Kérlek, próbáld újra később."
+    
 }
