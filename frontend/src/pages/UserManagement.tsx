@@ -42,7 +42,7 @@ export default class UserManagement implements ViewComponent {
   @action handleChange(
     e:
       | ChangeEvent<HTMLInputElement>
-      | ChangeEvent<{ name?: string; value: unknown }>
+      | ChangeEvent<{ name?: string; value: unknown }>,
   ) {
     const { name, value } = e.target;
     this.editedUser = { ...this.editedUser, [name as string]: value };
@@ -58,7 +58,7 @@ export default class UserManagement implements ViewComponent {
       await GlobalEntities.updateUser(
         this.editedUser.name ?? "",
         this.editedUser.email ?? "",
-        password
+        password,
       );
 
       this.editingId = null;
@@ -69,7 +69,8 @@ export default class UserManagement implements ViewComponent {
     }
   }
   @action async handleDelete(id: number) {
-    if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?")) return;
+    if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?"))
+      return;
 
     try {
       await GlobalEntities.deleteUser(id);
