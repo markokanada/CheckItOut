@@ -1,3 +1,3 @@
-export default interface ViewComponent{
-    View: ()=>JSX.Element
+export default interface ViewComponent {
+  View: () => JSX.Element;
 }
