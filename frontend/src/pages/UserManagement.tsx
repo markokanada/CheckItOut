@@ -56,13 +56,12 @@ export default class UserManagement implements ViewComponent {
     if (!this.editedUser.id) return;
 
     try {
-      const password = prompt("Kérlek add meg a jelszavad a mentéshez:");
-      if (!password) return;
 
-      await GlobalEntities.updateUser(
+      await GlobalEntities.updateUserById(
+        this.editedUser.id,
         this.editedUser.name ?? "",
         this.editedUser.email ?? "",
-        password
+        this.editedUser.role ?? ""
       );
 
       this.editingId = null;

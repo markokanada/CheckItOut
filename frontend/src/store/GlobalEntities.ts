@@ -154,6 +154,29 @@ class Entities {
     }
   };
 
+  @action updateUserById = async (
+    id: number,
+    name: string,
+    email: string,
+    role: string,
+  ) => {
+    const data = {
+      name: name,
+      email: email,
+      role: role,
+    };
+
+    try {
+      const resp = await GlobalApiHandlerInstance.put(
+        `/users/${id}`,
+        data,
+      );
+      return resp.data.message;
+    } catch {
+      return 0;
+    }
+  };
+
   @action async fetchUsers() {
     const response = await GlobalApiHandlerInstance.get("/users", {
       headers: {
