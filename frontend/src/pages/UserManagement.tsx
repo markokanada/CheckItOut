@@ -1,6 +1,5 @@
 import React, { ChangeEvent } from "react";
-import axios from "axios";
-import { makeObservable, observable, action, makeAutoObservable } from "mobx";
+import { makeObservable, observable, action } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
   Container,
@@ -22,18 +21,13 @@ import { NavigateFunction } from "react-router-dom";
 import GlobalEntities from "../store/GlobalEntities";
 
 export default class UserManagement implements ViewComponent {
-  @observable accessor users: User[] = [];
   @observable accessor editingId: number | null = null;
   @observable accessor editedUser: Partial<User> = {};
 
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
-    // GlobalEntities.fetchUsers();
-    console.log(GlobalEntities.users);
-    console.log(GlobalEntities.user);
-    
+    GlobalEntities.fetchUsers();
   }
-
 
   @action handleEdit(user: User) {
     this.editingId = user.id;
@@ -54,6 +48,19 @@ export default class UserManagement implements ViewComponent {
     this.editedUser = { ...this.editedUser, [name as string]: value };
   }
 
+  @action async handleSave() {
+
+  }
+  @action async handleDelete(id: number) {
+    if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?")) return;
+
+    try {
+      await GlobalEntities.deleteUser(id);
+      await GlobalEntities.fetchUsers();
+    } catch (error) {
+      console.error("Törlés sikertelen:", error);
+    }
+  }
 
   View = observer(() => (
     <Container>
@@ -99,7 +106,7 @@ export default class UserManagement implements ViewComponent {
                   <Select
                     name="role"
                     value={this.editedUser.role || "user"}
-                    onChange={() => this.handleChange}
+                    onChange={this.handleChange}
                     size="small"
                   >
                     <MenuItem value="user">User</MenuItem>
@@ -112,10 +119,10 @@ export default class UserManagement implements ViewComponent {
               <TableCell>
                 {this.editingId === user.id ? (
                   <Stack direction="row" spacing={1}>
-                    <IconButton onClick={this.handleSave}>
+                    <IconButton onClick={() => this.handleSave()}>
                       <Save />
                     </IconButton>
-                    <IconButton onClick={this.handleCancel}>
+                    <IconButton onClick={() => this.handleCancel()}>
                       <Cancel />
                     </IconButton>
                   </Stack>
