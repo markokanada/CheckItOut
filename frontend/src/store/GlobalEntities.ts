@@ -27,6 +27,7 @@ class Entities {
       user: observable,
       categories: observable,
       firstTask: observable,
+      users:observable,
       setFirstTask: action,
       loadTasks: action,
       createTask: action,
