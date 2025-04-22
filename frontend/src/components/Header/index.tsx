@@ -32,7 +32,8 @@ const Header = ({ t }: { t: TFunction }) => {
   const isDocumentation = location.pathname === "/how-to-use";
   const isLogin = location.pathname === "/login";
   const isRegister = location.pathname === "/register";
-  const isUserLinksRequired = (isHome || isDocumentation || isLogin || isRegister);
+  const isUserLinksRequired =
+    isHome || isDocumentation || isLogin || isRegister;
   const scrollTo = (id: string) => {
     const element = document.getElementById(id) as HTMLDivElement;
     if (element) {
