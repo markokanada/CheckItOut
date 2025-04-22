@@ -55,5 +55,21 @@
   "Notification Error Fallback": "Form submission failed. Please try again later.",
   "menu": "Menu",
   "Sign In": "Sign In",
-  "Get Started": "Get Started"
+  "Get Started": "Get Started",
+  "Register Title": "Register",
+  "Register Fullname": "Full Name",
+  "Register Email": "Email",
+  "Register Password": "Password",
+  "Register Confirm Password": "Confirm Password",
+  "Register Submit": "Sign Up",
+  "Register Success": "Registration successful!",
+
+  "Validation Fullname Required": "Full name is required!",
+  "Validation Email Required": "Email is required!",
+  "Validation Email Format": "A valid email is required!",
+  "Validation Password Required": "Password is required!",
+  "Validation Password Length": "Password must be at least 6 characters long!",
+  "Validation Confirm Password Required": "Confirming your password is required!",
+  "Validation Password Match": "Passwords do not match!"
+
 }

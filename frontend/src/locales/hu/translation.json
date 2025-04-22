@@ -54,5 +54,20 @@
   "Notification Error Fallback": "A beküldés sikertelen volt. Kérlek, próbáld újra később.",
   "menu": "Menü",
   "Sign In": "Bejelentkezés",
-  "Get Started": "Kezdés"
+  "Get Started": "Kezdés",
+  "Register Title": "Regisztráció",
+  "Register Fullname": "Teljes név",
+  "Register Email": "E-mail",
+  "Register Password": "Jelszó",
+  "Register Confirm Password": "Jelszó megerősítése",
+  "Register Submit": "Regisztrálok",
+  "Register Success": "Sikeres regisztráció!",
+
+  "Validation Fullname Required": "Név megadása kötelező!",
+  "Validation Email Required": "E-mail megadása kötelező!",
+  "Validation Email Format": "Érvényes e-mail szükséges!",
+  "Validation Password Required": "Jelszó szükséges!",
+  "Validation Password Length": "A jelszónak legalább 6 karakterből kell állnia!",
+  "Validation Confirm Password Required": "Jelszó megerősítése szükséges!",
+  "Validation Password Match": "A jelszavak nem egyeznek!"
 }
