@@ -56,7 +56,7 @@
     "Notification Success Description": "Your message has been sent successfully!",
     "Notification Error Title": "Error occurred",
     "Notification Error Description": "There was an error sending your message, please try again later.",
-    "Notification Error Fallback": "Form submission failed. Please try again later."
-
+    "Notification Error Fallback": "Form submission failed. Please try again later.",
+    "menu": "Menu"
 
 }
