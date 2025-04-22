@@ -22,7 +22,6 @@ import { LanguageSwitchContainer, LanguageSwitch } from "../Footer/styles";
 import i18n from "../../translation";
 import styled from "styled-components";
 
-
 const Header = ({ t }: { t: TFunction }) => {
   const [visible, setVisibility] = useState(false);
   const toggleButton = () => setVisibility(!visible);
