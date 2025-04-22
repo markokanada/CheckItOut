@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { notification } from "antd";
+import { useTranslation } from "react-i18next";
 
 interface IValues {
   name: string;
@@ -13,22 +14,21 @@ const initialValues: IValues = {
   message: "",
 };
 
-export const useForm = (validate: { (values: IValues): IValues }) => {
-  const [formState, setFormState] = useState<{
-    values: IValues;
-    errors: IValues;
-  }>({
+export const useForm = (validate: (values: IValues) => IValues) => {
+  const [formState, setFormState] = useState({
     values: { ...initialValues },
     errors: { ...initialValues },
   });
+
+  const { t } = useTranslation(); // 🔥 Fontos!
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     const values = formState.values;
     const errors = validate(values);
-    setFormState((prevState) => ({ ...prevState, errors }));
+    setFormState((prev) => ({ ...prev, errors }));
 
-    const url = "http://mailcatcher.vm1.test/"; // TODO: Fix mail sending
+    const url = "http://mailcatcher.vm1.test/"; // TODO: Replace later
 
     try {
       if (Object.values(errors).every((error) => error === "")) {
@@ -42,9 +42,8 @@ export const useForm = (validate: { (values: IValues): IValues }) => {
 
         if (!response.ok) {
           notification["error"]({
-            message: "Error",
-            description:
-              "There was an error sending your message, please try again later.",
+            message: t("Notification Error Title"),
+            description: t("Notification Error Description"),
           });
         } else {
           event.target.reset();
@@ -54,15 +53,15 @@ export const useForm = (validate: { (values: IValues): IValues }) => {
           }));
 
           notification["success"]({
-            message: "Success",
-            description: "Your message has been sent!",
+            message: t("Notification Success Title"),
+            description: t("Notification Success Description"),
           });
         }
       }
     } catch (error) {
       notification["error"]({
-        message: "Error",
-        description: "Failed to submit form. Please try again later.",
+        message: t("Notification Error Title"),
+        description: t("Notification Error Fallback"),
       });
     }
   };
@@ -70,16 +69,15 @@ export const useForm = (validate: { (values: IValues): IValues }) => {
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    event.persist();
     const { name, value } = event.target;
-    setFormState((prevState) => ({
-      ...prevState,
+    setFormState((prev) => ({
+      ...prev,
       values: {
-        ...prevState.values,
+        ...prev.values,
         [name]: value,
       },
       errors: {
-        ...prevState.errors,
+        ...prev.errors,
         [name]: "",
       },
     }));
