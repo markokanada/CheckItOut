@@ -20,26 +20,52 @@ import GlobalEntities from "../store/GlobalEntities";
 import { useTranslation } from "react-i18next";
 
 export default class Login implements ViewComponent {
-  constructor(public navigate: NavigateFunction) {
-    makeObservable(this);
-  }
+  @observable accessor snackbarOpen = false;
+  @observable accessor snackbarMessage = "";
+  @observable accessor snackbarSeverity: "success" | "error" = "success";
 
-  @observable private accessor snackbarOpen = false;
-
-  @observable private accessor initialValues = {
+  @observable accessor initialValues = {
     email: "",
     password: "",
   };
 
-  @action private async handleSubmit(values: typeof this.initialValues) {
-    await GlobalEntities.login(values.email, values.password);
-    this.snackbarOpen = true;
-    setTimeout(() => this.navigate("/home"), 1500);
+  constructor(public navigate: NavigateFunction) {
+    makeObservable(this);
   }
 
-  @action private handleCloseSnackbar() {
-    this.snackbarOpen = false;
+  @action private async handleSubmit(values: typeof this.initialValues) {
+    try {
+      await GlobalEntities.login(values.email, values.password);
+      this.snackbarMessage = "Login Success";
+      this.snackbarSeverity = "success";
+      this.snackbarOpen = true;
+      setTimeout(() => this.navigate("/home"), 1500);
+    } catch (error: any) {
+      let translationKey = "Login Error"; 
+          
+      if (error.isAxiosError) {
+        const serverMessage = error.response?.data?.message || error.message;
+        
+        if (serverMessage.includes("The selected email is invalid")) {
+          translationKey = "Login Error 2";
+        } else if (serverMessage.includes("Request failed with status code 401")) {
+          translationKey = "Login Error 3";
+        }
+        else if (error.response?.status === 422 && error.response?.data?.errors) {
+          translationKey = "Validation Error";
+        }
+        console.log(error)
+      }
+  
+      this.snackbarMessage = translationKey;
+      this.snackbarSeverity = "error";
+      this.snackbarOpen = true;
+    }
   }
+
+  @action private handleCloseSnackbar = () => {
+    this.snackbarOpen = false;
+  };
 
   View = observer(() => {
     const { t } = useTranslation();
@@ -63,7 +89,7 @@ export default class Login implements ViewComponent {
           <Formik
             initialValues={this.initialValues}
             validationSchema={validationSchema}
-            onSubmit={this.handleSubmit}
+            onSubmit={(values) => this.handleSubmit(values)}
           >
             {({ handleChange, values, touched, errors }) => (
               <Form>
@@ -121,10 +147,10 @@ export default class Login implements ViewComponent {
           >
             <Alert
               onClose={this.handleCloseSnackbar}
-              severity="success"
+              severity={this.snackbarSeverity}
               sx={{ width: "100%" }}
             >
-              {t("Login Success")}
+              {t(this.snackbarMessage)}
             </Alert>
           </Snackbar>
         </Stack>
@@ -132,3 +158,4 @@ export default class Login implements ViewComponent {
     );
   });
 }
+
