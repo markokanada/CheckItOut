@@ -58,26 +58,26 @@ export default class Landing implements ViewComponent {
         content={AboutContent.text}
         section={AboutContent.section}
         icon="graphs.svg"
-        id="about"
+        id="why-us"
       />
       <ContentBlock
         direction="right"
         title={MissionContent.title}
         content={MissionContent.text}
         icon="product-launch.svg"
-        id="mission"
+        id="features"
       />
       <ContentBlock
         direction="left"
         title={ProductContent.title}
         content={ProductContent.text}
         icon="waving.svg"
-        id="product"
+        id="usage"
       />
       <ContactForm
         title={ContactContent.title}
         content={ContactContent.text}
-        id="contact"
+        id="content"
       />
     </Container>  
 
