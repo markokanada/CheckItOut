@@ -53,12 +53,12 @@ export const NotHidden = styled("div")`
   @media only screen and (max-width: 890px) {
     display: none;
   }
-    @media only screen and (max-width: 1048px) and (min-width: 891px) {
+  @media only screen and (max-width: 1048px) and (min-width: 891px) {
     display: flex;
     padding-top: 1rem;
     padding-bottom: 1rem;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     width: 100%;
   }
 `;
