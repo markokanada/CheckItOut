@@ -53,6 +53,8 @@
     "Notification Error Title": "Hiba történt",
     "Notification Error Description": "Nem sikerült elküldeni az üzenetet, próbáld meg később.",
     "Notification Error Fallback": "A beküldés sikertelen volt. Kérlek, próbáld újra később.",
-    "menu": "Menü"
+    "menu": "Menü",
+    "Sign In": "Bejelentkezés",
+    "Get Started": "Kezdés"
 
 }
