@@ -11,10 +11,11 @@ body {
 }
 
 a {
-  color: #F5F5DC;
+  color: #f5f5dc;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: light;
-  }}
+  }
+}
