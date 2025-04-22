@@ -16,6 +16,8 @@ import {
   Span,
 } from "./styles";
 import { Text } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
+
 const Header = ({ t }: { t: TFunction }) => {
   const [visible, setVisibility] = useState(false);
 
@@ -31,24 +33,28 @@ const Header = ({ t }: { t: TFunction }) => {
       });
       setVisibility(false);
     };
+
+    const location = useLocation();
+
+    const isHome = location.pathname === "/";
     return (
       <>
-        <CustomNavLinkSmall onClick={() => scrollTo("why-us")}>
-          <Span>{t("nav1")}</Span>
-        </CustomNavLinkSmall>
-        <CustomNavLinkSmall onClick={() => scrollTo("features")}>
-          <Span>{t("nav2")}</Span>
-        </CustomNavLinkSmall>
-        <CustomNavLinkSmall onClick={() => scrollTo("usage")}>
-          <Span>{t("nav3")}</Span>
-        </CustomNavLinkSmall>
-        <CustomNavLinkSmall
-          onClick={() => scrollTo("content")}
-        >
-          <Span>
-            {t("nav4")}
-          </Span>
-        </CustomNavLinkSmall>
+        {isHome && (
+    <>
+      <CustomNavLinkSmall onClick={() => scrollTo("why-us")}>
+        <Span>{t("nav1")}</Span>
+      </CustomNavLinkSmall>
+      <CustomNavLinkSmall onClick={() => scrollTo("features")}>
+        <Span>{t("nav2")}</Span>
+      </CustomNavLinkSmall>
+      <CustomNavLinkSmall onClick={() => scrollTo("usage")}>
+        <Span>{t("nav3")}</Span>
+      </CustomNavLinkSmall>
+      <CustomNavLinkSmall onClick={() => scrollTo("content")}>
+        <Span>{t("nav4")}</Span>
+      </CustomNavLinkSmall>
+    </>
+  )}
       </>
     );
   };
