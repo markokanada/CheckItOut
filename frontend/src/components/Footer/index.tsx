@@ -50,51 +50,65 @@ const Footer = ({ t }: { t: TFunction }) => {
     <>
       <FooterSection>
         <Container>
-          <Row style={{marginBottom:"2rem"}} justify="space-between">
+          <Row style={{ marginBottom: "2rem" }} justify="space-between">
             <Col lg={6} md={6} sm={12} xs={12}>
-            <Center><Language>{t("Contact")}</Language></Center>
-<Center>
-              <a href="mailto:info@oneofthelot.hu">
-                <Chat>{t(`Mail Us`)}</Chat>
-              </a>
+              <Center>
+                <Language>{t("Contact")}</Language>
+              </Center>
+              <Center>
+                <a href="mailto:info@oneofthelot.hu">
+                  <Chat>{t(`Mail Us`)}</Chat>
+                </a>
               </Center>
             </Col>
             <Col lg={6} md={6} sm={12} xs={12}>
-            <Center><Title>{t("Documentation Title")}</Title></Center>
-            <Center><Large to="/how-to-use">{t("Documentation Text")}</Large></Center>
+              <Center>
+                <Title>{t("Documentation Title")}</Title>
+              </Center>
+              <Center>
+                <Large to="/how-to-use">{t("Documentation Text")}</Large>
+              </Center>
             </Col>
-           
           </Row>
           <Row justify="space-between">
             <Col lg={6} md={6} sm={12} xs={12}>
-            
-            <Center><Language>{t("Address")}</Language></Center>
-              <Center><Para>{t("Adress Detail 1")}</Para></Center>
-              <Center><Para>{t("Adress Detail 2")}</Para></Center>
-              <Center><Para>{t("Adress Detail 3")}</Para></Center>
-              
-
+              <Center>
+                <Language>{t("Address")}</Language>
+              </Center>
+              <Center>
+                <Para>{t("Adress Detail 1")}</Para>
+              </Center>
+              <Center>
+                <Para>{t("Adress Detail 2")}</Para>
+              </Center>
+              <Center>
+                <Para>{t("Adress Detail 3")}</Para>
+              </Center>
             </Col>
             <Col lg={6} md={6} sm={12} xs={12}>
-            <Center><Label htmlFor="select-lang">{t("Language")}</Label></Center>
-            <Center><LanguageSwitchContainer>
-                <LanguageSwitch onClick={() => handleChange("en")}>
-                  <SvgIcon
-                    src="en.svg"
-                    aria-label="homepage"
-                    width="30px"
-                    height="30px"
-                  />
-                </LanguageSwitch>
-                <LanguageSwitch onClick={() => handleChange("hu")}>
-                  <SvgIcon
-                    src="hu.svg"
-                    aria-label="homepage"
-                    width="30px"
-                    height="30px"
-                  />
-                </LanguageSwitch>
-              </LanguageSwitchContainer></Center>
+              <Center>
+                <Label htmlFor="select-lang">{t("Language")}</Label>
+              </Center>
+              <Center>
+                <LanguageSwitchContainer>
+                  <LanguageSwitch onClick={() => handleChange("en")}>
+                    <SvgIcon
+                      src="en.svg"
+                      aria-label="homepage"
+                      width="30px"
+                      height="30px"
+                    />
+                  </LanguageSwitch>
+                  <LanguageSwitch onClick={() => handleChange("hu")}>
+                    <SvgIcon
+                      src="hu.svg"
+                      aria-label="homepage"
+                      width="30px"
+                      height="30px"
+                    />
+                  </LanguageSwitch>
+                </LanguageSwitchContainer>
+              </Center>
             </Col>
           </Row>
         </Container>
@@ -113,9 +127,9 @@ const Footer = ({ t }: { t: TFunction }) => {
                   aria-label="homepage"
                   width="auto"
                   height="64px"
-                /> by the One of The Lot
+                />{" "}
+                by the One of The Lot
               </LogoContainer>
-              
             </NavLink>
             {/* <FooterContainer>
               
