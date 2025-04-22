@@ -20,7 +20,6 @@ import { User } from "../model/User";
 import ViewComponent from "../interfaces/ViewComponent";
 import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
 import { NavigateFunction } from "react-router-dom";
-import { NavigateFunction } from "react-router-dom";
 import GlobalEntities from "../store/GlobalEntities";
 
 export default class UserManagement implements ViewComponent {
@@ -28,7 +27,6 @@ export default class UserManagement implements ViewComponent {
   @observable accessor editingId: number | null = null;
   @observable accessor editedUser: Partial<User> = {};
 
-  constructor(public navigate: NavigateFunction) {
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
     // GlobalEntities.fetchUsers();
@@ -142,10 +140,16 @@ export default class UserManagement implements ViewComponent {
                   </Stack>
                 ) : (
                   <Stack direction="row" spacing={1}>
-                    <IconButton onClick={() => this.handleEdit(user)}>
+                    <IconButton onClick={() => {}
+                      
+                      // this.handleEdit(user)
+                      }>
                       <Edit />
                     </IconButton>
-                    <IconButton onClick={() => this.handleDelete(user.id)}>
+                    <IconButton onClick={()=> {}
+                      // this.handleDelete(user.id)
+                      
+                      }>
                       <Delete />
                     </IconButton>
                   </Stack>
