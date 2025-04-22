@@ -60,7 +60,7 @@ export default class Profile implements ViewComponent {
     const resp = await GlobalEntities.updateUser(
       this.name,
       this.email,
-      password
+      password,
     );
     if (resp !== 0) {
       this.showSnackbar(resp, "success");
