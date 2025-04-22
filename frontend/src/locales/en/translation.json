@@ -47,5 +47,10 @@
     "nav2":"Features",
     "nav3":"Usage",
     "nav4":"Contact",
-    "Documentation Link": "https://organic-gong-e92.notion.site/ebd/1dd3a97be88580a09c74e4c6c7c8c598"
+    "Documentation Link": "https://organic-gong-e92.notion.site/ebd/1dd3a97be88580a09c74e4c6c7c8c598",
+    "Name Error":"Name is required!",
+    "Email Error1":"Email address is required!",
+    "Email Error2":"Invalid Email address detected!",
+    "Message Error": "Message is required!"
+
 }

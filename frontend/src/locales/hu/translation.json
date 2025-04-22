@@ -43,6 +43,10 @@
     "nav2":"Funkciók",
     "nav3":"Használat",
     "nav4":"Írj nekünk!",
-    "Documentation Link": "https://organic-gong-e92.notion.site/ebd/1b93a97be88580babc93e39736ae7dcb"
+    "Documentation Link": "https://organic-gong-e92.notion.site/ebd/1b93a97be88580babc93e39736ae7dcb",
+    "Name Error": "Név megadása kötelező!",
+    "Email Error1": "Email cím megadása kötelező!",
+    "Email Error2": "Érvénytelen email címet adtál meg!",
+    "Message Error": "Üzenet megadása kötelező!"
 
 }
