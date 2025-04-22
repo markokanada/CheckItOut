@@ -58,7 +58,6 @@ export default class Login implements ViewComponent {
         ) {
           translationKey = "Validation Error";
         }
-        console.log(error);
       }
 
       this.snackbarMessage = translationKey;
