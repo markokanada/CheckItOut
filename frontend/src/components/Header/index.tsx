@@ -15,8 +15,10 @@ import {
   Outline,
   Span,
 } from "./styles";
-import { Text } from "@chakra-ui/react";
+import { Center, Text } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
+import { LanguageSwitchContainer, LanguageSwitch } from "../Footer/styles";
+import i18n from "../../translation";
 
 const Header = ({ t }: { t: TFunction }) => {
   const [visible, setVisibility] = useState(false);
@@ -58,7 +60,9 @@ const Header = ({ t }: { t: TFunction }) => {
       </>
     );
   };
-
+  const handleChange = (language: string) => {
+    i18n.changeLanguage(language);
+  };
   return (
     <HeaderSection>
       <Container>
@@ -86,6 +90,24 @@ const Header = ({ t }: { t: TFunction }) => {
             </Label>
           </Col>
           <MenuItem />
+          <Center><LanguageSwitchContainer>
+                          <LanguageSwitch onClick={() => handleChange("en")}>
+                            <SvgIcon
+                              src="en.svg"
+                              aria-label="homepage"
+                              width="30px"
+                              height="30px"
+                            />
+                          </LanguageSwitch>
+                          <LanguageSwitch onClick={() => handleChange("hu")}>
+                            <SvgIcon
+                              src="hu.svg"
+                              aria-label="homepage"
+                              width="30px"
+                              height="30px"
+                            />
+                          </LanguageSwitch>
+                        </LanguageSwitchContainer></Center>
         </Drawer>
       </Container>
     </HeaderSection>
