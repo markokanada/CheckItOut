@@ -14,7 +14,7 @@ export default class Documentation implements ViewComponent {
 
     return (
       <iframe
-        src={t("Documentation Link")} 
+        src={t("Documentation Link")}
         style={{
           width: "100%",
           height: "120vh",
