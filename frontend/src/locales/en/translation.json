@@ -70,6 +70,12 @@
   "Validation Password Required": "Password is required!",
   "Validation Password Length": "Password must be at least 6 characters long!",
   "Validation Confirm Password Required": "Confirming your password is required!",
-  "Validation Password Match": "Passwords do not match!"
-
+  "Validation Password Match": "Passwords do not match!",
+    "Login Title": "Login",
+    "Login Email": "Email",
+    "Login Password": "Password",
+    "Login Submit": "Sign In",
+    "Login No Account": "Don’t have an account? Sign up now!",
+    "Login Success": "Login successful!"
+  
 }

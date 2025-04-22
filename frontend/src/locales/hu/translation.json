@@ -69,5 +69,11 @@
   "Validation Password Required": "Jelszó szükséges!",
   "Validation Password Length": "A jelszónak legalább 6 karakterből kell állnia!",
   "Validation Confirm Password Required": "Jelszó megerősítése szükséges!",
-  "Validation Password Match": "A jelszavak nem egyeznek!"
+  "Validation Password Match": "A jelszavak nem egyeznek!",
+  "Login Title": "Bejelentkezés",
+  "Login Email": "E-mail",
+  "Login Password": "Jelszó",
+  "Login Submit": "Bejelentkezés",
+  "Login No Account": "Még nincs fiókod? Regisztrálj",
+  "Login Success": "Sikeres bejelentkezés!"
 }
