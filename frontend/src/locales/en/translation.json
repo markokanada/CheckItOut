@@ -71,16 +71,14 @@
   "Validation Password Length": "Password must be at least 6 characters long!",
   "Validation Confirm Password Required": "Confirming your password is required!",
   "Validation Password Match": "Passwords do not match!",
-    "Login Title": "Login",
-    "Login Email": "Email",
-    "Login Password": "Password",
-    "Login Submit": "Sign In",
-    "Login No Account": "Don’t have an account? Sign up now!",
-    "Login Success": "Login successful!",
-    "Login Error": "An error occurred during login",
-    "Login Error 2": "The email address is not registered",
-    "Login Error 3": "Invalid email or password",
-    "Validation Error": "Please correct the form errors"
-
-  
+  "Login Title": "Login",
+  "Login Email": "Email",
+  "Login Password": "Password",
+  "Login Submit": "Sign In",
+  "Login No Account": "Don’t have an account? Sign up now!",
+  "Login Success": "Login successful!",
+  "Login Error": "An error occurred during login",
+  "Login Error 2": "The email address is not registered",
+  "Login Error 3": "Invalid email or password",
+  "Validation Error": "Please correct the form errors"
 }
