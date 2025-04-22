@@ -50,7 +50,7 @@ const Footer = ({ t }: { t: TFunction }) => {
     <>
       <FooterSection>
         <Container>
-          <Row justify="space-between">
+          <Row style={{marginBottom:"2rem"}} justify="space-between">
             <Col lg={6} md={6} sm={12} xs={12}>
             <Center><Language>{t("Contact")}</Language></Center>
 <Center>
