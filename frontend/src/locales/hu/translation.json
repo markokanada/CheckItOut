@@ -75,5 +75,10 @@
   "Login Password": "Jelszó",
   "Login Submit": "Bejelentkezés",
   "Login No Account": "Még nincs fiókod? Regisztrálj",
-  "Login Success": "Sikeres bejelentkezés!"
+  "Login Success": "Sikeres bejelentkezés!",
+  "Login Error": "Hiba történt a bejelentkezés során",
+    "Login Error 2": "Az email cím nincs regisztrálva",
+    "Login Error 3": "Hibás email vagy jelszó",
+    "Validation Error": "Kérjük javítsa a hibákat az űrlapon"
+  
 }
