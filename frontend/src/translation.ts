@@ -8,7 +8,7 @@ import { initReactI18next } from "react-i18next";
 i18n
   .use(XHR)
   .use(LanguageDetector)
-  .use(initReactI18next) 
+  .use(initReactI18next)
   .init({
     debug: false,
     lng: "en",
