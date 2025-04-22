@@ -15,6 +15,7 @@ import {
   StyledRow,
   ButtonWrapper,
 } from "./styles";
+import { Center } from "@chakra-ui/react";
 
 const ContentBlock = ({
   icon,
@@ -47,8 +48,8 @@ const ContentBlock = ({
           </Col>
           <Col lg={11} md={11} sm={11} xs={24}>
             <ContentWrapper>
-              <h6>{t(title)}</h6>
-              <Content>{t(content)}</Content>
+              <Center><h6>{t(title)}</h6></Center>
+              <Center><Content>{t(content)}</Content></Center>
               {direction === "right" ? (
                 <ButtonWrapper>
                   {typeof button === "object" &&
