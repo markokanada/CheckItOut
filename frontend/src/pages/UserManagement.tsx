@@ -32,7 +32,6 @@ export default class UserManagement implements ViewComponent {
     // GlobalEntities.fetchUsers();
     console.log(GlobalEntities.users);
     console.log(GlobalEntities.user);
-    
   }
 
   @action async fetchUsers() {
@@ -53,7 +52,7 @@ export default class UserManagement implements ViewComponent {
   @action handleChange(
     e:
       | ChangeEvent<HTMLInputElement>
-      | ChangeEvent<{ name?: string; value: unknown }>
+      | ChangeEvent<{ name?: string; value: unknown }>,
   ) {
     const { name, value } = e.target;
     this.editedUser = { ...this.editedUser, [name as string]: value };
@@ -62,9 +61,12 @@ export default class UserManagement implements ViewComponent {
   @action async handleSave() {
     if (!this.editedUser.id) return;
 
-    await GlobalApiHandlerInstance.put(`/users/${this.editedUser.id}`, this.editedUser);
+    await GlobalApiHandlerInstance.put(
+      `/users/${this.editedUser.id}`,
+      this.editedUser,
+    );
     this.users = this.users.map((u) =>
-      u.id === this.editedUser.id ? ({ ...u, ...this.editedUser } as User) : u
+      u.id === this.editedUser.id ? ({ ...u, ...this.editedUser } as User) : u,
     );
     this.editingId = null;
   }
@@ -140,16 +142,21 @@ export default class UserManagement implements ViewComponent {
                   </Stack>
                 ) : (
                   <Stack direction="row" spacing={1}>
-                    <IconButton onClick={() => {}
-                      
-                      // this.handleEdit(user)
-                      }>
+                    <IconButton
+                      onClick={
+                        () => {}
+
+                        // this.handleEdit(user)
+                      }
+                    >
                       <Edit />
                     </IconButton>
-                    <IconButton onClick={()=> {}
-                      // this.handleDelete(user.id)
-                      
-                      }>
+                    <IconButton
+                      onClick={
+                        () => {}
+                        // this.handleDelete(user.id)
+                      }
+                    >
                       <Delete />
                     </IconButton>
                   </Stack>
