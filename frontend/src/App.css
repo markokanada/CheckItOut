@@ -13,3 +13,8 @@ body {
 a {
   color: #F5F5DC;
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light;
+  }}
