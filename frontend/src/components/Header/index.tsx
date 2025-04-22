@@ -30,6 +30,8 @@ const Header = ({ t }: { t: TFunction }) => {
   const navigate = useNavigate();
   const isHome = location.pathname === "/";
   const isDocumentation = location.pathname === "/how-to-use";
+  const isLogin = location.pathname === "/login";
+  const isRegister = location.pathname === "/register";
 
   const scrollTo = (id: string) => {
     const element = document.getElementById(id) as HTMLDivElement;
@@ -73,7 +75,7 @@ const Header = ({ t }: { t: TFunction }) => {
           </LogoContainer>
           <NotHidden>
             <MenuItem />
-            {(isHome || isDocumentation) && (
+            {(isHome || isDocumentation || isLogin || isRegister) && (
               <>
                 <CustomNavLinkSmall onClick={() => navigate("/register")}>
                   <Span style={{ color: "#FF824B" }}>{t("Get Started")}</Span>
