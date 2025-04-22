@@ -28,7 +28,7 @@ export const useForm = (validate: { (values: IValues): IValues }) => {
     const errors = validate(values);
     setFormState((prevState) => ({ ...prevState, errors }));
 
-    const url = ""; // Fill in your API URL here
+    const url = "http://mailcatcher.vm1.test/"; // TODO: Fix mail sending
 
     try {
       if (Object.values(errors).every((error) => error === "")) {
