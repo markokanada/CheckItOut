@@ -11,7 +11,7 @@ import {
   Snackbar,
   Stack,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -19,35 +19,38 @@ import { action, makeObservable, observable } from "mobx";
 
 export default class Register implements ViewComponent {
   constructor(public navigate: NavigateFunction) {
-    makeObservable(this)
+    makeObservable(this);
   }
 
   @observable private accessor initialValues = {
     fullName: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   };
   @observable private accessor snackbarOpen = false;
 
-
   @observable private accessor validationSchema = Yup.object({
     fullName: Yup.string().required("Név megadása kötelező!"),
-    email: Yup.string().email("Érvényes e-mail szükséges!").required("E-mail megadása kötelező!"),
-    password: Yup.string().min(6, "A jelszónak legalább 6 karakterből kell állnia!").required("Jelszó szükséges!"),
+    email: Yup.string()
+      .email("Érvényes e-mail szükséges!")
+      .required("E-mail megadása kötelező!"),
+    password: Yup.string()
+      .min(6, "A jelszónak legalább 6 karakterből kell állnia!")
+      .required("Jelszó szükséges!"),
     confirmPassword: Yup.string()
       .oneOf([Yup.ref("password")], "A jelszavak nem egyeznek!")
       .required("Jelszó megerősítése szükséges!"),
   });
 
-  @action private handleSubmit (values: typeof this.initialValues) {
+  @action private handleSubmit(values: typeof this.initialValues) {
     this.snackbarOpen = true;
     setTimeout(() => this.navigate("/"), 1500);
-  };
+  }
 
-  @action private handleCloseSnackbar()  {
+  @action private handleCloseSnackbar() {
     this.snackbarOpen = false;
-  };
+  }
 
   View = observer(() => (
     <Container maxWidth="sm">
@@ -102,8 +105,12 @@ export default class Register implements ViewComponent {
                     type="password"
                     value={values.confirmPassword}
                     onChange={handleChange}
-                    error={touched.confirmPassword && Boolean(errors.confirmPassword)}
-                    helperText={touched.confirmPassword && errors.confirmPassword}
+                    error={
+                      touched.confirmPassword && Boolean(errors.confirmPassword)
+                    }
+                    helperText={
+                      touched.confirmPassword && errors.confirmPassword
+                    }
                   />
                 </FormControl>
                 <Stack direction="row" justifyContent="flex-end">
@@ -122,7 +129,11 @@ export default class Register implements ViewComponent {
           onClose={this.handleCloseSnackbar}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
-          <Alert onClose={this.handleCloseSnackbar} severity="success" sx={{ width: "100%" }}>
+          <Alert
+            onClose={this.handleCloseSnackbar}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
             Sikeres regisztráció!
           </Alert>
         </Snackbar>
