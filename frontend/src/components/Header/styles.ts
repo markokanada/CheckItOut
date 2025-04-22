@@ -13,6 +13,10 @@ export const HeaderSection = styled("header")`
 
 export const LogoContainer = styled(Link)`
   display: flex;
+  @media only screen and (max-width: 1048px) and (min-width: 891px) {
+    justify-content: center;
+    width: 100%;
+  }
 `;
 
 export const NavLink = styled("div")`
@@ -48,6 +52,14 @@ export const Burger = styled("div")`
 export const NotHidden = styled("div")`
   @media only screen and (max-width: 890px) {
     display: none;
+  }
+    @media only screen and (max-width: 1048px) and (min-width: 891px) {
+    display: flex;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    justify-content: center;
+    align-items:center;
+    width: 100%;
   }
 `;
 
