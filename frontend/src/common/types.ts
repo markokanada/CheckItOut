@@ -26,7 +26,7 @@ export interface InputProps {
   onChange: (
     event:
       | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
   ) => void;
 }
 export interface validateProps {
