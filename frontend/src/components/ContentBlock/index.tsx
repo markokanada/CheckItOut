@@ -48,8 +48,12 @@ const ContentBlock = ({
           </Col>
           <Col lg={11} md={11} sm={11} xs={24}>
             <ContentWrapper>
-              <Center><h6>{t(title)}</h6></Center>
-              <Center><Content>{t(content)}</Content></Center>
+              <Center>
+                <h6>{t(title)}</h6>
+              </Center>
+              <Center>
+                <Content>{t(content)}</Content>
+              </Center>
               {direction === "right" ? (
                 <ButtonWrapper>
                   {typeof button === "object" &&
@@ -59,7 +63,7 @@ const ContentBlock = ({
                           color?: string;
                           title: string;
                         },
-                        id: number
+                        id: number,
                       ) => {
                         return (
                           <Button
@@ -70,7 +74,7 @@ const ContentBlock = ({
                             {t(item.title)}
                           </Button>
                         );
-                      }
+                      },
                     )}
                 </ButtonWrapper>
               ) : (
@@ -84,7 +88,7 @@ const ContentBlock = ({
                             content: string;
                             icon: string;
                           },
-                          id: number
+                          id: number,
                         ) => {
                           return (
                             <Col key={id} span={11}>
@@ -97,7 +101,7 @@ const ContentBlock = ({
                               <MinPara>{t(item.content)}</MinPara>
                             </Col>
                           );
-                        }
+                        },
                       )}
                   </Row>
                 </ServiceWrapper>
