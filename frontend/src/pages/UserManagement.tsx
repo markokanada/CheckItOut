@@ -14,8 +14,7 @@ import {
   MenuItem,
   Stack,
 } from "@mui/material";
-import { Edit, Delete, Save, Cancel } from "@mui/icons-material";
-import { User } from "../model/User";
+import { Edit, Delete, Save, Cancel, ThirtyFpsRounded } from "@mui/icons-material";
 import ViewComponent from "../interfaces/ViewComponent";
 import { NavigateFunction } from "react-router-dom";
 import GlobalEntities from "../store/GlobalEntities";
@@ -30,24 +29,29 @@ export default class UserManagement implements ViewComponent {
   }
 
   @action handleEdit(user: User) {
-    this.editingId = user.id;
-    this.editedUser = { ...user };
+    this.editingId = user.id ?? null;
+    this.editedUser = { ...user }; 
   }
+  
 
   @action handleCancel() {
     this.editingId = null;
     this.editedUser = {};
   }
+  
 
-  @action handleChange(
-    e:
-      | ChangeEvent<HTMLInputElement>
-      | ChangeEvent<{ name?: string; value: unknown }>,
-  ) {
-    const { name, value } = e.target;
-    this.editedUser = { ...this.editedUser, [name as string]: value };
-  }
-
+  handleChange = action(
+    (
+      e:
+        | ChangeEvent<HTMLInputElement>
+        | ChangeEvent<{ name?: string; value: unknown }>
+    ) => {
+      const { name, value } = e.target;
+      if (!name) return;
+      this.editedUser = { ...this.editedUser, [name]: value as string };
+    }
+  );
+  
   @action async handleSave() {
     if (!this.editedUser.id) return;
 
@@ -58,7 +62,7 @@ export default class UserManagement implements ViewComponent {
       await GlobalEntities.updateUser(
         this.editedUser.name ?? "",
         this.editedUser.email ?? "",
-        password,
+        password
       );
 
       this.editingId = null;
@@ -68,9 +72,9 @@ export default class UserManagement implements ViewComponent {
       console.error("Mentés sikertelen:", error);
     }
   }
+
   @action async handleDelete(id: number) {
-    if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?"))
-      return;
+    if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?")) return;
 
     try {
       await GlobalEntities.deleteUser(id);
