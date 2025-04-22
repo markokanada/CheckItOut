@@ -18,13 +18,13 @@
 
     "Get started": "Get started",
 
-    "Submit": "Submit",
-    "Message": "Message",
-    "Your Message": "Type your message here...",
-    "Name": "Name",
-    "Your Name": "Enter your name...",
-    "Email": "Email",
-    "Your Email": "Enter your email...",
+    "submit": "Submit",
+    "message": "Message",
+    "your Message": "Type your message here...",
+    "name": "Name",
+    "your Name": "Enter your name...",
+    "email": "Email",
+    "your Email": "Enter your email...",
 
 
     "Intro Title": "Organize your day effortlessly!",
