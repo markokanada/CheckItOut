@@ -1,15 +1,16 @@
 {
-    "title": "About Title",
-    "text": "About Text",
-    "section": [{
-            "title": "About Section Title 1",
-            "content": "About Section Content 1",
-            "icon": "notes.svg"
-        },
-        {
-            "title": "About Section Title 2",
-            "content": "About Section Content 2",
-            "icon": "notes.svg"
-        }
-    ]
+  "title": "About Title",
+  "text": "About Text",
+  "section": [
+    {
+      "title": "About Section Title 1",
+      "content": "About Section Content 1",
+      "icon": "notes.svg"
+    },
+    {
+      "title": "About Section Title 2",
+      "content": "About Section Content 2",
+      "icon": "notes.svg"
+    }
+  ]
 }
