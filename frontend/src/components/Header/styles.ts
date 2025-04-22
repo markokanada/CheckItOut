@@ -73,11 +73,18 @@ export const CustomNavLinkSmall = styled(NavLink)`
   font-size: 1.2rem;
   color: #18216d;
   transition: color 0.2s ease-in;
-  margin: 0.5rem 2rem;
+  margin: 0.5rem 1rem;
 
   @media only screen and (max-width: 768px) {
     margin: 1.25rem 2rem;
   }
+`;
+
+export const CustomNavLinkSmallForUserInteraction = styled(NavLink)`
+  font-size: 1.2rem;
+  color: #18216d;
+  transition: color 0.2s ease-in;
+  margin-right: 0.5rem;
 `;
 
 export const Label = styled("span")`
@@ -104,4 +111,23 @@ export const Span = styled("span")`
     text-underline-position: under;
     text-decoration: rgb(255, 130, 92) wavy underline;
   }
+`;
+export const DrawerContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+`;
+
+export const TopSection = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const BottomSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  align-items: center;
 `;
