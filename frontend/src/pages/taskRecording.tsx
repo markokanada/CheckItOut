@@ -1,27 +1,34 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import ViewComponent from '../interfaces/ViewComponent';
-import { FormControl, FormLabel, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material';
-import { Box, Button, Card, For, Input, Stack, VStack } from '@chakra-ui/react';
-import { action, computed, makeObservable, observable, toJS } from 'mobx';
-import { NavigateFunction } from 'react-router-dom';
-import GlobalEntities from '../store/GlobalEntities';
-import { observer } from 'mobx-react-lite';
-
+import React, { ChangeEvent, FormEvent, useState } from "react";
+import ViewComponent from "../interfaces/ViewComponent";
+import {
+  FormControl,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
+import { Box, Button, Card, For, Input, Stack, VStack } from "@chakra-ui/react";
+import { action, computed, makeObservable, observable, toJS } from "mobx";
+import { NavigateFunction } from "react-router-dom";
+import GlobalEntities from "../store/GlobalEntities";
+import { observer } from "mobx-react-lite";
 
 export default class TaskRecording implements ViewComponent {
   @observable accessor category: Category = {
     id: undefined,
-    name: undefined
+    name: undefined,
   };
 
   @observable accessor formData: {
-    title: string,
-    description: string,
-    due_date: Date | string,
-    category_id: number,
-    priority: number,
-    status: string,
-    user_id: number
+    title: string;
+    description: string;
+    due_date: Date | string;
+    category_id: number;
+    priority: number;
+    status: string;
+    user_id: number;
   } = {
     title: "",
     description: "",
@@ -29,8 +36,8 @@ export default class TaskRecording implements ViewComponent {
     category_id: 0,
     priority: 0,
     status: "új",
-    user_id: (GlobalEntities.user.id as number)
-  }
+    user_id: GlobalEntities.user.id as number,
+  };
   @observable accessor errors: { [key: string]: string } = {};
 
   constructor(public navigate: NavigateFunction) {
@@ -46,16 +53,17 @@ export default class TaskRecording implements ViewComponent {
       newErrors.title = "A feladat leírása nem lehethosszabb 255 karakternél!";
     }
     if (this.formData.due_date <= new Date(Date.now())) {
-      newErrors.due_date = "A feladat határideje nem lehet korábban mint holnap!";
+      newErrors.due_date =
+        "A feladat határideje nem lehet korábban mint holnap!";
     }
     this.errors = newErrors;
 
     return Object.keys(this.errors).length === 0;
-  }
+  };
 
   @action handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
-    
+    const { name, value } = e.target;
+
     if (name === "category_id") {
       this.formData.category_id = Number(value);
     }
@@ -63,7 +71,7 @@ export default class TaskRecording implements ViewComponent {
       this.formData.priority = Number(value);
     }
     if (name === "due_date") {
-      this.formData.due_date = new Date(value)
+      this.formData.due_date = new Date(value);
     }
     if (name === "title") this.formData.title = value;
     if (name === "description") this.formData.description = value;
@@ -71,24 +79,29 @@ export default class TaskRecording implements ViewComponent {
 
   @action submitForm = async (event: FormEvent) => {
     event.preventDefault();
-    this.errors = {}
+    this.errors = {};
     this.validateForm();
     if (this.validateForm()) {
-      this.formData.due_date = (this.formData.due_date as Date).toISOString().slice(0,19).replace("T", " ")
+      this.formData.due_date = (this.formData.due_date as Date)
+        .toISOString()
+        .slice(0, 19)
+        .replace("T", " ");
       const resp = await GlobalEntities.createTask(this.formData);
       if (resp.status === 201) {
         alert("Sikeresen létrehozva");
-        this.navigate("home")
+        this.navigate("home");
       }
     }
-  }
+  };
 
   @action handleSelectChange = (event: SelectChangeEvent) => {
     this.category.id = Number(event.target.value);
-    this.category.name = GlobalEntities.categories.find((element) => element.id === this.category.id)?.name;
+    this.category.name = GlobalEntities.categories.find(
+      (element) => element.id === this.category.id,
+    )?.name;
 
     this.formData.category_id = Number(event.target.value);
-  }
+  };
 
   @computed get categoryName() {
     return this.category.name === undefined ? "" : this.category.name;
@@ -100,68 +113,69 @@ export default class TaskRecording implements ViewComponent {
 
   View = observer(() => (
     <Stack maxWidth={720} padding={20} margin={"auto"}>
-      <Card.Root variant='outline' >
+      <Card.Root variant="outline">
         <Card.Header>
           <Card.Title>Feladat Hozzáadás</Card.Title>
-          <Card.Description>Töltsd ki az űrlapot a feladat felvételéhez</Card.Description>
+          <Card.Description>
+            Töltsd ki az űrlapot a feladat felvételéhez
+          </Card.Description>
         </Card.Header>
         <Card.Body>
           <form onSubmit={this.submitForm}>
             <VStack>
               <FormControl fullWidth>
                 <TextField
-                  label='Feladat neve'
-                  type='text'
-                  name='title'
-                  id='title'
+                  label="Feladat neve"
+                  type="text"
+                  name="title"
+                  id="title"
                   fullWidth
                   required
                   error={this.errorTitle}
                   helperText={this.errors.title}
                   onChange={this.handleChange}
                 />
-              </ FormControl>
+              </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  label='Leírás'
-                  type='text'
-                  name='description'
-                  id='descreption'
+                  label="Leírás"
+                  type="text"
+                  name="description"
+                  id="descreption"
                   fullWidth
                   required
                   onChange={this.handleChange}
                 />
-              </ FormControl>
+              </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  label='Határidő'
-                  type='datetime-local'
-                  name='due_date'
-                  id='due_date'
-                  slotProps={
-                    { inputLabel: { shrink: true } }
-                  }
+                  label="Határidő"
+                  type="datetime-local"
+                  name="due_date"
+                  id="due_date"
+                  slotProps={{ inputLabel: { shrink: true } }}
                   fullWidth
                   required
                   onChange={this.handleChange}
                 />
-              </ FormControl>
+              </FormControl>
               <FormControl fullWidth>
                 <InputLabel id="categoryLabel">Kategória</InputLabel>
                 <Select
                   fullWidth
-                  labelId='categoryLabel'
-                  label='Kategória'
-                  id='category'
+                  labelId="categoryLabel"
+                  label="Kategória"
+                  id="category"
                   value={this.category.name}
                   onChange={this.handleSelectChange}
                   required
                 >
-
                   {toJS(GlobalEntities.categories).map((category: Category) => {
                     return (
-                      <MenuItem key={category.id} value={category.id}>{category.name}</MenuItem>
-                    )
+                      <MenuItem key={category.id} value={category.id}>
+                        {category.name}
+                      </MenuItem>
+                    );
                   })}
                 </Select>
               </FormControl>
@@ -169,25 +183,23 @@ export default class TaskRecording implements ViewComponent {
                 <TextField
                   fullWidth
                   label="Prioritás"
-                  type='number'
-                  id='priority'
-                  name='priority'
-                  slotProps={
-                    { htmlInput: { 'max': 10, 'min': 0 } }
-                  }
+                  type="number"
+                  id="priority"
+                  name="priority"
+                  slotProps={{ htmlInput: { max: 10, min: 0 } }}
                   required
                   onChange={this.handleChange}
                 />
               </FormControl>
             </VStack>
-            <Box display='flex' justifyContent='end'>
-              <Button type='submit' marginTop={5}>Felvétel</Button>
+            <Box display="flex" justifyContent="end">
+              <Button type="submit" marginTop={5}>
+                Felvétel
+              </Button>
             </Box>
-
           </form>
         </Card.Body>
       </Card.Root>
-
     </Stack>
   ));
 }
