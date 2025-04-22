@@ -12,5 +12,5 @@ export const Container = styled("div")`
 export const TextWrapper = styled("div")`
   border-radius: 3rem;
   max-width: 400px;
-  margin:auto;
+  margin: auto;
 `;
