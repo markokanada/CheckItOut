@@ -4,7 +4,6 @@ import ViewComponent from "../interfaces/ViewComponent";
 import { observer } from "mobx-react-lite";
 import {
   Alert,
-  Box,
   Button,
   Container,
   FormControl,
@@ -13,9 +12,10 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { action, makeObservable, observable } from "mobx";
+import { useTranslation } from "react-i18next";
 
 export default class Register implements ViewComponent {
   constructor(public navigate: NavigateFunction) {
@@ -30,19 +30,6 @@ export default class Register implements ViewComponent {
   };
   @observable private accessor snackbarOpen = false;
 
-  @observable private accessor validationSchema = Yup.object({
-    fullName: Yup.string().required("Név megadása kötelező!"),
-    email: Yup.string()
-      .email("Érvényes e-mail szükséges!")
-      .required("E-mail megadása kötelező!"),
-    password: Yup.string()
-      .min(6, "A jelszónak legalább 6 karakterből kell állnia!")
-      .required("Jelszó szükséges!"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password")], "A jelszavak nem egyeznek!")
-      .required("Jelszó megerősítése szükséges!"),
-  });
-
   @action private handleSubmit(values: typeof this.initialValues) {
     this.snackbarOpen = true;
     setTimeout(() => this.navigate("/"), 1500);
@@ -52,92 +39,110 @@ export default class Register implements ViewComponent {
     this.snackbarOpen = false;
   }
 
-  View = observer(() => (
-    <Container maxWidth="sm">
-      <Stack spacing={4} mt={6}>
-        <Typography variant="h4" align="center">
-          Regisztráció
-        </Typography>
-        <Formik
-          initialValues={this.initialValues}
-          validationSchema={this.validationSchema}
-          onSubmit={this.handleSubmit}
-        >
-          {({ handleChange, values, touched, errors }) => (
-            <Form>
-              <Stack spacing={3}>
-                <FormControl>
-                  <TextField
-                    label="Teljes név"
-                    name="fullName"
-                    value={values.fullName}
-                    onChange={handleChange}
-                    error={touched.fullName && Boolean(errors.fullName)}
-                    helperText={touched.fullName && errors.fullName}
-                  />
-                </FormControl>
-                <FormControl>
-                  <TextField
-                    label="E-mail"
-                    name="email"
-                    type="email"
-                    value={values.email}
-                    onChange={handleChange}
-                    error={touched.email && Boolean(errors.email)}
-                    helperText={touched.email && errors.email}
-                  />
-                </FormControl>
-                <FormControl>
-                  <TextField
-                    label="Jelszó"
-                    name="password"
-                    type="password"
-                    value={values.password}
-                    onChange={handleChange}
-                    error={touched.password && Boolean(errors.password)}
-                    helperText={touched.password && errors.password}
-                  />
-                </FormControl>
-                <FormControl>
-                  <TextField
-                    label="Jelszó megerősítése"
-                    name="confirmPassword"
-                    type="password"
-                    value={values.confirmPassword}
-                    onChange={handleChange}
-                    error={
-                      touched.confirmPassword && Boolean(errors.confirmPassword)
-                    }
-                    helperText={
-                      touched.confirmPassword && errors.confirmPassword
-                    }
-                  />
-                </FormControl>
-                <Stack direction="row" justifyContent="flex-end">
-                  <Button type="submit" variant="contained" color="primary">
-                    Regisztrálok
-                  </Button>
-                </Stack>
-              </Stack>
-            </Form>
-          )}
-        </Formik>
+  View = observer(() => {
+    const { t } = useTranslation();
 
-        <Snackbar
-          open={this.snackbarOpen}
-          autoHideDuration={3000}
-          onClose={this.handleCloseSnackbar}
-          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-        >
-          <Alert
-            onClose={this.handleCloseSnackbar}
-            severity="success"
-            sx={{ width: "100%" }}
+    const validationSchema = Yup.object({
+      fullName: Yup.string().required(t("Validation Fullname Required")),
+      email: Yup.string()
+        .email(t("Validation Email Format"))
+        .required(t("Validation Email Required")),
+      password: Yup.string()
+        .min(6, t("Validation Password Length"))
+        .required(t("Validation Password Required")),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password")], t("Validation Password Match"))
+        .required(t("Validation Confirm Password Required")),
+    });
+
+    return (
+      <Container maxWidth="sm">
+        <Stack spacing={4} mb={6}>
+          <Typography variant="h4" align="center">
+            {t("Register Title")}
+          </Typography>
+          <Formik
+            initialValues={this.initialValues}
+            validationSchema={validationSchema}
+            onSubmit={this.handleSubmit}
           >
-            Sikeres regisztráció!
-          </Alert>
-        </Snackbar>
-      </Stack>
-    </Container>
-  ));
+            {({ handleChange, values, touched, errors }) => (
+              <Form>
+                <Stack spacing={3}>
+                  <FormControl>
+                    <TextField
+                      label={t("Register Fullname")}
+                      name="fullName"
+                      value={values.fullName}
+                      onChange={handleChange}
+                      error={touched.fullName && Boolean(errors.fullName)}
+                      helperText={touched.fullName && errors.fullName}
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <TextField
+                      label={t("Register Email")}
+                      name="email"
+                      type="email"
+                      value={values.email}
+                      onChange={handleChange}
+                      error={touched.email && Boolean(errors.email)}
+                      helperText={touched.email && errors.email}
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <TextField
+                      label={t("Register Password")}
+                      name="password"
+                      type="password"
+                      value={values.password}
+                      onChange={handleChange}
+                      error={touched.password && Boolean(errors.password)}
+                      helperText={touched.password && errors.password}
+                    />
+                  </FormControl>
+                  <FormControl>
+                    <TextField
+                      label={t("Register Confirm Password")}
+                      name="confirmPassword"
+                      type="password"
+                      value={values.confirmPassword}
+                      onChange={handleChange}
+                      error={
+                        touched.confirmPassword &&
+                        Boolean(errors.confirmPassword)
+                      }
+                      helperText={
+                        touched.confirmPassword && errors.confirmPassword
+                      }
+                    />
+                  </FormControl>
+                  <Stack direction="row" justifyContent="flex-end">
+                    <Button type="submit" variant="contained" color="primary">
+                      {t("Register Submit")}
+                    </Button>
+                  </Stack>
+                </Stack>
+              </Form>
+            )}
+          </Formik>
+
+          <Snackbar
+            open={this.snackbarOpen}
+            autoHideDuration={3000}
+            onClose={this.handleCloseSnackbar}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+          >
+            <Alert
+              onClose={this.handleCloseSnackbar}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              {t("Register Success")}
+            </Alert>
+          </Snackbar>
+        </Stack>
+      </Container>
+    );
+  });
 }
