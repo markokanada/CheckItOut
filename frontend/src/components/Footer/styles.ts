@@ -7,7 +7,7 @@ export const FooterSection = styled("footer")`
 `;
 
 export const Title = styled("h4")`
-  font-size: 22px;
+  font-size: 26px;
   text-transform: capitalize;
   color: #18216d;
 
@@ -73,8 +73,9 @@ export const Chat = styled("p")`
   max-width: fit-content;
   border-bottom: 1px solid #18216d;
   cursor: pointer;
-  margin-top: 1rem;
+  margin-bottom: 1rem;
   transition: all 0.3s ease-in-out;
+  font-size:19px;
 
   &:hover {
     border-bottom: 1px solid rgb(255, 130, 92);
