@@ -11,5 +11,18 @@ export default class Documentation implements ViewComponent {
             
         });
     }
-    View = observer(() => (<></>))
+     View = observer(() => (
+        <iframe
+          src="https://organic-gong-e92.notion.site/ebd/1b93a97be88580babc93e39736ae7dcb"
+          style={{
+            width: "100%",
+            height: "120vh",
+            border: "none",
+          }}
+          allowFullScreen
+        />
+      ));
+
+
+
 }
