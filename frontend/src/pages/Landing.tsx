@@ -33,55 +33,51 @@ import Container from "../common/Container";
 export default class Landing implements ViewComponent {
   constructor(public navigate: NavigateFunction) {}
 
-  View = () => {    
-
+  View = () => {
     return (
-
-        <Container>
-      <ScrollToTop />
-      <ContentBlock
-        direction="right"
-        title={IntroContent.title}
-        content={IntroContent.text}
-        button={IntroContent.button}
-        icon="developer.svg"
-        id="intro"
-      />
-      <MiddleBlock
-        title={MiddleBlockContent.title}
-        content={MiddleBlockContent.text}
-        button={MiddleBlockContent.button}
-      />
-      <ContentBlock
-        direction="left"
-        title={AboutContent.title}
-        content={AboutContent.text}
-        section={AboutContent.section}
-        icon="graphs.svg"
-        id="why-us"
-      />
-      <ContentBlock
-        direction="right"
-        title={MissionContent.title}
-        content={MissionContent.text}
-        icon="product-launch.svg"
-        id="features"
-      />
-      <ContentBlock
-        direction="left"
-        title={ProductContent.title}
-        content={ProductContent.text}
-        icon="waving.svg"
-        id="usage"
-      />
-      <ContactForm
-        title={ContactContent.title}
-        content={ContactContent.text}
-        id="content"
-      />
-    </Container>  
-
-
+      <Container>
+        <ScrollToTop />
+        <ContentBlock
+          direction="right"
+          title={IntroContent.title}
+          content={IntroContent.text}
+          button={IntroContent.button}
+          icon="developer.svg"
+          id="intro"
+        />
+        <MiddleBlock
+          title={MiddleBlockContent.title}
+          content={MiddleBlockContent.text}
+          button={MiddleBlockContent.button}
+        />
+        <ContentBlock
+          direction="left"
+          title={AboutContent.title}
+          content={AboutContent.text}
+          section={AboutContent.section}
+          icon="graphs.svg"
+          id="why-us"
+        />
+        <ContentBlock
+          direction="right"
+          title={MissionContent.title}
+          content={MissionContent.text}
+          icon="product-launch.svg"
+          id="features"
+        />
+        <ContentBlock
+          direction="left"
+          title={ProductContent.title}
+          content={ProductContent.text}
+          icon="waving.svg"
+          id="usage"
+        />
+        <ContactForm
+          title={ContactContent.title}
+          content={ContactContent.text}
+          id="content"
+        />
+      </Container>
     );
   };
 }
