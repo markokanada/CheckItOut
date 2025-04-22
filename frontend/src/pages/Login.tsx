@@ -12,7 +12,7 @@ import {
   Stack,
   TextField,
   Typography,
-  Link
+  Link,
 } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -26,12 +26,12 @@ export default class Login implements ViewComponent {
 
   @observable private accessor snackbarOpen = false;
 
-  @observable private accessor  initialValues = {
+  @observable private accessor initialValues = {
     email: "",
     password: "",
   };
 
-  @observable  private  accessor  validationSchema = Yup.object({
+  @observable private accessor validationSchema = Yup.object({
     email: Yup.string()
       .email("Érvényes e-mail szükséges!")
       .required("E-mail megadása kötelező!"),
@@ -40,15 +40,15 @@ export default class Login implements ViewComponent {
       .required("Jelszó megadása kötelező!"),
   });
 
-  @action  private async handleSubmit(values: typeof this.initialValues) {
+  @action private async handleSubmit(values: typeof this.initialValues) {
     await GlobalEntities.login(values.email, values.password);
     this.snackbarOpen = true;
     setTimeout(() => this.navigate("/home"), 1500);
-  };
+  }
 
   @action private handleCloseSnackbar() {
     this.snackbarOpen = false;
-  };
+  }
 
   View = observer(() => (
     <Container maxWidth="sm">
@@ -89,7 +89,11 @@ export default class Login implements ViewComponent {
                     fullWidth
                   />
                 </FormControl>
-                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Stack
+                  direction="row"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
                   <Link
                     component="button"
                     variant="body2"
