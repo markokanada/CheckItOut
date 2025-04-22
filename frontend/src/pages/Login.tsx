@@ -41,22 +41,26 @@ export default class Login implements ViewComponent {
       this.snackbarOpen = true;
       setTimeout(() => this.navigate("/home"), 1500);
     } catch (error: any) {
-      let translationKey = "Login Error"; 
-          
+      let translationKey = "Login Error";
+
       if (error.isAxiosError) {
         const serverMessage = error.response?.data?.message || error.message;
-        
+
         if (serverMessage.includes("The selected email is invalid")) {
           translationKey = "Login Error 2";
-        } else if (serverMessage.includes("Request failed with status code 401")) {
+        } else if (
+          serverMessage.includes("Request failed with status code 401")
+        ) {
           translationKey = "Login Error 3";
-        }
-        else if (error.response?.status === 422 && error.response?.data?.errors) {
+        } else if (
+          error.response?.status === 422 &&
+          error.response?.data?.errors
+        ) {
           translationKey = "Validation Error";
         }
-        console.log(error)
+        console.log(error);
       }
-  
+
       this.snackbarMessage = translationKey;
       this.snackbarSeverity = "error";
       this.snackbarOpen = true;
@@ -158,4 +162,3 @@ export default class Login implements ViewComponent {
     );
   });
 }
-
