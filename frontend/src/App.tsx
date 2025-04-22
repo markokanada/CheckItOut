@@ -11,6 +11,11 @@ import ViewComponent from './interfaces/ViewComponent';
 import GlobalEntities from './store/GlobalEntities';
 import Profile from './pages/Profile';
 import UserManagement from './pages/UserManagement';
+import { Suspense } from 'react';
+import { Styles } from './styles/styles';
+import Header from './components/Header/index';
+import Footer from './components/Footer';
+import Documentation from './pages/Documentation';
 
 export default class App implements ViewComponent{
   constructor(private navigate: NavigateFunction ) {
@@ -23,6 +28,10 @@ export default class App implements ViewComponent{
 
   @computed get landing(): ViewComponent {
     return new Landing(this.navigate); 
+  }
+
+  @computed get documentation(): ViewComponent {
+    return new Documentation(this.navigate);
   }
 
   @computed get home(): ViewComponent {
@@ -52,9 +61,12 @@ export default class App implements ViewComponent{
 
   View = () =>
      (
-      <Layout>
+      <Suspense fallback={null}>
+      <Styles />
+      <Header />
         <Routes>
           <Route path='/' element={<this.landing.View/>} />
+          <Route path='/how-to-use' element={<this.documentation.View/>} />
           <Route path='/home' element={this.isLoggedIn ? <this.home.View /> : <></>} />
           <Route path='/newTask' element={<this.taskRecording.View />} />
           <Route path='/profile' element={/*<main><h1>In development - profile</h1></main>*/ <this.profile.View />} />
@@ -62,6 +74,8 @@ export default class App implements ViewComponent{
           <Route path='/login' element={<this.login.View/>} />
           <Route path='/admin/users' element={<this.userManagement.View />} />
         </Routes>
-      </Layout>
+            <Footer />
+      </Suspense>
+
     );
   }

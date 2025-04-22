@@ -1,10 +1,12 @@
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter as Router, useNavigate } from 'react-router-dom';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
 import { ChakraProvider, createSystem, defineConfig } from '@chakra-ui/react';
 import './index.css';
 import App from './App';
-import Header from './components/Header';
 import { useEffect, useState } from 'react';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './translation';
+import 'antd/dist/antd.min.css';
 
 const config = defineConfig({
   theme: {
@@ -33,8 +35,13 @@ const AppWrapper = () => {
 
 createRoot(document.getElementById('root') as HTMLElement).render(
   <ChakraProvider value={system}>
-    <Router>
+    <BrowserRouter>
+    <I18nextProvider i18n={i18n}>
+    
+    </I18nextProvider>
+
       <AppWrapper />
-    </Router>
+    </BrowserRouter>
   </ChakraProvider>
+
 );
