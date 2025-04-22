@@ -20,6 +20,7 @@ import {
   LanguageSwitch,
   LanguageSwitchContainer,
 } from "./styles";
+import { Center } from "@chakra-ui/react";
 
 interface SocialLinkProps {
   href: string;
@@ -51,11 +52,12 @@ const Footer = ({ t }: { t: TFunction }) => {
         <Container>
           <Row justify="space-between">
             <Col lg={6} md={6} sm={12} xs={12}>
-              <Language>{t("Contact")}</Language>
-
-              <a href="mailto:l.qqbadze@gmail.com">
+            <Center><Language>{t("Contact")}</Language></Center>
+<Center>
+              <a href="mailto:info@oneofthelot.hu">
                 <Chat>{t(`Mail Us`)}</Chat>
               </a>
+              </Center>
             </Col>
             <Col lg={6} md={6} sm={12} xs={12}>
               <Title>{t("Policy")}</Title>
@@ -65,16 +67,18 @@ const Footer = ({ t }: { t: TFunction }) => {
            
           </Row>
           <Row justify="space-between">
-            <Col lg={10} md={10} sm={12} xs={12}>
-              <Empty />
-              <Language>{t("Address")}</Language>
-              <Para>{t("Adress Detail 1")}</Para>
-              <Para>{t("Adress Detail 2")}</Para>
-              <Para>{t("Adress Detail 3")}</Para>
+            <Col lg={6} md={6} sm={12} xs={12}>
+            
+            <Center><Language>{t("Address")}</Language></Center>
+              <Center><Para>{t("Adress Detail 1")}</Para></Center>
+              <Center><Para>{t("Adress Detail 2")}</Para></Center>
+              <Center><Para>{t("Adress Detail 3")}</Para></Center>
+              
+
             </Col>
             <Col lg={6} md={6} sm={12} xs={12}>
-              <Label htmlFor="select-lang">{t("Language")}</Label>
-              <LanguageSwitchContainer>
+            <Center><Label htmlFor="select-lang">{t("Language")}</Label></Center>
+            <Center><LanguageSwitchContainer>
                 <LanguageSwitch onClick={() => handleChange("en")}>
                   <SvgIcon
                     src="united-states.svg"
@@ -91,7 +95,7 @@ const Footer = ({ t }: { t: TFunction }) => {
                     height="30px"
                   />
                 </LanguageSwitch>
-              </LanguageSwitchContainer>
+              </LanguageSwitchContainer></Center>
             </Col>
           </Row>
         </Container>
