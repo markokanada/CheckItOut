@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./translation";
 import "antd/dist/antd.min.css";
+import { register } from "./serviceWorkerRegistration";
 
 const config = defineConfig({
   theme: {
@@ -38,3 +39,18 @@ createRoot(document.getElementById("root") as HTMLElement).render(
     </BrowserRouter>
   </ChakraProvider>,
 );
+
+register({
+  onUpdate: (registration: { waiting: { postMessage: (arg0: { type: string; }) => void; }; }) => {
+    if (registration && registration.waiting) {
+      console.log('New version available!');
+
+      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+
+      window.location.reload();
+    }
+  },
+  onSuccess: (registration: any) => {
+    console.log('Service worker registered successfully:', registration);
+  }
+});
