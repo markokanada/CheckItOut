@@ -1,0 +1,37 @@
+{
+    "short_name": "Check It Out!",
+    "name": "Check It Out! - The innovative task manager",
+    "icons": [{
+            "src": "favicon.ico",
+            "sizes": "16x16 24x24 32x32 64x64",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "img/icons/logo192.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+            "src": "img/icons/logo512.png",
+            "type": "image/png",
+            "sizes": "512x512"
+        },
+        {
+            "src": "checkitout.webp",
+            "type": "image/webp",
+            "sizes": "512x512"
+        },
+        {
+            "src": "vite.svg",
+            "type": "image/svg+xml",
+            "sizes": "any"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff",
+    "orientation": "portrait-primary",
+    "scope": "/",
+    "lang": "en"
+}
