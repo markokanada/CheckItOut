@@ -39,7 +39,7 @@ export default class Login implements ViewComponent {
       this.snackbarMessage = "Login Success";
       this.snackbarSeverity = "success";
       this.snackbarOpen = true;
-      setTimeout(() => this.navigate("/home"), 1500);
+      setTimeout(() => this.navigate("/home"), 7500);
     } catch (error: any) {
       let translationKey = "Login Error";
 
@@ -144,7 +144,7 @@ export default class Login implements ViewComponent {
 
           <Snackbar
             open={this.snackbarOpen}
-            autoHideDuration={3000}
+            autoHideDuration={7000}
             onClose={this.handleCloseSnackbar}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           >
