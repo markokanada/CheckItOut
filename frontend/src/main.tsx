@@ -41,16 +41,18 @@ createRoot(document.getElementById("root") as HTMLElement).render(
 );
 
 register({
-  onUpdate: (registration: { waiting: { postMessage: (arg0: { type: string; }) => void; }; }) => {
+  onUpdate: (registration: {
+    waiting: { postMessage: (arg0: { type: string }) => void };
+  }) => {
     if (registration && registration.waiting) {
-      console.log('New version available!');
+      console.log("New version available!");
 
-      registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+      registration.waiting.postMessage({ type: "SKIP_WAITING" });
 
       window.location.reload();
     }
   },
   onSuccess: (registration: any) => {
-    console.log('Service worker registered successfully:', registration);
-  }
+    console.log("Service worker registered successfully:", registration);
+  },
 });
