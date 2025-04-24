@@ -45,6 +45,7 @@ const Footer = ({ t }: { t: TFunction }) => {
       </a>
     );
   };
+  const isItAnAppSide: boolean = location.pathname.includes("app")
 
   return (
     <>
@@ -66,7 +67,7 @@ const Footer = ({ t }: { t: TFunction }) => {
                 <Title>{t("Documentation Title")}</Title>
               </Center>
               <Center>
-                <Large to="/how-to-use">{t("Documentation Text")}</Large>
+                <Large to={isItAnAppSide ? "/app/how-to-use" :"/how-to-use"}>{t("Documentation Text")}</Large>
               </Center>
             </Col>
           </Row>
