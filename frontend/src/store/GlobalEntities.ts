@@ -27,7 +27,7 @@ class Entities {
       user: observable,
       categories: observable,
       firstTask: observable,
-      users:observable,
+      users: observable,
       setFirstTask: action,
       loadTasks: action,
       createTask: action,
@@ -47,9 +47,8 @@ class Entities {
   };
 
   @action register = async (data: Object) => {
-      const resp = await GlobalApiHandlerInstance.post("/register", data);
-      return resp.data.data.message;
-    
+    const resp = await GlobalApiHandlerInstance.post("/register", data);
+    return resp.data.data.message;
   };
 
   @action login = async (email: string, password: string) => {
@@ -165,10 +164,7 @@ class Entities {
     };
 
     try {
-      const resp = await GlobalApiHandlerInstance.put(
-        `/users/${id}`,
-        data,
-      );
+      const resp = await GlobalApiHandlerInstance.put(`/users/${id}`, data);
       return resp.data.message;
     } catch {
       return 0;
