@@ -62,6 +62,7 @@ const ContentBlock = ({
                         item: {
                           color?: string;
                           title: string;
+                          redirect:string;
                         },
                         id: number,
                       ) => {
@@ -69,7 +70,7 @@ const ContentBlock = ({
                           <Button
                             key={id}
                             color={item.color}
-                            onClick={() => scrollTo("about")}
+                            onClick={() => scrollTo(item.redirect)}
                           >
                             {t(item.title)}
                           </Button>
