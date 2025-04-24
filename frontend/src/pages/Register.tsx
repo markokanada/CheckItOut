@@ -11,44 +11,74 @@ import {
   Stack,
   TextField,
   Typography,
+  Link,
 } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { action, makeObservable, observable } from "mobx";
+import GlobalEntities from "../store/GlobalEntities";
 import { useTranslation } from "react-i18next";
+import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
 
 export default class Register implements ViewComponent {
-  constructor(public navigate: NavigateFunction) {
-    makeObservable(this);
-  }
+  @observable accessor snackbarOpen = false;
+  @observable accessor snackbarMessage = "";
+  @observable accessor snackbarSeverity: "success" | "error" = "success";
 
-  @observable private accessor initialValues = {
-    fullName: "",
+  @observable accessor initialValues = {
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   };
-  @observable private accessor snackbarOpen = false;
 
-  @action private handleSubmit(values: typeof this.initialValues) {
-    this.snackbarOpen = true;
-    setTimeout(() => this.navigate("/"), 1500);
+  constructor(public navigate: NavigateFunction) {
+    makeObservable(this);
   }
 
-  @action private handleCloseSnackbar() {
+  @action private async handleSubmit(values: typeof this.initialValues) {
+    try {
+      await GlobalApiHandlerInstance.post("register",values);
+      this.snackbarMessage = "Register Success";
+      this.snackbarSeverity = "success";
+      this.snackbarOpen = true;
+      setTimeout(() => this.navigate("/login"), 7500);
+    } catch (error: any) {
+      let translationKey = "Register Error";
+
+      if (error.isAxiosError) {
+        const serverMessage = error.response?.data?.message || error.message;
+
+        if (serverMessage.includes("The email has already been taken")) {
+          translationKey = "Register Error Taken";
+        } else if (
+          error.response?.status === 422 &&
+          error.response?.data?.errors
+        ) {
+          translationKey = "Validation Error";
+        }
+      }
+
+      this.snackbarMessage = translationKey;
+      this.snackbarSeverity = "error";
+      this.snackbarOpen = true;
+    }
+  }
+
+  @action private handleCloseSnackbar = () => {
     this.snackbarOpen = false;
-  }
+  };
 
   View = observer(() => {
     const { t } = useTranslation();
 
     const validationSchema = Yup.object({
-      fullName: Yup.string().required(t("Validation Fullname Required")),
+      name: Yup.string().required(t("Validation Fullname Required")),
       email: Yup.string()
         .email(t("Validation Email Format"))
         .required(t("Validation Email Required")),
       password: Yup.string()
-        .min(6, t("Validation Password Length"))
+        .min(8, t("Validation Password Length"))
         .required(t("Validation Password Required")),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("password")], t("Validation Password Match"))
@@ -61,10 +91,11 @@ export default class Register implements ViewComponent {
           <Typography variant="h4" align="center">
             {t("Register Title")}
           </Typography>
+
           <Formik
             initialValues={this.initialValues}
             validationSchema={validationSchema}
-            onSubmit={this.handleSubmit}
+            onSubmit={(values) => this.handleSubmit(values)}
           >
             {({ handleChange, values, touched, errors }) => (
               <Form>
@@ -72,11 +103,12 @@ export default class Register implements ViewComponent {
                   <FormControl>
                     <TextField
                       label={t("Register Fullname")}
-                      name="fullName"
-                      value={values.fullName}
+                      name="name"
+                      value={values.name}
                       onChange={handleChange}
-                      error={touched.fullName && Boolean(errors.fullName)}
-                      helperText={touched.fullName && errors.fullName}
+                      error={touched.name && Boolean(errors.name)}
+                      helperText={touched.name && errors.name}
+                      fullWidth
                     />
                   </FormControl>
                   <FormControl>
@@ -88,6 +120,7 @@ export default class Register implements ViewComponent {
                       onChange={handleChange}
                       error={touched.email && Boolean(errors.email)}
                       helperText={touched.email && errors.email}
+                      fullWidth
                     />
                   </FormControl>
                   <FormControl>
@@ -99,6 +132,7 @@ export default class Register implements ViewComponent {
                       onChange={handleChange}
                       error={touched.password && Boolean(errors.password)}
                       helperText={touched.password && errors.password}
+                      fullWidth
                     />
                   </FormControl>
                   <FormControl>
@@ -115,9 +149,21 @@ export default class Register implements ViewComponent {
                       helperText={
                         touched.confirmPassword && errors.confirmPassword
                       }
+                      fullWidth
                     />
                   </FormControl>
-                  <Stack direction="row" justifyContent="flex-end">
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Link
+                      component="button"
+                      variant="body2"
+                      onClick={() => this.navigate("/login")}
+                    >
+                      {t("Register Have Account")}
+                    </Link>
                     <Button type="submit" variant="contained" color="primary">
                       {t("Register Submit")}
                     </Button>
@@ -129,16 +175,16 @@ export default class Register implements ViewComponent {
 
           <Snackbar
             open={this.snackbarOpen}
-            autoHideDuration={3000}
+            autoHideDuration={7500}
             onClose={this.handleCloseSnackbar}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           >
             <Alert
               onClose={this.handleCloseSnackbar}
-              severity="success"
+              severity={this.snackbarSeverity}
               sx={{ width: "100%" }}
             >
-              {t("Register Success")}
+              {t(this.snackbarMessage)}
             </Alert>
           </Snackbar>
         </Stack>
