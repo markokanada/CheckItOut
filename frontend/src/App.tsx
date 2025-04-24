@@ -76,16 +76,11 @@ export default class App implements ViewComponent {
           element={this.isLoggedIn ? <this.home.View /> : <></>}
         />
         <Route path="/app/newTask" element={<this.taskRecording.View />} />
-        <Route
-          path="/app/profile"
-          element={
-             <this.profile.View />
-          }
-        />
+        <Route path="/app/profile" element={<this.profile.View />} />
         <Route path="/register" element={<this.register.View />} />
         <Route path="/login" element={<this.login.View />} />
         <Route path="/app/admin/users" element={<this.userManagement.View />} />
-        <Route path="*" element={<this._404.View/>}/>
+        <Route path="*" element={<this._404.View />} />
       </Routes>
       <Footer />
     </Suspense>
