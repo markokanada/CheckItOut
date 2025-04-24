@@ -25,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict();
 
         Gate::define('list-users', function (User $user) {
-            // return $user->role == "admin";
-            return true;
+             return $user->role == "admin";
+            //return true;
         });
     }
 }
