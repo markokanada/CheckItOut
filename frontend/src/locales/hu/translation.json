@@ -61,7 +61,7 @@
     "Register Password": "Jelszó",
     "Register Confirm Password": "Jelszó megerősítése",
     "Register Submit": "Regisztrálok",
-    "Register Success": "Sikeres regisztráció!",
+    "Register Success": "Sikeres regisztráció, átirányítás folyamatban!",
 
     "Validation Fullname Required": "Név megadása kötelező!",
     "Validation Email Required": "E-mail megadása kötelező!",
@@ -82,5 +82,8 @@
     "Validation Error": "Kérjük javítsa a hibákat az űrlapon",
     "404 Title": "Az oldal nem található",
     "404 Description": "Sajnáljuk, de az oldal amit keresel nem létezik vagy eltávolításra került.",
-    "404 Button": "Vissza a kezdőlapra"
+    "404 Button": "Vissza a kezdőlapra",
+    "Register Error": "Valami hiba történt a regisztráció során.",
+    "Register Error Taken": "Ez az e-mail cím már foglalt.",
+    "Register Have Account": "Már van fiókod? Jelentkezz be"
 }
