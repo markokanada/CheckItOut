@@ -11,10 +11,12 @@ export interface ContentBlockProps {
   button?: (
     | {
         title: string;
+        redirect: string;
         color?: undefined;
       }
     | {
         title: string;
+        redirect: string;
         color: string;
       }
   )[];
