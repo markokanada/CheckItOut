@@ -25,7 +25,7 @@ export default class UserManagement implements ViewComponent {
 
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
-    GlobalEntities.fetchUsers();
+    
   }
 
   @action handleEdit(user: User) {
@@ -82,8 +82,9 @@ export default class UserManagement implements ViewComponent {
       console.error("Törlés sikertelen:", error);
     }
   }
-
-  View = observer(() => (
+  View = observer(() => {
+    GlobalEntities.fetchUsers();
+    return(
     <Container>
       <h2>Felhasználók kezelése</h2>
       <Table>
@@ -163,5 +164,5 @@ export default class UserManagement implements ViewComponent {
         </TableBody>
       </Table>
     </Container>
-  ));
+  )});
 }
