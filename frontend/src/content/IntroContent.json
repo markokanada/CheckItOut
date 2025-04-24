@@ -1,13 +1,14 @@
 {
-  "title": "Intro Title",
-  "text": "Intro Text",
-  "button": [
-    {
-      "title": "Intro Button1"
-    },
-    {
-      "title": "Intro Button2",
-      "color": "#fff"
-    }
-  ]
+    "title": "Intro Title",
+    "text": "Intro Text",
+    "button": [{
+            "title": "Intro Button1",
+            "redirect": "getStarted"
+        },
+        {
+            "title": "Intro Button2",
+            "color": "#fff",
+            "redirect": "why-us"
+        }
+    ]
 }
