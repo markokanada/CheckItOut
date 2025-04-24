@@ -62,7 +62,7 @@
     "Register Password": "Password",
     "Register Confirm Password": "Confirm Password",
     "Register Submit": "Sign Up",
-    "Register Success": "Registration successful!",
+    "Register Success": "Registration successful, redirecting in progress!",
 
     "Validation Fullname Required": "Full name is required!",
     "Validation Email Required": "Email is required!",
@@ -83,5 +83,10 @@
     "Validation Error": "Please correct the form errors",
     "404 Title": "Page Not Found",
     "404 Description": "Sorry, the page you're looking for doesn't exist or has been removed.",
-    "404 Button": "Back to Home"
+    "404 Button": "Back to Home",
+    "Register Error": "Something went wrong during registration.",
+    "Register Error Taken": "Email is already in use.",
+    "Register Have Account": "Already have an account? Log in"
+
+
 }
