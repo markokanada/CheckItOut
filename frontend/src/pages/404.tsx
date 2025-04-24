@@ -33,7 +33,7 @@ export default class _404 implements ViewComponent {
             {t("404 Title")}
           </Typography>
           <Typography variant="body1" color="textSecondary" textAlign="center">
-            {t("404 Description") }
+            {t("404 Description")}
           </Typography>
           <Button
             variant="contained"
