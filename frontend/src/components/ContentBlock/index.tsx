@@ -62,7 +62,7 @@ const ContentBlock = ({
                         item: {
                           color?: string;
                           title: string;
-                          redirect:string;
+                          redirect: string;
                         },
                         id: number,
                       ) => {
