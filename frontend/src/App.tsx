@@ -16,6 +16,7 @@ import { Styles } from "./styles/styles";
 import Header from "./components/Header/index";
 import Footer from "./components/Footer";
 import Documentation from "./pages/Documentation";
+import _404 from "./pages/404";
 
 export default class App implements ViewComponent {
   constructor(private navigate: NavigateFunction) {
@@ -58,6 +59,10 @@ export default class App implements ViewComponent {
     return new UserManagement(this.navigate);
   }
 
+  @computed get _404(): ViewComponent {
+    return new _404(this.navigate);
+  }
+
   View = () => (
     <Suspense fallback={null}>
       <Styles />
@@ -79,6 +84,7 @@ export default class App implements ViewComponent {
         <Route path="/register" element={<this.register.View />} />
         <Route path="/login" element={<this.login.View />} />
         <Route path="/admin/users" element={<this.userManagement.View />} />
+        <Route path="*" element={<this._404.View/>}/>
       </Routes>
       <Footer />
     </Suspense>
