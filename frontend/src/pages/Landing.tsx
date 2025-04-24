@@ -49,6 +49,7 @@ export default class Landing implements ViewComponent {
           title={MiddleBlockContent.title}
           content={MiddleBlockContent.text}
           button={MiddleBlockContent.button}
+          id="getStarted"
         />
         <ContentBlock
           direction="left"
