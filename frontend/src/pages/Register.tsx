@@ -16,9 +16,9 @@ import {
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { action, makeObservable, observable } from "mobx";
-import GlobalEntities from "../store/GlobalEntities";
 import { useTranslation } from "react-i18next";
 import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
+import GlobalEntities from "../store/GlobalEntities";
 
 export default class Register implements ViewComponent {
   @observable accessor snackbarOpen = false;
@@ -38,14 +38,13 @@ export default class Register implements ViewComponent {
 
   @action private async handleSubmit(values: typeof this.initialValues) {
     try {
-      await GlobalApiHandlerInstance.post("register",values);
+      await GlobalEntities.register(values);
       this.snackbarMessage = "Register Success";
       this.snackbarSeverity = "success";
       this.snackbarOpen = true;
       setTimeout(() => this.navigate("/login"), 7500);
     } catch (error: any) {
       let translationKey = "Register Error";
-
       if (error.isAxiosError) {
         const serverMessage = error.response?.data?.message || error.message;
 
