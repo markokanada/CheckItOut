@@ -128,7 +128,7 @@ export default class UserManagement implements ViewComponent {
                   <Select
                     name="role"
                     value={this.editedUser.role || "user"}
-                    onChange={this.handleChange}
+                    onChange={()=>this.handleChange}
                     size="small"
                   >
                     <MenuItem value="user">User</MenuItem>
@@ -153,7 +153,7 @@ export default class UserManagement implements ViewComponent {
                     <IconButton onClick={() => this.handleEdit(user)}>
                       <Edit />
                     </IconButton>
-                    <IconButton onClick={() => this.handleDelete(user.id)}>
+                    <IconButton disabled={user === undefined} onClick={() => this.handleDelete(user.id!)}>
                       <Delete />
                     </IconButton>
                   </Stack>
