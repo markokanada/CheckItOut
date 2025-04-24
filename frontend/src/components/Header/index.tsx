@@ -67,13 +67,16 @@ const Header = ({ t }: { t: TFunction }) => {
     </>
   );
 
-  const isItAnAppSide: boolean = location.pathname.includes("app")
+  const isItAnAppSide: boolean = location.pathname.includes("app");
 
   return (
     <HeaderSection>
       <Container>
         <Row justify="space-between">
-          <LogoContainer to={isItAnAppSide ? "/app/home" :"/"} aria-label="homepage">
+          <LogoContainer
+            to={isItAnAppSide ? "/app/home" : "/"}
+            aria-label="homepage"
+          >
             <SvgIcon src="logo.png" width="auto" height="64px" />
           </LogoContainer>
           <NotHidden>
