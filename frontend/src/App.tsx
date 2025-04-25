@@ -17,6 +17,7 @@ import Header from "./components/Header/index";
 import Footer from "./components/Footer";
 import Documentation from "./pages/Documentation";
 import _404 from "./pages/404";
+import { Box, Flex } from "@chakra-ui/react";
 
 export default class App implements ViewComponent {
   constructor(private navigate: NavigateFunction) {
@@ -66,23 +67,27 @@ export default class App implements ViewComponent {
   View = () => (
     <Suspense fallback={null}>
       <Styles />
-      <Header />
-      <Routes>
-        <Route path="/" element={<this.landing.View />} />
-        <Route path="/app/how-to-use" element={<this.documentation.View />} />
-        <Route path="/how-to-use" element={<this.documentation.View />} />
-        <Route
-          path="/app/home"
-          element={this.isLoggedIn ? <this.home.View /> : <></>}
-        />
-        <Route path="/app/newTask" element={<this.taskRecording.View />} />
-        <Route path="/app/profile" element={<this.profile.View />} />
-        <Route path="/register" element={<this.register.View />} />
-        <Route path="/login" element={<this.login.View />} />
-        <Route path="/app/admin/users" element={<this.userManagement.View />} />
-        <Route path="*" element={<this._404.View />} />
-      </Routes>
-      <Footer />
+      <Flex direction="column" minHeight="100vh">
+        <Header />
+        <Box flex="1">
+          <Routes>
+            <Route path="/" element={<this.landing.View />} />
+            <Route path="/app/how-to-use" element={<this.documentation.View />} />
+            <Route path="/how-to-use" element={<this.documentation.View />} />
+            <Route
+              path="/app/home"
+              element={this.isLoggedIn ? <this.home.View /> : <></>}
+            />
+            <Route path="/app/newTask" element={<this.taskRecording.View />} />
+            <Route path="/app/profile" element={<this.profile.View />} />
+            <Route path="/register" element={<this.register.View />} />
+            <Route path="/login" element={<this.login.View />} />
+            <Route path="/app/admin/users" element={<this.userManagement.View />} />
+            <Route path="*" element={<this._404.View />} />
+          </Routes>
+        </Box>
+        <Footer />
+      </Flex>
     </Suspense>
   );
 }
