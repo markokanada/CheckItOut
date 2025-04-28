@@ -23,7 +23,7 @@ export default class Login implements ViewComponent {
   @observable accessor snackbarOpen = false;
   @observable accessor snackbarMessage = "";
   @observable accessor snackbarSeverity: "success" | "error" = "success";
-
+  @observable accessor autoHideDuration = 7000
   @observable accessor initialValues = {
     email: "",
     password: "",
@@ -31,7 +31,7 @@ export default class Login implements ViewComponent {
 
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
-  }
+    }
 
   @action private async handleSubmit(values: typeof this.initialValues) {
     try {
@@ -71,6 +71,15 @@ export default class Login implements ViewComponent {
   };
 
   View = observer(() => {
+    if (GlobalEntities.user) {
+      this.snackbarMessage = "Login Success";
+      this.snackbarSeverity = "success";
+      this.snackbarOpen = true;
+      this.autoHideDuration = 1500;
+      setTimeout(() => {
+        this.navigate("/app/home");
+      }, 2000);
+  }
     const { t } = useTranslation();
 
     const validationSchema = Yup.object({
@@ -144,7 +153,7 @@ export default class Login implements ViewComponent {
 
           <Snackbar
             open={this.snackbarOpen}
-            autoHideDuration={7000}
+            autoHideDuration={this.autoHideDuration}
             onClose={this.handleCloseSnackbar}
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
           >
