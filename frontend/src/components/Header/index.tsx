@@ -20,6 +20,7 @@ import {
 } from "./styles";
 import { LanguageSwitchContainer, LanguageSwitch } from "../Footer/styles";
 import i18n from "../../translation";
+import GlobalEntities from "../../store/GlobalEntities";
 
 const navLinks = [
   { id: "why-us", label: "nav1" },
@@ -65,6 +66,7 @@ const Header = ({ t }: { t: TFunction }) => {
 
   const handleConfirmLogout = () => {
     localStorage.clear();
+    GlobalEntities.logout();
     setIsModalVisible(false);
     navigate("/");
     setVisibility(false);
