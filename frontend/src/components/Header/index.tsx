@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Row, Col, Drawer, Modal, Button } from "antd"; // <-- Modal, Button is kell!
+import { Row, Col, Drawer, Modal } from "antd";
 import { withTranslation, TFunction } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
 import Container from "../../common/Container";
 import { SvgIcon } from "../../common/SvgIcon";
 import {
@@ -17,109 +18,125 @@ import {
   DrawerContent,
   TopSection,
 } from "./styles";
-import { useLocation, useNavigate } from "react-router-dom";
 import { LanguageSwitchContainer, LanguageSwitch } from "../Footer/styles";
 import i18n from "../../translation";
 
+const navLinks = [
+  { id: "why-us", label: "nav1" },
+  { id: "features", label: "nav2" },
+  { id: "usage", label: "nav3" },
+  { id: "content", label: "nav4" },
+];
+
+const appLinks = [
+  { path: "/app/newTask", label: "New Task Title", color: "#2D6CDF" },
+  { path: "/app/profile", label: "Profile Title", color: "#2D6CDF" },
+];
+
+const authLinks = [
+  { path: "/register", label: "Get Started", color: "#FF824B" },
+  { path: "/login", label: "Sign In", color: "#2D6CDF" },
+];
+
 const Header = ({ t }: { t: TFunction }) => {
   const [visible, setVisibility] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false); // Modal láthatóság állapot
-
-  const toggleButton = () => setVisibility(!visible);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
   const isHome = location.pathname === "/";
-  const isDocumentation = location.pathname === "/how-to-use";
-  const isLogin = location.pathname === "/login";
-  const isRegister = location.pathname === "/register";
-  const isUserLinksRequired = isHome || isDocumentation || isLogin || isRegister;
-  const isInTheApp = location.pathname.includes("/app/");
+  const isInTheApp = location.pathname.startsWith("/app/");
+  const isUserLinksRequired = !isInTheApp && ["/", "/how-to-use", "/login", "/register"].includes(location.pathname);
+
+  const toggleButton = () => setVisibility(!visible);
 
   const scrollTo = (id: string) => {
-    const element = document.getElementById(id) as HTMLDivElement;
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setVisibility(false);
   };
 
-  const handleChange = (language: string) => {
+  const handleChangeLanguage = (language: string) => {
     i18n.changeLanguage(language);
   };
 
   const handleLogoutClick = () => {
-    setIsModalVisible(true); 
+    setIsModalVisible(true);
   };
 
   const handleConfirmLogout = () => {
     localStorage.clear();
     setIsModalVisible(false);
     navigate("/");
-    setVisibility(false)
+    setVisibility(false);
   };
 
   const handleCancelLogout = () => {
     setIsModalVisible(false);
   };
 
-  const MenuItem = () => (
+  const renderLanguageSwitch = () => (
+    <LanguageSwitchContainer>
+      {["en", "hu"].map((lang) => (
+        <LanguageSwitch key={lang} onClick={() => handleChangeLanguage(lang)}>
+          <SvgIcon src={`${lang}.svg`} aria-label={lang} width="30px" height="30px" />
+        </LanguageSwitch>
+      ))}
+    </LanguageSwitchContainer>
+  );
+
+  const renderNavLinks = () => (
     <>
-      {isHome && (
-        <>
-          <CustomNavLinkSmall onClick={() => scrollTo("why-us")}>
-            <Span>{t("nav1")}</Span>
-          </CustomNavLinkSmall>
-          <CustomNavLinkSmall onClick={() => scrollTo("features")}>
-            <Span>{t("nav2")}</Span>
-          </CustomNavLinkSmall>
-          <CustomNavLinkSmall onClick={() => scrollTo("usage")}>
-            <Span>{t("nav3")}</Span>
-          </CustomNavLinkSmall>
-          <CustomNavLinkSmall onClick={() => scrollTo("content")}>
-            <Span>{t("nav4")}</Span>
-          </CustomNavLinkSmall>
-        </>
-      )}
+      {isHome && navLinks.map(({ id, label }) => (
+        <CustomNavLinkSmall key={id} onClick={() => scrollTo(id)}>
+          <Span>{t(label)}</Span>
+        </CustomNavLinkSmall>
+      ))}
     </>
   );
 
-  const isItAnAppSide: boolean = location.pathname.includes("app");
+  const renderAuthLinks = () => (
+    <>
+      {authLinks.map(({ path, label, color }) => (
+        <CustomNavLinkSmall key={path} onClick={() => {navigate(path);    setVisibility(false);
+                }        }>
+          <Span style={{ color }}>{t(label)}</Span>
+        </CustomNavLinkSmall>
+      ))}
+    </>
+  );
+
+  const renderAppNavigationLinks = () => (
+    <>
+      {appLinks.map(({ path, label, color }) => (
+        <CustomNavLinkSmall key={path} onClick={() => {navigate(path);    setVisibility(false);
+                }        }>
+          <Span style={{ color }}>{t(label)}</Span>
+        </CustomNavLinkSmall>
+      ))}
+    </>
+  );
+
+  const renderLogoutButton = () => (
+    <CustomNavLinkSmall onClick={handleLogoutClick}>
+      <Span style={{ color: "#FF824B" }}>{t("Log out Title")}</Span>
+    </CustomNavLinkSmall>
+  );
 
   return (
     <HeaderSection>
       <Container>
         <Row justify="space-between">
-          <LogoContainer
-            to={isItAnAppSide ? "/app/home" : "/"}
-            aria-label="homepage"
-          >
+          <LogoContainer to={isInTheApp ? "/app/home" : "/"} aria-label="homepage">
             <SvgIcon src="logo.png" width="auto" height="64px" />
           </LogoContainer>
 
           <NotHidden>
-            <MenuItem />
-            {isUserLinksRequired && (
-              <>
-                <CustomNavLinkSmall onClick={() => navigate("/register")}>
-                  <Span style={{ color: "#FF824B" }}>{t("Get Started")}</Span>
-                </CustomNavLinkSmall>
-                <CustomNavLinkSmall onClick={() => navigate("/login")}>
-                  <Span style={{ color: "#2D6CDF" }}>{t("Sign In")}</Span>
-                </CustomNavLinkSmall>
-              </>
-            )}
+            {renderNavLinks()}
+            {isUserLinksRequired && renderAuthLinks()}
             {isInTheApp && (
               <>
-                <CustomNavLinkSmall onClick={() => navigate("/app/newTask")}>
-                  <Span style={{ color: "#2D6CDF" }}>{t("New Task Title")}</Span>
-                </CustomNavLinkSmall>
-                <CustomNavLinkSmall onClick={() => navigate("/app/profile")}>
-                  <Span style={{ color: "#2D6CDF" }}>{t("Profile Title")}</Span>
-                </CustomNavLinkSmall>
-                <CustomNavLinkSmall onClick={handleLogoutClick}>
-                  <Span style={{ color: "#FF824B" }}>{t("Log out Title")}</Span>
-                </CustomNavLinkSmall>
+                {renderAppNavigationLinks()}
+                {renderLogoutButton()}
               </>
             )}
           </NotHidden>
@@ -129,7 +146,6 @@ const Header = ({ t }: { t: TFunction }) => {
           </Burger>
         </Row>
 
-        {/* Drawer for Mobile Menu */}
         <Drawer closable={false} open={visible} onClose={toggleButton}>
           <DrawerContent>
             <TopSection>
@@ -143,72 +159,14 @@ const Header = ({ t }: { t: TFunction }) => {
                   </Col>
                 </Label>
               </Col>
-              {!isItAnAppSide && (<MenuItem />)}
-              {isItAnAppSide && (<>
-                <CustomNavLinkSmall onClick={() => navigate("/app/newTask")}>
-              <Span style={{ color: "#2D6CDF" }}>{t("New Task Title")}</Span>
-            </CustomNavLinkSmall>
-            <CustomNavLinkSmall onClick={() => navigate("/app/profile")}>
-              <Span style={{ color: "#2D6CDF" }}>{t("Profile Title")}</Span>
-            </CustomNavLinkSmall></>)}
+              {!isInTheApp ? renderNavLinks() : renderAppNavigationLinks()}
             </TopSection>
 
-            {isUserLinksRequired && (
-              <BottomSection>
-                <CustomNavLinkSmall onClick={() => navigate("/register")}>
-                  <Span style={{ color: "#FF824B" }}>{t("Get Started")}</Span>
-                </CustomNavLinkSmall>
-                <CustomNavLinkSmall onClick={() => navigate("/login")}>
-                  <Span style={{ color: "#2D6CDF" }}>{t("Sign In")}</Span>
-                </CustomNavLinkSmall>
-                <LanguageSwitchContainer>
-                  <LanguageSwitch onClick={() => handleChange("en")}>
-                    <SvgIcon
-                      src="en.svg"
-                      aria-label="english"
-                      width="30px"
-                      height="30px"
-                    />
-                  </LanguageSwitch>
-                  <LanguageSwitch onClick={() => handleChange("hu")}>
-                    <SvgIcon
-                      src="hu.svg"
-                      aria-label="magyar"
-                      width="30px"
-                      height="30px"
-                    />
-                  </LanguageSwitch>
-                </LanguageSwitchContainer>
-              </BottomSection>
-            )}
-            {isItAnAppSide && (<>
-
-              <BottomSection>
-              
-
-            <CustomNavLinkSmall onClick={handleLogoutClick}>
-              <Span style={{ color: "#FF824B" }}>{t("Log out Title")}</Span>
-            </CustomNavLinkSmall>
-            <LanguageSwitchContainer>
-                  <LanguageSwitch onClick={() => handleChange("en")}>
-                    <SvgIcon
-                      src="en.svg"
-                      aria-label="english"
-                      width="30px"
-                      height="30px"
-                    />
-                  </LanguageSwitch>
-                  <LanguageSwitch onClick={() => handleChange("hu")}>
-                    <SvgIcon
-                      src="hu.svg"
-                      aria-label="magyar"
-                      width="30px"
-                      height="30px"
-                    />
-                  </LanguageSwitch>
-                </LanguageSwitchContainer>
-              </BottomSection></>
-            )}
+            <BottomSection>
+              {isUserLinksRequired && renderAuthLinks()}
+              {isInTheApp && renderLogoutButton()}
+              {renderLanguageSwitch()}
+            </BottomSection>
           </DrawerContent>
         </Drawer>
 
