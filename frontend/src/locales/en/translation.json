@@ -93,7 +93,13 @@
     "Logout Confirm": "Log out",
     "Logout Cancel": "Cancel",
     "Logout Modal Title": "Confirm Logout",
-    "Logout Text": "Are you sure you want to log out?"
+    "Logout Text": "Are you sure you want to log out?",
+    "Next Task Title": "Next Task",
+    "Next Task Message": "No task to display",
+    "Today Task Title": "Today's Tasks",
+    "Today Task Message": "No current tasks",
+    "Done Task Title": "Tasks Done Today",
+    "Done Task Message": "No completed tasks yet today"
 
 
 }

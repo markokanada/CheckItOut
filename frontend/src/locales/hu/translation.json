@@ -92,5 +92,11 @@
     "Logout Confirm": "Kijelentkezés",
     "Logout Cancel": "Mégse",
     "Logout Modal Title": "Kijelentkezés megerősítése",
-    "Logout Text": "Biztosan ki szeretnél jelentkezni?"
+    "Logout Text": "Biztosan ki szeretnél jelentkezni?",
+    "Next Task Title": "Következő teendő",
+    "Next Task Message": "Nincs megjeleníthető feladat",
+    "Today Task Title": "Mai teendők",
+    "Today Task Message": "Nincs aktuális feladat",
+    "Done Task Title": "Ma elvégzett teendők",
+    "Done Task Message": "Ma még nincs kész feladat"
 }
