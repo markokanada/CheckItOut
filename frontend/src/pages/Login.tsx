@@ -71,7 +71,7 @@ export default class Login implements ViewComponent {
   };
 
   View = observer(() => {
-    if (GlobalEntities.user) {
+    if (GlobalEntities.user.id !== undefined) {
       this.snackbarMessage = "Login Success";
       this.snackbarSeverity = "success";
       this.snackbarOpen = true;
