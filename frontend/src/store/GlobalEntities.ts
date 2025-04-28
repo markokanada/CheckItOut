@@ -40,7 +40,20 @@ class Entities {
   get tasks() {
     return this._tasks;
   }
-
+  @action public logout(){
+     this._tasks = [];
+     this.doneTasks = [];
+     this.categories = [];
+     this.userToken = "";
+     this.user= {
+      id: undefined,
+      name: undefined,
+      email: undefined,
+      role: undefined,
+      created_at: undefined,
+      updated_at: undefined,
+    };
+  }
   @action loadTasks = async () => {
     const resp = await GlobalApiHandlerInstance.get(`/users/${this.user.id}`);
     this.Tasks(resp.data.data.tasks);
