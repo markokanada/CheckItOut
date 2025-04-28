@@ -46,6 +46,7 @@ const Footer = ({ t }: { t: TFunction }) => {
     );
   };
   const isItAnAppSide: boolean = location.pathname.includes("app");
+  const isInTheApp = location.pathname.startsWith("/app/");
 
   return (
     <>
@@ -123,7 +124,7 @@ const Footer = ({ t }: { t: TFunction }) => {
             align="middle"
             style={{ paddingTop: "3rem" }}
           >
-            <NavLink to="/">
+            <NavLink to={isInTheApp ? "/app/home" : "/"}>
               <LogoContainer>
                 <SvgIcon
                   src="logo.png"
