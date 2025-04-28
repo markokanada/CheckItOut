@@ -193,18 +193,24 @@ class Entities {
 const GlobalEntities = new Entities();
 
 if (localStorage.getItem("userToken")) {
-  const userDataResponse = await GlobalApiHandlerInstance.get("/user", {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("userToken")}`,
-    },
-  });
-
-  GlobalEntities.user = userDataResponse.data;
-  await GlobalEntities.loadTasks();
-  await GlobalEntities.loadDoneTasks();
-  if (GlobalEntities.user.role == "admin") {
-    await GlobalEntities.fetchUsers();
+  try{
+    const userDataResponse = await GlobalApiHandlerInstance.get("/user", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      },
+    });
+  
+    GlobalEntities.user = userDataResponse.data;
+    await GlobalEntities.loadTasks();
+    await GlobalEntities.loadDoneTasks();
+    if (GlobalEntities.user.role == "admin") {
+      await GlobalEntities.fetchUsers();
+    }
   }
+  catch(error){
+    console.warn("Backend error:", error)
+  }
+  
 }
 
 await GlobalEntities.loadCategories();
