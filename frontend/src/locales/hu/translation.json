@@ -122,5 +122,18 @@
     "Max255Chars": "Maximum 255 karakter engedélyezett",
     "MustBeFutureDate": "A dátum a jövőben kell legyen",
     "MinPriority1": "Minimum prioritás 1",
-    "MaxPriority10": "Maximum prioritás 10"
+    "MaxPriority10": "Maximum prioritás 10",
+    "TaskCreatedSuccess": "Feladat sikeresen létrehozva!",
+    "TaskCreateError": "Hiba a feladat létrehozásakor.",
+    "CategoryCreatedSuccess": "Kategória sikeresen létrehozva!",
+    "CategoryCreateError": "Hiba a kategória létrehozásakor.",
+    "NetworkOrServerError": "Hálózati hiba vagy szerverhiba.",
+    "CategoryCreateErrorConsole": "Hiba a kategória létrehozásakor:",
+    "MustStartWithCapital": "A névnek nagybetűvel kell kezdődnie.",
+    "NoInappropriateWords": "Trágár szavak használata nem megengedett.",
+    "AddNewCategory": "Új kategória hozzáadása",
+    "CategoryName": "Kategória neve",
+    "Cancel": "Mégse",
+    "Add": "Hozzáadás"
+
 }

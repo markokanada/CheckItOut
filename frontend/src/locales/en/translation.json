@@ -123,7 +123,20 @@
     "Max255Chars": "Maximum 255 characters allowed",
     "MustBeFutureDate": "Date must be in the future",
     "MinPriority1": "Minimum priority is 1",
-    "MaxPriority10": "Maximum priority is 10"
+    "MaxPriority10": "Maximum priority is 10",
+    "TaskCreatedSuccess": "Task successfully created!",
+    "TaskCreateError": "Error occurred while creating the task.",
+    "CategoryCreatedSuccess": "Category successfully created!",
+    "CategoryCreateError": "Error occurred while creating the category.",
+    "NetworkOrServerError": "Network or server error.",
+    "CategoryCreateErrorConsole": "Error occurred while creating the category:",
+    "MustStartWithCapital": "The name must start with a capital letter.",
+    "NoInappropriateWords": "Inappropriate words are not allowed.",
+    "AddNewCategory": "Add New Category",
+    "CategoryName": "Category Name",
+    "Cancel": "Cancel",
+    "Add": "Add"
+
 
 
 }
