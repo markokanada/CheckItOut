@@ -14,10 +14,11 @@ import GlobalEntities from "../store/GlobalEntities";
 import { BaseCard } from "../components/Card";
 import { observer } from "mobx-react-lite";
 import { Divider } from "antd";
-import { Hidden } from "@mui/material";
+import { Hidden, Backdrop, CircularProgress } from "@mui/material";
 import { EmptyMessage } from "../common/EmptyText";
 import { Section } from "../common/Section";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 
 export default class Home implements ViewComponent {
   constructor(public navigate: NavigateFunction) {
@@ -39,76 +40,98 @@ export default class Home implements ViewComponent {
     const doneTasks = toJS(GlobalEntities.doneTasks);
 
     const columns = useBreakpointValue({ base: 1, md: 2, lg: 2, xl: 3 });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      const timer = setTimeout(() => setLoading(false), 300);
+      return () => clearTimeout(timer);
+    }, []);
 
     return (
       <>
-        <Hidden lgDown>
-          <Flex alignItems="center" height="100%" paddingTop="2rem">
-            <Box flex="1" p={4}>
-              <Section title={t("Next Task Title")}>
-                {this.card ?? <EmptyMessage message={t("Next Task Message")} />}
-              </Section>
-            </Box>
+        <Backdrop
+          sx={{backgroundColor: "rgba(0, 0, 0, 0.2)", color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          open={loading}
+        >
+          <CircularProgress color="primary" />
+        </Backdrop>
 
-            <Box flex="1" p={4} borderLeft="2px lightgray solid" borderRight="2px lightgray solid">
-              <Section title={t("Today Task Title")}>
-                {tasks.length ? (
-                  <SimpleGrid columns={columns} padding={6}>
-                    {tasks.map((task: Task) => this.createCard(task))}
-                  </SimpleGrid>
-                ) : (
-                  <EmptyMessage message={t("Today Task Message")} />
-                )}
-              </Section>
-            </Box>
+        {!loading && (
+          <>
+            <Hidden lgDown>
+              <Flex alignItems="center" height="100%" paddingTop="2rem">
+                <Box flex="1" p={4}>
+                  <Section title={t("Next Task Title")}>
+                    {this.card ?? <EmptyMessage message={t("Next Task Message")} />}
+                  </Section>
+                </Box>
 
-            <Box flex="1" p={4}>
-              <Section title={t("Done Task Title")}>
-                {doneTasks.length ? (
-                  <SimpleGrid columns={columns} padding={6}>
-                    {doneTasks.map((task: Task) => this.createCard(task))}
-                  </SimpleGrid>
-                ) : (
-                  <EmptyMessage message={t("Done Task Message")} />
-                )}
-              </Section>
-            </Box>
-          </Flex>
-        </Hidden>
+                <Box
+                  flex="1"
+                  p={4}
+                  borderLeft="2px lightgray solid"
+                  borderRight="2px lightgray solid"
+                >
+                  <Section title={t("Today Task Title")}>
+                    {tasks.length ? (
+                      <SimpleGrid columns={columns} padding={6}>
+                        {tasks.map((task: Task) => this.createCard(task))}
+                      </SimpleGrid>
+                    ) : (
+                      <EmptyMessage message={t("Today Task Message")} />
+                    )}
+                  </Section>
+                </Box>
 
-        <Hidden lgUp>
-          <Container maxW="6xl" py={{ base: 6, md: 8 }}>
-            <VStack padding={10} align="stretch">
-              <Section title={t("Next Task Title")}>
-                {this.card ?? <EmptyMessage message={t("Next Task Message")} />}
-              </Section>
+                <Box flex="1" p={4}>
+                  <Section title={t("Done Task Title")}>
+                    {doneTasks.length ? (
+                      <SimpleGrid columns={columns} padding={6}>
+                        {doneTasks.map((task: Task) => this.createCard(task))}
+                      </SimpleGrid>
+                    ) : (
+                      <EmptyMessage message={t("Done Task Message")} />
+                    )}
+                  </Section>
+                </Box>
+              </Flex>
+            </Hidden>
 
-              <Divider />
+            <Hidden lgUp>
+              <Container maxW="6xl" py={{ base: 6, md: 8 }}>
+                <VStack padding={10} align="stretch">
+                  <Section title={t("Next Task Title")}>
+                    {this.card ?? <EmptyMessage message={t("Next Task Message")} />}
+                  </Section>
 
-              <Section title={t("Today Task Title")}>
-                {tasks.length ? (
-                  <SimpleGrid columns={columns} padding={6}>
-                    {tasks.map((task: Task) => this.createCard(task))}
-                  </SimpleGrid>
-                ) : (
-                  <EmptyMessage message={t("Today Task Message")} />
-                )}
-              </Section>
+                  <Divider />
 
-              <Divider />
+                  <Section title={t("Today Task Title")}>
+                    {tasks.length ? (
+                      <SimpleGrid columns={columns} padding={6}>
+                        {tasks.map((task: Task) => this.createCard(task))}
+                      </SimpleGrid>
+                    ) : (
+                      <EmptyMessage message={t("Today Task Message")} />
+                    )}
+                  </Section>
 
-              <Section title={t("Done Task Title")}>
-                {doneTasks.length ? (
-                  <SimpleGrid columns={columns} padding={6}>
-                    {doneTasks.map((task: Task) => this.createCard(task))}
-                  </SimpleGrid>
-                ) : (
-                  <EmptyMessage message={t("Done Task Message")} />
-                )}
-              </Section>
-            </VStack>
-          </Container>
-        </Hidden>
+                  <Divider />
+
+                  <Section title={t("Done Task Title")}>
+                    {doneTasks.length ? (
+                      <SimpleGrid columns={columns} padding={6}>
+                        {doneTasks.map((task: Task) => this.createCard(task))}
+                      </SimpleGrid>
+                    ) : (
+                      <EmptyMessage message={t("Done Task Message")} />
+                    )}
+                  </Section>
+                </VStack>
+              </Container>
+            </Hidden>
+          </>
+        )}
       </>
     );
   });
