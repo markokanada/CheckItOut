@@ -28,7 +28,8 @@ class Task extends Model
         return [
             "new",
             "in-progress",
-            "finished"
+            "finished",
+            "expired"
         ];
     }
 
