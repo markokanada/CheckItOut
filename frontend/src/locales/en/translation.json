@@ -151,7 +151,14 @@
     "validation email required": "Email is required",
     "validation password required": "Password is required",
     "snackbar success": "Update successful!",
-    "snackbar invalid password": "Incorrect password"
+    "snackbar invalid password": "Incorrect password",
+    "label status": "Status",
+    "label priority": "Priority",
+    "label category": "Category",
+    "label due date": "Due Date",
+    "button in progress": "In Progress",
+    "button done": "Done",
+    "update failed": "Update failed"
 
 
 

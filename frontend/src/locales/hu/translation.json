@@ -149,6 +149,13 @@
     "validation email required": "Email kötelező",
     "validation password required": "Jelszó kötelező",
     "snackbar success": "Sikeres frissítés!",
-    "snackbar invalid password": "Hibás jelszó"
+    "snackbar invalid password": "Hibás jelszó",
+    "label status": "Állapot",
+    "label priority": "Prioritás",
+    "label category": "Kategória",
+    "label due date": "Határidő",
+    "button in progress": "Folyamatban",
+    "button done": "Kész",
+    "update failed": "Sikertelen módosítás"
 
 }
