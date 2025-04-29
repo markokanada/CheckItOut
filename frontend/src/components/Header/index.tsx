@@ -58,6 +58,7 @@ const Header = ({ t }: { t: TFunction }) => {
 
   const handleChangeLanguage = (language: string) => {
     i18n.changeLanguage(language);
+    localStorage.setItem("language", language);
   };
 
   const handleLogoutClick = () => {
