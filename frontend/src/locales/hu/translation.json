@@ -172,6 +172,9 @@
     "Confirm Save": "Mentés megerősítése",
     "Are you sure you want to save changes?": "Biztosan elmented a módosításokat?",
     "Confirm": "Megerősít",
-    "Changes saved successfully": "A módosítások sikeresen mentve"
+    "Changes saved successfully": "A módosítások sikeresen mentve",
+    "Confirm Delete": "Törlés megerősítése",
+    "Are you sure you want to delete this user?": "Biztosan törölni szeretnéd ezt a felhasználót?",
+    "User deleted successfully": "A felhasználó sikeresen törölve"
 
 }
