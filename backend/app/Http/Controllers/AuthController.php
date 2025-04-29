@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Auth\Events\Registered;
 
 class AuthController extends Controller
 {
@@ -100,7 +101,7 @@ class AuthController extends Controller
         $data = $request->validated();
 
         $user = User::create($data);
-
+        event(new Registered($user));
         return response()->json([
             "data" => [
                 "message" => "Sikeresen regisztrál $user->email."
