@@ -28,13 +28,6 @@ import { PrioritySlider } from "../components/PrioritySlider";
 import { CreateCategoryDialog } from "../components/CreateCategoryDialog";
 import i18n from "../translation";
 
-interface Category {
-  id?: number;
-  lang?: string;
-  name?: string;
-  user_id?: number;
-}
-
 interface SnackbarState {
   open: boolean;
   type: 'success' | 'error';
@@ -96,13 +89,13 @@ export default class TaskRecording implements ViewComponent {
     try {
       const resp = await GlobalEntities.createTask(formattedValues);
       if (resp.status === 201) {
-        setSnackbar({ open: true, type: 'success', message: 'Feladat sikeresen létrehozva!' });
-        this.navigate("home");
+        setSnackbar({ open: true, type: 'success', message: i18n.t("TaskCreatedSuccess") });
+        setTimeout(() => { this.navigate("/app/home"); }, 2000);
       } else {
-        setSnackbar({ open: true, type: 'error', message: 'Hiba a feladat létrehozásakor.' });
+        setSnackbar({ open: true, type: 'error', message: i18n.t("TaskCreateError") });
       }
     } catch (e) {
-      setSnackbar({ open: true, type: 'error', message: 'Hálózati hiba vagy szerverhiba.' });
+      setSnackbar({ open: true, type: 'error', message: i18n.t("NetworkOrServerError") });
     } finally {
       setSubmitting(false);
     }
@@ -118,25 +111,25 @@ export default class TaskRecording implements ViewComponent {
   ): Promise<void> => {
     try {
       const resp = await GlobalEntities.createCategory(name);
-  
+
       if (resp.status === 201) {
         await GlobalEntities.loadCategories();
-        setSnackbar({ open: true, type: 'success', message: 'Kategória sikeresen létrehozva!' });
+        setSnackbar({ open: true, type: 'success', message: i18n.t("CategoryCreatedSuccess") });
       } else {
-        setSnackbar({ open: true, type: 'error', message: 'Hiba a kategória létrehozásakor.' });
+        setSnackbar({ open: true, type: 'error', message: i18n.t("CategoryCreateError") });
       }
     } catch (error) {
-      console.error("Hiba a kategória létrehozásakor:", error);
-      setSnackbar({ open: true, type: 'error', message: 'Hálózati hiba vagy szerverhiba.' });
+      console.error(i18n.t("CategoryCreateErrorConsole"), error);
+      setSnackbar({ open: true, type: 'error', message: i18n.t("NetworkOrServerError") });
     }
   };
 
   View = observer(() => {
     const { t } = useTranslation();
-    const [snackbar, setSnackbar] = useState<SnackbarState>({ 
-      open: false, 
-      message: '', 
-      type: 'success' 
+    const [snackbar, setSnackbar] = useState<SnackbarState>({
+      open: false,
+      message: '',
+      type: 'success'
     });
 
     const validationSchema = Yup.object().shape({
@@ -148,28 +141,26 @@ export default class TaskRecording implements ViewComponent {
       category_id: Yup.number().required(t("RequiredField")),
       priority: Yup.number().min(1, t("MinPriority1")).max(10, t("MaxPriority10")).required(t("RequiredField")),
     });
-    
+
     const getNowRoundedToMinute = (): string => {
       const now = new Date();
       now.setSeconds(0, 0);
-    
       const year = now.getFullYear();
       const month = String(now.getMonth() + 1).padStart(2, '0');
       const day = String(now.getDate()).padStart(2, '0');
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
-    
       return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
-    
+
     return (
       <>
         <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
-          <Card sx={{ 
-            width: "100%", 
-            maxWidth: 720, 
-            p: 3, 
-            boxShadow: 3, 
+          <Card sx={{
+            width: "100%",
+            maxWidth: 720,
+            p: 3,
+            boxShadow: 3,
             borderRadius: 2,
             '& .MuiOutlinedInput-root': {
               '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
@@ -195,14 +186,14 @@ export default class TaskRecording implements ViewComponent {
                 <Form>
                   <Stack spacing={3} sx={{ mt: 2 }}>
                     <FormControl fullWidth error={touched.title && !!errors.title}>
-                      <Field 
-                        as={StyledTextField} 
-                        name="title" 
-                        label={t("TaskTitle")} 
-                        variant="outlined" 
-                        fullWidth 
-                        error={touched.title && !!errors.title} 
-                        helperText={touched.title && errors.title} 
+                      <Field
+                        as={StyledTextField}
+                        name="title"
+                        label={t("TaskTitle")}
+                        variant="outlined"
+                        fullWidth
+                        error={touched.title && !!errors.title}
+                        helperText={touched.title && errors.title}
                         sx={{
                           '& input:focus-within, & textarea:focus-within': {
                             boxShadow: 'none',
@@ -213,16 +204,16 @@ export default class TaskRecording implements ViewComponent {
                     </FormControl>
 
                     <FormControl fullWidth error={touched.description && !!errors.description}>
-                      <Field 
-                        as={StyledTextField} 
-                        name="description" 
-                        label={t("TaskDescription")} 
-                        variant="outlined" 
-                        multiline 
-                        rows={4} 
-                        fullWidth 
-                        error={touched.description && !!errors.description} 
-                        helperText={touched.description && errors.description} 
+                      <Field
+                        as={StyledTextField}
+                        name="description"
+                        label={t("TaskDescription")}
+                        variant="outlined"
+                        multiline
+                        rows={4}
+                        fullWidth
+                        error={touched.description && !!errors.description}
+                        helperText={touched.description && errors.description}
                         sx={{
                           '& input:focus-within, & textarea:focus-within': {
                             boxShadow: 'none',
@@ -277,8 +268,8 @@ export default class TaskRecording implements ViewComponent {
                                 <>
                                   {params.InputProps.endAdornment}
                                   <InputAdornment position="end">
-                                    <IconButton 
-                                      onClick={() => this.toggleCategoryDialog(true)} 
+                                    <IconButton
+                                      onClick={() => this.toggleCategoryDialog(true)}
                                       edge="end"
                                     >
                                       <AddIcon />
@@ -293,11 +284,11 @@ export default class TaskRecording implements ViewComponent {
                     </FormControl>
 
                     <FormControl fullWidth error={touched.priority && !!errors.priority}>
-                      <Field 
-                        name="priority" 
-                        component={PrioritySlider} 
-                        value={values.priority} 
-                        onChange={(_e: Event, value: number | number[]) => 
+                      <Field
+                        name="priority"
+                        component={PrioritySlider}
+                        value={values.priority}
+                        onChange={(_e: Event, value: number | number[]) =>
                           setFieldValue("priority", Array.isArray(value) ? value[0] : value)
                         } sx={{
                           '& input:focus-within, & textarea:focus-within': {
@@ -327,10 +318,11 @@ export default class TaskRecording implements ViewComponent {
           </Card>
         </Box>
 
-        <Snackbar 
-          open={snackbar.open} 
-          autoHideDuration={4000} 
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={4000}
           onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
           <Alert severity={snackbar.type} sx={{ width: '100%' }}>
             {snackbar.message}
