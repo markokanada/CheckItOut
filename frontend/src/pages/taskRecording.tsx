@@ -19,12 +19,6 @@ import { useTranslation } from "react-i18next";
 import ViewComponent from "../interfaces/ViewComponent";
 import { PrioritySlider } from "../components/PrioritySlider";
 
-interface Category {
-  id?: number;
-  name?: string;
-}
-
-
 export default class TaskRecording implements ViewComponent {
   @observable accessor category: Category = {
     id: undefined,
@@ -147,7 +141,6 @@ export default class TaskRecording implements ViewComponent {
                     />
                   </FormControl>
 
-                  {/* Due Date Field */}
                   <FormControl
                     fullWidth
                     error={touched.due_date && !!errors.due_date}
