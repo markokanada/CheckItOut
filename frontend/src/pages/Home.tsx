@@ -19,6 +19,7 @@ import { EmptyMessage } from "../common/EmptyText";
 import { Section } from "../common/Section";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
+import { Task } from "../interfaces/Task";
 
 export default class Home implements ViewComponent {
   constructor(public navigate: NavigateFunction) {
