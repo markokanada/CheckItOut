@@ -99,7 +99,31 @@
     "Today Task Title": "Today's Tasks",
     "Today Task Message": "No current tasks",
     "Done Task Title": "Tasks Done Today",
-    "Done Task Message": "No completed tasks yet today"
+    "Done Task Message": "No completed tasks yet today",
+    "AddTaskTitle": "Add New Task",
+    "AddTaskDescription": "Fill out the form to create a new task",
+    "TaskTitle": "Task Title",
+    "TaskDescription": "Description",
+    "DueDateTitle": "Due Date",
+    "CategoryTitle": "Category",
+    "PriorityTitle": "Priority",
+    "PriorityValue1": "Very Low",
+    "PriorityValue2": "Low",
+    "PriorityValue3": "Moderately Low",
+    "PriorityValue4": "Below Average",
+    "PriorityValue5": "Average",
+    "PriorityValue6": "Above Average",
+    "PriorityValue7": "Moderately High",
+    "PriorityValue8": "High",
+    "PriorityValue9": "Very High",
+    "PriorityValue10": "Critical",
+    "SubmitButton": "Create Task",
+    "RequiredField": "This field is required",
+    "Max50Chars": "Maximum 50 characters allowed",
+    "Max255Chars": "Maximum 255 characters allowed",
+    "MustBeFutureDate": "Date must be in the future",
+    "MinPriority1": "Minimum priority is 1",
+    "MaxPriority10": "Maximum priority is 10"
 
 
 }
