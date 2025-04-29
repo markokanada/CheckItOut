@@ -30,6 +30,7 @@ interface SocialLinkProps {
 const Footer = ({ t }: { t: TFunction }) => {
   const handleChange = (language: string) => {
     i18n.changeLanguage(language);
+    localStorage.setItem("language", language);
   };
 
   const SocialLink = ({ href, src }: SocialLinkProps) => {
