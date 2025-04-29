@@ -60,7 +60,7 @@ export default class Home implements ViewComponent {
         {!loading && (
           <>
             <Hidden lgDown>
-              <Flex alignItems="center" height="100%" paddingTop="2rem">
+              <Flex alignItems="flex-start" height="100%" paddingTop="2rem">
                 <Box flex="1" p={4}>
                   <Section title={t("Next Task Title")}>
                     {this.card ?? <EmptyMessage message={t("Next Task Message")} />}
