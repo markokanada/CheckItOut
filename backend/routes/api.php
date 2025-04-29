@@ -13,31 +13,19 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource("users",UserController::class)->except("index");
-
-Route::apiResource("schedule", ScheduleController::class);
-
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::get("/scheduleComposer/{user}", [ScheduleController::class, 'scheduleComposer'])
-->name("schedule.compose")->middleware('auth:sanctum');
+Route::apiResource("users", UserController::class)->except("index");
 
-Route::apiResource("tasks", TaskController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource("categories", CategoryController::class);
+    Route::apiResource("schedule", ScheduleController::class);
+    Route::apiResource("tasks", TaskController::class);
 
-Route::apiResource("categories", CategoryController::class);
+    Route::get("/scheduleComposer/{user}", [ScheduleController::class, 'scheduleComposer'])
+        ->name("schedule.compose");
 
-
-Route::get("users", [AdminController::class, "index"])->middleware("auth:sanctum");
-
-
-// Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-//     Route::get('/users', [UserController::class, 'index']);
-//     Route::put('/users/{id}', [UserController::class, 'update']);
-//     Route::delete('/users/{id}', [UserController::class, 'destroy']);
-// });
-
-
-
-
-Route::get("tasks/today/{user}", [UserController::class, 'taskDoneToday']);
+    Route::get("users", [AdminController::class, "index"]);
+    Route::get("tasks/today/{user}", [UserController::class, 'taskDoneToday']);
+});
