@@ -4,7 +4,10 @@ interface Task {
   description: string;
   due_date: Date;
   priority: number;
-  status: string;
+  status: [            "new",
+    "in-progress",
+    "finished",
+    "expired"]
   category_id: number;
   user_id: number | object;
 }
