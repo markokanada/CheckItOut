@@ -13,7 +13,7 @@ class ExpireOverdueTasks extends Command
      */
     protected $signature = 'app:expire-overdue-tasks';
 
-    rotected $description = 'Set expired status for overdue tasks';
+    protected $description = 'Set expired status for overdue tasks';
 
     public function handle()
     {
