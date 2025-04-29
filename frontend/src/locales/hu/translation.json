@@ -161,6 +161,17 @@
     "in-progress": "Folyamatban",
     "finished": "Befejezve",
     "expired": "Lejárt",
-    "usermanagement": "Felhasználókezelés"
+    "usermanagement": "Felhasználókezelés",
+    "User Management": "Felhasználók kezelése",
+    "Name": "Név",
+    "Email": "Email",
+    "Role": "Szerepkör",
+    "Actions": "Műveletek",
+    "User": "Felhasználó",
+    "Admin": "Admin",
+    "Confirm Save": "Mentés megerősítése",
+    "Are you sure you want to save changes?": "Biztosan elmented a módosításokat?",
+    "Confirm": "Megerősít",
+    "Changes saved successfully": "A módosítások sikeresen mentve"
 
 }
