@@ -12,6 +12,7 @@ class Category extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        "name",
         'category_name',
         'lang',
         'user_id',
