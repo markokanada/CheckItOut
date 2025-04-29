@@ -13,18 +13,16 @@ class ExpireOverdueTasks extends Command
      */
     protected $signature = 'app:expire-overdue-tasks';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Command description';
+    rotected $description = 'Set expired status for overdue tasks';
 
-    /**
-     * Execute the console command.
-     */
     public function handle()
     {
-        //
+        $now = Carbon::now();
+
+        $expiredCount = Task::where('status', '!=', 'finished')
+            ->where('due_date', '<', $now)
+            ->update(['status' => 'expired']);
+
+        $this->info("Updated $expiredCount task(s) to expired.");
     }
 }
