@@ -65,6 +65,7 @@ export class BaseCard implements ViewComponent {
         maxWidth: "720px",
         margin: "5rem auto",
       }}
+      id={`${this.task.id}`}
     >
       <Card.Body>
         <Card.Header>
