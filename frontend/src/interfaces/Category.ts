@@ -1,4 +1,6 @@
 interface Category {
-  id: number | undefined;
-  name: string | undefined;
+  id: number ;
+  name: string;
+  lang: string;
+  user_id: number;
 }
