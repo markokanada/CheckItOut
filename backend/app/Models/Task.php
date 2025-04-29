@@ -26,9 +26,9 @@ class Task extends Model
 
     public static function getStatuses() {
         return [
-            "új",
-            "folyamatban",
-            "kész"
+            "new",
+            "in-progress",
+            "finished"
         ];
     }
 
