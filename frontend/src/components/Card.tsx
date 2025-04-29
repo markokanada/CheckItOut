@@ -98,9 +98,9 @@ export class BaseCard implements ViewComponent {
         <Divider sx={{ my: 2 }} />
 
         <Card.Body>
-          <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
-            <Chip label={`${t("label status")}: ${this.task.status}`} color="info" />
-            <Chip label={`${t("label priority")}: ${this.task.priority}`} color="secondary" />
+          <Stack justifyContent="center" spacing={1} direction="row" flexWrap="wrap" useFlexGap>
+            <Chip label={`${t("label status")}: ${t(this.task.status)}`} color="info" />
+            <Chip label={`${t("label priority")}: ${t('PriorityValue'+this.task.priority)}`} color="secondary" />
             <Chip label={`${t("label category")}: ${this.category.name}`} color="primary" />
           </Stack>
 
