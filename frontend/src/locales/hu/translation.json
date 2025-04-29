@@ -160,5 +160,7 @@
     "new": "Új",
     "in-progress": "Folyamatban",
     "finished": "Befejezve",
-    "expired": "Lejárt"
+    "expired": "Lejárt",
+    "usermanagement": "Felhasználókezelés"
+
 }
