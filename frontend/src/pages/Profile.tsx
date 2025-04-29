@@ -15,17 +15,11 @@ import {
 } from "@mui/material";
 import GlobalEntities from "../store/GlobalEntities";
 import { NavigateFunction } from "react-router-dom";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 export default class Profile implements ViewComponent {
-  constructor(public navigate: NavigateFunction) {
-    this.name = GlobalEntities.user.name as string;
-    this.email = GlobalEntities.user.email as string;
-    makeObservable(this);
-  }
-
   @observable accessor editable: boolean = false;
   @observable accessor showModal: boolean = false;
   @observable accessor name: string;
@@ -34,32 +28,38 @@ export default class Profile implements ViewComponent {
   @observable accessor snackbarMessage: string = "";
   @observable accessor snackbarSeverity: "success" | "error" = "success";
 
-  @action toggleEdit() {
+  constructor(public navigate: NavigateFunction) {
+    this.name = GlobalEntities.user.name as string;
+    this.email = GlobalEntities.user.email as string;
+  }
+
+  @action toggleEdit = () => {
     this.editable = !this.editable;
-  }
+    console.log("Editable state:", this.editable);
+  };
 
-  @action toggleModal() {
+  @action toggleModal = () => {
     this.showModal = !this.showModal;
-  }
+  };
 
-  @action abortEdit() {
+  @action abortEdit = () => {
     this.name = GlobalEntities.user.name as string;
     this.email = GlobalEntities.user.email as string;
     this.editable = false;
     this.showModal = false;
-  }
+  };
 
-  @action showSnackbar(message: string, severity: "success" | "error") {
+  @action showSnackbar = (message: string, severity: "success" | "error") => {
     this.snackbarMessage = message;
     this.snackbarSeverity = severity;
     this.snackbarOpen = true;
-  }
+  };
 
-  @action handleSnackbarClose() {
+  @action handleSnackbarClose = () => {
     this.snackbarOpen = false;
-  }
+  };
 
-  @action async confirmEdit(password: string) {
+  @action confirmEdit = async (password: string) => {
     const resp = await GlobalEntities.updateUser(
       this.name,
       this.email,
@@ -71,7 +71,7 @@ export default class Profile implements ViewComponent {
       this.showSnackbar("Hibás jelszó", "error");
     }
     this.abortEdit();
-  }
+  };
 
   View = observer(() => (
     <Container maxWidth="sm" sx={{ marginY: 4 }}>
@@ -81,9 +81,14 @@ export default class Profile implements ViewComponent {
         </Typography>
 
         <Formik
+          key={`${this.name}-${this.email}-${this.editable}`}
           initialValues={{ name: this.name, email: this.email }}
           enableReinitialize
-          onSubmit={() => this.toggleModal()}
+          onSubmit={({ name, email }) => {
+            this.name = name;
+            this.email = email;
+            this.toggleModal();
+          }}
           validationSchema={Yup.object({
             name: Yup.string().required("Név kötelező"),
             email: Yup.string()
@@ -102,13 +107,16 @@ export default class Profile implements ViewComponent {
                     variant="outlined"
                     disabled={!this.editable}
                     value={values.name}
-                    onChange={(e) => {
-                      handleChange(e);
-                      this.name = e.target.value;
-                    }}
+                    onChange={handleChange}
                     error={touched.name && Boolean(errors.name)}
                     helperText={touched.name && errors.name}
                     fullWidth
+                    sx={{
+                      "& input:focus-within, & textarea:focus-within": {
+                        boxShadow: "none",
+                        background: "none",
+                      },
+                    }}
                   />
                 </FormControl>
 
@@ -120,13 +128,16 @@ export default class Profile implements ViewComponent {
                     variant="outlined"
                     disabled={!this.editable}
                     value={values.email}
-                    onChange={(e) => {
-                      handleChange(e);
-                      this.email = e.target.value;
-                    }}
+                    onChange={handleChange}
                     error={touched.email && Boolean(errors.email)}
                     helperText={touched.email && errors.email}
                     fullWidth
+                    sx={{
+                      "& input:focus-within, & textarea:focus-within": {
+                        boxShadow: "none",
+                        background: "none",
+                      },
+                    }}
                   />
                 </FormControl>
 
@@ -141,15 +152,17 @@ export default class Profile implements ViewComponent {
                       <Button
                         variant="outlined"
                         color="error"
-                        onClick={() => this.abortEdit()}
-                        sx={{ width: { xs: '100%', sm: 'auto' } }}                      >
+                        onClick={this.abortEdit}
+                        sx={{ width: { xs: "100%", sm: "auto" } }}
+                      >
                         Mégse
                       </Button>
                       <Button
                         type="submit"
                         variant="contained"
                         color="primary"
-                        sx={{ width: { xs: '100%', sm: 'auto' } }}                      >
+                        sx={{ width: { xs: "100%", sm: "auto" } }}
+                      >
                         Mentés
                       </Button>
                     </>
@@ -157,7 +170,8 @@ export default class Profile implements ViewComponent {
                     <Button
                       variant="contained"
                       onClick={this.toggleEdit}
-                      sx={{ width: { xs: '100%', sm: 'auto' } }}                    >
+                      sx={{ width: { xs: "100%", sm: "auto" } }}
+                    >
                       Szerkesztés
                     </Button>
                   )}
@@ -234,11 +248,7 @@ export default class Profile implements ViewComponent {
                     >
                       Mégse
                     </Button>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                    >
+                    <Button type="submit" variant="contained" color="primary">
                       Mentés
                     </Button>
                   </Stack>
