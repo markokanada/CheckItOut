@@ -27,36 +27,10 @@ import ViewComponent from "../interfaces/ViewComponent";
 import { PrioritySlider } from "../components/PrioritySlider";
 import { CreateCategoryDialog } from "../components/CreateCategoryDialog";
 import i18n from "../translation";
-
-interface SnackbarState {
-  open: boolean;
-  type: 'success' | 'error';
-  message: string;
-}
-
-interface FormValues {
-  title: string;
-  description: string;
-  due_date: string;
-  category_id: string;
-  priority: number;
-}
-
-const StyledTextField = styled(TextField)({
-  '& .MuiOutlinedInput-root': {
-    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderWidth: '1px',
-    },
-  },
-});
-
-const StyledAutocomplete = styled(Autocomplete<Category, false, false, false>)({
-  '& .MuiOutlinedInput-root': {
-    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderWidth: '1px',
-    },
-  },
-});
+import { FormValues } from "../interfaces/FormValues";
+import { SnackbarState } from "../interfaces/SnackbarState";
+import { StyledTextField } from "../common/StyledTextField";
+import { StyledAutocomplete } from "../common/StyledAutocomplete";
 
 export default class TaskRecording implements ViewComponent {
   @observable accessor category: Category = { id: undefined, lang: undefined, name: undefined, user_id: undefined };
