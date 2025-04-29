@@ -81,7 +81,7 @@ class UserController extends Controller
     }
 
     public function taskDoneToday(User $user){
-        $tasks = Task::whereDate("due_date", Date::today()->toDateString())->get()->where("status", "=", "kész")->where("user_id", "=", $user->id);
+        $tasks = Task::whereDate("due_date", Date::today()->toDateString())->get()->where("status", "=", "done")->where("user_id", "=", $user->id);
 
 
         return TaskResource::collection($tasks);
