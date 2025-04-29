@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string("category_name", 25);
-            $table->string("lang", 2);
+            $table->unsignedBigInteger('user_id');
+            $table->string('category_name', 25);
+            $table->string('lang', 2);
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        
         });
     }
 
