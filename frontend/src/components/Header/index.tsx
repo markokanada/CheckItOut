@@ -48,7 +48,7 @@ const Header = ({ t }: { t: TFunction }) => {
   const isHome = location.pathname === "/";
   const isInTheApp = location.pathname.startsWith("/app/");
   const isUserLinksRequired = !isInTheApp && ["/", "/how-to-use", "/login", "/register"].includes(location.pathname);
-
+  const isAdminPanelNeeded = isInTheApp && GlobalEntities.user.role === "admin"
   const toggleButton = () => setVisibility(!visible);
 
   const scrollTo = (id: string) => {
@@ -115,6 +115,12 @@ const Header = ({ t }: { t: TFunction }) => {
           <Span style={{ color }}>{t(label)}</Span>
         </CustomNavLinkSmall>
       ))}
+      {isAdminPanelNeeded && (
+        <CustomNavLinkSmall key="/app/admin/users" onClick={() => {navigate("/app/admin/users");    setVisibility(false);
+        }        }>
+  <Span style={{ color:"#FF824B" }}>{t("usermanagement")}</Span>
+</CustomNavLinkSmall>
+      )}
     </>
   );
 
