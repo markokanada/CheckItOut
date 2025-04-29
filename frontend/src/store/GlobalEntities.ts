@@ -123,7 +123,12 @@ class Entities {
   
 
   @action createTask = async (data: Object) => {
-    const resp = await GlobalApiHandlerInstance.post("/tasks", data);
+    const resp = await GlobalApiHandlerInstance.post("/tasks", data, {
+      
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      },
+    });
 
     await this.loadTasks();
     await this.loadDoneTasks();
