@@ -22,8 +22,8 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|string|unique:categories,category_name",
-        "lang" => "required|in:hu,en",
+"name" => "required|string|unique:categories,category_name,NULL,id,user_id," . auth()->id(),      
+        "lang" => "required|in:hu,en",      
         "user_id" => "required|exists:users,id",
                 ];
     }
