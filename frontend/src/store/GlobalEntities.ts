@@ -10,7 +10,7 @@ class Entities {
   public userToken: string = "";
   public user: User = {
     id: undefined,
-    name: undefined,
+    name: undefined, 
     email: undefined,
     role: undefined,
     created_at: undefined,
@@ -94,10 +94,33 @@ class Entities {
   };
 
   @action loadCategories = async () => {
-    const resp = await GlobalApiHandlerInstance.get("/categories");
+    const resp = await GlobalApiHandlerInstance.get("/categories", {
+      
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      },
+    })
+    
 
     this.categories = resp.data.data;
   };
+
+  @action createCategory = async (name: string) => {
+    try {
+      const resp = await GlobalApiHandlerInstance.post("/categories", { name });
+  
+      if (resp.status === 201 || resp.status === 200) {
+        await this.loadCategories(); 
+      }
+  
+      return resp;
+    } catch (error) {
+      console.error("Hiba a kategória létrehozásakor:", error);
+      throw error;
+    }
+  };
+  
+  
 
   @action createTask = async (data: Object) => {
     const resp = await GlobalApiHandlerInstance.post("/tasks", data);
@@ -132,7 +155,12 @@ class Entities {
 
   @action loadDoneTasks = async () => {
     const resp = await GlobalApiHandlerInstance.get(
-      `/tasks/today/${this.user.id}`,
+      `/tasks/today/${this.user.id}`, {
+      
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+      },
     );
 
     this.setDoneTasks(resp.data.data);
