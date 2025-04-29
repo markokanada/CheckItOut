@@ -100,11 +100,26 @@ export default class TaskRecording implements ViewComponent {
     const validationSchema = Yup.object().shape({
       title: Yup.string().max(50, t("Max50Chars")).required(t("RequiredField")),
       description: Yup.string().max(255, t("Max255Chars")).required(t("RequiredField")),
-      due_date: Yup.date().min(new Date(Date.now() + 86400000), t("MustBeFutureDate")).required(t("RequiredField")),
+      due_date: Yup.date()
+        .min(new Date(Date.now() + 60000), t("MustBeFutureDate")) // 1 perc múlva
+        .required(t("RequiredField")),
       category_id: Yup.number().required(t("RequiredField")),
       priority: Yup.number().min(1, t("MinPriority1")).max(10, t("MaxPriority10")).required(t("RequiredField")),
     });
-
+    
+    const getNowRoundedToMinute = () => {
+      const now = new Date();
+      now.setSeconds(0, 0);
+    
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const day = String(now.getDate()).padStart(2, '0');
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+      return `${year}-${month}-${day}T${hours}:${minutes}`;
+    };
+    
     return (
       <>
         <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
@@ -116,7 +131,7 @@ export default class TaskRecording implements ViewComponent {
               initialValues={{
                 title: "",
                 description: "",
-                due_date: new Date(Date.now() + 86400000).toISOString().slice(0, 16),
+                due_date: getNowRoundedToMinute(),
                 category_id: "",
                 priority: 5,
               }}
