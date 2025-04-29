@@ -1,6 +1,7 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
 import { Task } from "@mui/icons-material";
+import i18n from "../translation";
 
 class Entities {
   public _tasks: Task[] = [];
@@ -227,5 +228,10 @@ if (localStorage.getItem("userToken")) {
 }
 
 await GlobalEntities.loadCategories();
+
+const savedLang = localStorage.getItem("language");
+if (savedLang) {
+  i18n.changeLanguage(savedLang);
+}
 
 export default GlobalEntities;
