@@ -2,7 +2,6 @@ FROM php:8.3.8-fpm-alpine3.20
 
 RUN adduser -u 1000 -s /bin/fish -D phpdocker
 
-
 WORKDIR /www
 
 COPY --from=composer /usr/bin/composer /usr/bin/composer
@@ -18,18 +17,19 @@ RUN apk update && apk add --no-cache \
     oniguruma-dev \
     libxml2-dev \
     vim \
-    fish
-    
+    fish \
+    cron
 
 RUN docker-php-ext-configure gd --with-jpeg
-
-RUN docker-php-ext-install  pdo \
+RUN docker-php-ext-install pdo \
                             pdo_mysql \
                             zip \
                             exif \
                             pcntl \
                             gd
+
 USER phpdocker
 
+RUN echo "* * * * * cd /www && php artisan schedule:run >> /dev/null 2>&1" | crontab -
 
-CMD ["php-fpm"]
+CMD ["sh", "-c", "cron && php-fpm"]
