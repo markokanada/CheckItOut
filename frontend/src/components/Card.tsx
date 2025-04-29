@@ -1,7 +1,16 @@
 import { action, makeObservable, observable } from "mobx";
 import ViewComponent from "../interfaces/ViewComponent";
 import { Card, Heading } from "@chakra-ui/react";
-import { Alert, Button, Snackbar, Stack } from "@mui/material";
+import {
+  Alert,
+  Button,
+  Chip,
+  Snackbar,
+  Stack,
+  Typography,
+  Box,
+  Divider,
+} from "@mui/material";
 import GlobalEntities from "../store/GlobalEntities";
 import { observer } from "mobx-react-lite";
 
@@ -10,13 +19,13 @@ export class BaseCard implements ViewComponent {
   category: Category;
   showAlert: boolean = false;
   alertMessage: string = "";
-  alertType: string = "";
+  alertType: "success" | "error" | "" = "";
 
   constructor(task: Task) {
     this.task = task;
 
     const idx = GlobalEntities.categories.findIndex(
-      (element) => element.id === task.category_id,
+      (element) => element.id === task.category_id
     );
 
     this.category = GlobalEntities.categories[idx];
@@ -40,7 +49,7 @@ export class BaseCard implements ViewComponent {
       this.toggleAlert(
         true,
         `Állapot sikeresen módosítva: ${newStatus}`,
-        "success",
+        "success"
       );
     } else {
       this.toggleAlert(true, "Sikertelen módosítás", "error");
@@ -51,7 +60,11 @@ export class BaseCard implements ViewComponent {
     this.toggleAlert(false, "", "");
   };
 
-  @action toggleAlert = (open: boolean, message: string, type: string) => {
+  @action toggleAlert = (
+    open: boolean,
+    message: string,
+    type: "success" | "error" | ""
+  ) => {
     this.showAlert = open;
     this.alertMessage = message;
     this.alertType = type;
@@ -60,46 +73,57 @@ export class BaseCard implements ViewComponent {
   View = observer(() => (
     <Card.Root
       css={{
-        boxShadow: "7px 7px 7px 7px rgb(0,0,0,0.5)",
-        borderRadius: "0.5rem",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+        borderRadius: "1rem",
         maxWidth: "720px",
-        margin: "5rem auto",
+        margin: "3rem auto",
+        padding: "1.5rem",
+        background: "#fff",
       }}
       id={`${this.task.id}`}
     >
+      <Card.Header>
+        <Heading size="md" mb="1">{this.task.title}</Heading>
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          {this.task.description}
+        </Typography>
+      </Card.Header>
+
+      <Divider sx={{ my: 2 }} />
+
       <Card.Body>
-        <Card.Header>
-          <Heading size="md">{this.task.title}</Heading>
-        </Card.Header>
-        <Card.Description>{this.task.description}</Card.Description>
-        <Card.Description>{this.task.due_date.toString()}</Card.Description>
-        Állapot: {this.task.status} | Prioritás: {this.task.priority}
-        <Card.Description>Kategória: {this.category.name}</Card.Description>
+        <Stack spacing={1} direction="row" flexWrap="wrap" useFlexGap>
+          <Chip label={`Státusz: ${this.task.status}`} color="info" />
+          <Chip label={`Prioritás: ${this.task.priority}`} color="secondary" />
+          <Chip label={`Kategória: ${this.category.name}`} color="primary" />
+        </Stack>
+
+        <Typography variant="caption" color="text.secondary" mt={2}>
+          Határidő: {new Date(this.task.due_date).toLocaleDateString("hu-HU")}
+        </Typography>
       </Card.Body>
-      <Card.Footer display="flex" justifyContent="flex-end">
+
+      <Card.Footer>
         <Stack
-          sx={{ flexWrap: "wrap" }}
-          spacing={2.5}
-          direction="row"
-          margin={"1rem"}
-          useFlexGap
+          direction={{ xs: "column", sm: "row" }}
+          spacing={2}
+          justifyContent="flex-end"
+          alignItems="center"
+          sx={{ mt: 3 }}
         >
           <Button
-            sx={{ margin: "auto!important" }}
-            onClick={() => this.toggleStatus("folyamatban")}
             variant="contained"
             color="warning"
+            onClick={() => this.toggleStatus("folyamatban")}
+            fullWidth
           >
             Folyamatban
           </Button>
           <Button
-            sx={{
-              margin: "auto!important",
-              xs: { marginTop: "1rem!important" },
-            }}
-            onClick={() => this.toggleStatus("kész")}
             variant="contained"
             color="success"
+            onClick={() => this.toggleStatus("kész")}
+            fullWidth
           >
             Kész
           </Button>
@@ -108,10 +132,18 @@ export class BaseCard implements ViewComponent {
 
       <Snackbar
         open={this.showAlert}
-        autoHideDuration={6000}
+        autoHideDuration={4000}
         onClose={this.handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
-        <Alert variant="filled">{this.alertMessage}</Alert>
+        <Alert
+          onClose={this.handleClose}
+          severity={this.alertType || "info"}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          {this.alertMessage}
+        </Alert>
       </Snackbar>
     </Card.Root>
   ));
