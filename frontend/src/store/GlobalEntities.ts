@@ -1,7 +1,7 @@
 import { action, computed, makeObservable, observable } from "mobx";
 import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
-import { Task } from "@mui/icons-material";
 import i18n from "../translation";
+import { Task } from "../interfaces/Task";
 
 class Entities {
   public _tasks: Task[] = [];
@@ -153,7 +153,7 @@ class Entities {
 
   @action Tasks = (tasks: Task[]) => {
     this._tasks = tasks.filter((element) => {
-      return element.status != "kész";
+      return element.status != "finished";
     });
 
     this.setFirstTask();
