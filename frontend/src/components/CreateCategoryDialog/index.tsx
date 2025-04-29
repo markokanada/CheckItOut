@@ -52,6 +52,12 @@ export const CreateCategoryDialog = observer(({ open, onClose, onCreate }: {
                 margin="normal"
                 error={touched.name && !!errors.name}
                 helperText={touched.name && errors.name}
+                sx={{
+                    '& input:focus-within, & textarea:focus-within': {
+                      boxShadow: 'none',
+                      background: 'none',
+                    },
+                  }}
               />
             </DialogContent>
             <DialogActions>
