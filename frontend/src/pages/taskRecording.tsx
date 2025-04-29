@@ -30,10 +30,11 @@ import ViewComponent from "../interfaces/ViewComponent";
 import { PrioritySlider } from "../components/PrioritySlider";
 import {Filter} from "bad-words";
 import { CreateCategoryDialog } from "../components/CreateCategoryDialog";
+import i18n from "../translation";
 
 
 export default class TaskRecording implements ViewComponent {
-  @observable accessor category: Category = { id: undefined, name: undefined };
+  @observable accessor category: Category = {id: undefined, lang: undefined, name:undefined, user_id:undefined};
   @observable accessor showCategoryDialog = false;
 
   constructor(public navigate: NavigateFunction) {
@@ -45,7 +46,7 @@ export default class TaskRecording implements ViewComponent {
   }
 
   @computed get categories() {
-    return toJS(GlobalEntities.categories);
+    return toJS(GlobalEntities.categories).filter(cat => cat.lang === i18n.language);
   }
 
   @action handleSubmit = async (values: any, { resetForm, setSubmitting }: any, setSnackbar: any) => {
