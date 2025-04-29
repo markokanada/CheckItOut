@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent } from "react";
 import { makeObservable, observable, action } from "mobx";
 import { observer } from "mobx-react-lite";
 import {
@@ -37,6 +37,8 @@ export default class UserManagement implements ViewComponent {
   @observable accessor editedUser: Partial<User> = {};
   @observable accessor confirmSave: boolean = false;
   @observable accessor snackbarOpen: boolean = false;
+  @observable accessor snackbarMessage: string = "";
+  @observable accessor confirmDeleteId: number | null = null;
 
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
@@ -89,18 +91,30 @@ export default class UserManagement implements ViewComponent {
       this.editingId = null;
       this.editedUser = {};
       await GlobalEntities.fetchUsers();
+      this.snackbarMessage = "Changes saved successfully";
       this.snackbarOpen = true;
     } catch (error) {
       console.error("Mentés sikertelen:", error);
     }
   }
 
-  @action async handleDelete(id: number) {
-    if (!window.confirm("Biztosan törölni szeretnéd ezt a felhasználót?")) return;
+  @action handleDeleteRequest(id: number) {
+    this.confirmDeleteId = id;
+  }
 
+  @action handleCloseDeleteDialog(confirm: boolean) {
+    if (confirm && this.confirmDeleteId !== null) {
+      this.handleDelete(this.confirmDeleteId);
+    }
+    this.confirmDeleteId = null;
+  }
+
+  @action async handleDelete(id: number) {
     try {
       await GlobalEntities.deleteUser(id);
       await GlobalEntities.fetchUsers();
+      this.snackbarMessage = "User deleted successfully";
+      this.snackbarOpen = true;
     } catch (error) {
       console.error("Törlés sikertelen:", error);
     }
@@ -162,7 +176,7 @@ export default class UserManagement implements ViewComponent {
                       <Select
                         name="role"
                         value={this.editedUser.role || "user"}
-                        onChange={this.handleChange}
+                        onChange={()=>{this.handleChange}}
                         size="small"
                       >
                         {!isCurrentUser && (
@@ -191,7 +205,7 @@ export default class UserManagement implements ViewComponent {
                         </IconButton>
                         <IconButton
                           disabled={user === undefined}
-                          onClick={() => this.handleDelete(user.id!)}
+                          onClick={() => this.handleDeleteRequest(user.id!)}
                         >
                           <Delete />
                         </IconButton>
@@ -204,6 +218,7 @@ export default class UserManagement implements ViewComponent {
           </TableBody>
         </Table>
 
+        {/* Save confirmation dialog */}
         <Dialog open={this.confirmSave} onClose={() => this.handleCloseDialog(false)}>
           <DialogTitle>{t("Confirm Save")}</DialogTitle>
           <DialogContent>
@@ -215,11 +230,22 @@ export default class UserManagement implements ViewComponent {
           </DialogActions>
         </Dialog>
 
+        <Dialog open={this.confirmDeleteId !== null} onClose={() => this.handleCloseDeleteDialog(false)}>
+          <DialogTitle>{t("Confirm Delete")}</DialogTitle>
+          <DialogContent>
+            <DialogContentText>{t("Are you sure you want to delete this user?")}</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => this.handleCloseDeleteDialog(false)}>{t("Cancel")}</Button>
+            <Button onClick={() => this.handleCloseDeleteDialog(true)} autoFocus>{t("Confirm")}</Button>
+          </DialogActions>
+        </Dialog>
+
         <Snackbar
           open={this.snackbarOpen}
           autoHideDuration={3000}
           onClose={this.handleCloseSnackbar}
-          message={t("Changes saved successfully")}
+          message={t(this.snackbarMessage)}
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         />
       </Container>
