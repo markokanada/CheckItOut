@@ -158,7 +158,11 @@
     "label due date": "Due Date",
     "button in progress": "In Progress",
     "button done": "Done",
-    "update failed": "Update failed"
+    "update failed": "Update failed",
+    "new": "New",
+    "in-progress": "In Progress",
+    "finished": "Finished",
+    "expired": "Expired"
 
 
 

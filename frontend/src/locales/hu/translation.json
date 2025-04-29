@@ -156,6 +156,9 @@
     "label due date": "Határidő",
     "button in progress": "Folyamatban",
     "button done": "Kész",
-    "update failed": "Sikertelen módosítás"
-
+    "update failed": "Sikertelen módosítás",
+    "new": "Új",
+    "in-progress": "Folyamatban",
+    "finished": "Befejezve",
+    "expired": "Lejárt"
 }
