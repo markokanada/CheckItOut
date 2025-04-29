@@ -15,8 +15,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return TaskResource::collection(Task::with(["user"])->get());
-    }
+        return TaskResource::collection(
+            Task::with(["user"])
+                ->whereDate("due_date", Carbon::today())
+                ->get()
+        );    }
 
     /**
      * Store a newly created resource in storage.
