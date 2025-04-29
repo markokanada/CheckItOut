@@ -1,19 +1,90 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
-import ViewComponent from "../interfaces/ViewComponent";
-import {
-  FormControl,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from "@mui/material";
-import { Box, Button, Card, For, Input, Stack, VStack } from "@chakra-ui/react";
-import { action, computed, makeObservable, observable, toJS } from "mobx";
+import React from "react";
 import { NavigateFunction } from "react-router-dom";
-import GlobalEntities from "../store/GlobalEntities";
+import { Formik, Form, Field } from "formik";
+import * as Yup from "yup";
+import {
+  Box,
+  Button,
+  Card,
+  Stack,
+  FormControl,
+  FormHelperText,
+  TextField,
+  Autocomplete,
+  Slider,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import { observer } from "mobx-react-lite";
+import { action, computed, makeObservable, observable, toJS } from "mobx";
+import GlobalEntities from "../store/GlobalEntities";
+import { useTranslation } from "react-i18next";
+import ViewComponent from "../interfaces/ViewComponent";
+
+interface Category {
+  id?: number;
+  name?: string;
+}
+
+const PrioritySlider = ({ value, ...props }: { value: number }) => {
+  const { t } = useTranslation();
+  const theme = useTheme();
+
+  const priorityColors = [
+    theme.palette.success.main,       // 1 - Very Low (green)
+    theme.palette.success.light,      // 2 - Low
+    theme.palette.info.main,          // 3 - Moderately Low
+    theme.palette.info.light,         // 4 - Below Average
+    theme.palette.warning.light,      // 5 - Average (yellow)
+    theme.palette.warning.main,       // 6 - Above Average
+    theme.palette.error.light,        // 7 - Moderately High
+    theme.palette.error.main,         // 8 - High (orange)
+    theme.palette.error.dark,         // 9 - Very High
+    '#d32f2f',                       // 10 - Critical (dark red)
+  ];
+
+  const textColors = [
+    theme.palette.success.main,       // 1 - Very Low (green)
+    theme.palette.success.light,      // 2 - Low
+    theme.palette.info.main,          // 3 - Moderately Low
+    theme.palette.info.light,         // 4 - Below Average
+    theme.palette.warning.light,      // 5 - Average (yellow)
+    theme.palette.warning.main,       // 6 - Above Average
+    theme.palette.error.light,        // 7 - Moderately High
+    theme.palette.error.main,         // 8 - High (orange)
+    theme.palette.error.dark,         // 9 - Very High
+    '#d32f2f',                       // 10 - Critical (dark red)
+  
+  ];
+
+  return (
+    <Box>
+      <Typography id="priority-slider" gutterBottom>
+        {t("PriorityTitle")}:{" "}
+        <span style={{ 
+          color: textColors[value - 1],
+          fontWeight: value === 10 ? 'bold' : 'normal'
+        }}>
+          {t(`PriorityValue${value}`)}
+        </span>
+      </Typography>
+      <Slider
+        {...props}
+        value={value}
+        sx={{
+          color: priorityColors[value - 1],
+          "& .MuiSlider-thumb": {
+            backgroundColor: priorityColors[value - 1],
+          },
+          "& .MuiSlider-valueLabel": {
+            backgroundColor: priorityColors[value - 1],
+            color: textColors[value - 1],
+          },
+        }}
+      />
+    </Box>
+  );
+};
 
 export default class TaskRecording implements ViewComponent {
   @observable accessor category: Category = {
@@ -21,185 +92,213 @@ export default class TaskRecording implements ViewComponent {
     name: undefined,
   };
 
-  @observable accessor formData: {
-    title: string;
-    description: string;
-    due_date: Date | string;
-    category_id: number;
-    priority: number;
-    status: string;
-    user_id: number;
-  } = {
-    title: "",
-    description: "",
-    due_date: new Date(Date.now()),
-    category_id: 0,
-    priority: 0,
-    status: "új",
-    user_id: GlobalEntities.user.id as number,
-  };
-  @observable accessor errors: { [key: string]: string } = {};
-
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
   }
-
-  @action validateForm = () => {
-    let newErrors: { [key: string]: string } = {};
-    if (this.formData.title.length > 50) {
-      newErrors.title = "A feladat neve nem lehethosszabb 50 karakternél!";
-    }
-    if (this.formData.description.length > 255) {
-      newErrors.title = "A feladat leírása nem lehethosszabb 255 karakternél!";
-    }
-    if (this.formData.due_date <= new Date(Date.now())) {
-      newErrors.due_date =
-        "A feladat határideje nem lehet korábban mint holnap!";
-    }
-    this.errors = newErrors;
-
-    return Object.keys(this.errors).length === 0;
-  };
-
-  @action handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-
-    if (name === "category_id") {
-      this.formData.category_id = Number(value);
-    }
-    if (name === "priority") {
-      this.formData.priority = Number(value);
-    }
-    if (name === "due_date") {
-      this.formData.due_date = new Date(value);
-    }
-    if (name === "title") this.formData.title = value;
-    if (name === "description") this.formData.description = value;
-  };
-
-  @action submitForm = async (event: FormEvent) => {
-    event.preventDefault();
-    this.errors = {};
-    this.validateForm();
-    if (this.validateForm()) {
-      this.formData.due_date = (this.formData.due_date as Date)
-        .toISOString()
-        .slice(0, 19)
-        .replace("T", " ");
-      const resp = await GlobalEntities.createTask(this.formData);
-      if (resp.status === 201) {
-        alert("Sikeresen létrehozva");
-        this.navigate("home");
-      }
-    }
-  };
-
-  @action handleSelectChange = (event: SelectChangeEvent) => {
-    this.category.id = Number(event.target.value);
-    this.category.name = GlobalEntities.categories.find(
-      (element) => element.id === this.category.id,
-    )?.name;
-
-    this.formData.category_id = Number(event.target.value);
-  };
 
   @computed get categoryName() {
     return this.category.name === undefined ? "" : this.category.name;
   }
 
-  @computed get errorTitle() {
-    return this.errors.title === undefined ? false : true;
+  @computed get categories() {
+    return toJS(GlobalEntities.categories);
   }
 
-  View = observer(() => (
-    <Stack maxWidth={720} padding={20} margin={"auto"}>
-      <Card.Root variant="outline">
-        <Card.Header>
-          <Card.Title>Feladat Hozzáadás</Card.Title>
-          <Card.Description>
-            Töltsd ki az űrlapot a feladat felvételéhez
-          </Card.Description>
-        </Card.Header>
-        <Card.Body>
-          <form onSubmit={this.submitForm}>
-            <VStack>
-              <FormControl fullWidth>
-                <TextField
-                  label="Feladat neve"
-                  type="text"
-                  name="title"
-                  id="title"
-                  fullWidth
-                  required
-                  error={this.errorTitle}
-                  helperText={this.errors.title}
-                  onChange={this.handleChange}
-                />
-              </FormControl>
-              <FormControl fullWidth>
-                <TextField
-                  label="Leírás"
-                  type="text"
-                  name="description"
-                  id="descreption"
-                  fullWidth
-                  required
-                  onChange={this.handleChange}
-                />
-              </FormControl>
-              <FormControl fullWidth>
-                <TextField
-                  label="Határidő"
-                  type="datetime-local"
-                  name="due_date"
-                  id="due_date"
-                  slotProps={{ inputLabel: { shrink: true } }}
-                  fullWidth
-                  required
-                  onChange={this.handleChange}
-                />
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="categoryLabel">Kategória</InputLabel>
-                <Select
-                  fullWidth
-                  labelId="categoryLabel"
-                  label="Kategória"
-                  id="category"
-                  value={this.category.name}
-                  onChange={this.handleSelectChange}
-                  required
-                >
-                  {toJS(GlobalEntities.categories).map((category: Category) => {
-                    return (
-                      <MenuItem key={category.id} value={category.id}>
-                        {category.name}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </FormControl>
-              <FormControl fullWidth>
-                <TextField
-                  fullWidth
-                  label="Prioritás"
-                  type="number"
-                  id="priority"
-                  name="priority"
-                  slotProps={{ htmlInput: { max: 10, min: 0 } }}
-                  required
-                  onChange={this.handleChange}
-                />
-              </FormControl>
-            </VStack>
-            <Box display="flex" justifyContent="end">
-              <Button type="submit" marginTop={5}>
-                Felvétel
-              </Button>
-            </Box>
-          </form>
-        </Card.Body>
-      </Card.Root>
-    </Stack>
-  ));
+  @action handleSubmit = async (values: any) => {
+    const formattedValues = {
+      ...values,
+      due_date: new Date(values.due_date).toISOString().slice(0, 19).replace("T", " "),
+      user_id: GlobalEntities.user.id as number,
+      status: "new",
+    };
+
+    const resp = await GlobalEntities.createTask(formattedValues);
+    if (resp.status === 201) {
+      this.navigate("home");
+    }
+  };
+
+  View = observer(() => {
+    const { t } = useTranslation();
+
+    const validationSchema = Yup.object().shape({
+      title: Yup.string()
+        .max(50, t("Max50Chars"))
+        .required(t("RequiredField")),
+      description: Yup.string()
+        .max(255, t("Max255Chars"))
+        .required(t("RequiredField")),
+      due_date: Yup.date()
+        .min(new Date(Date.now() + 86400000), t("MustBeFutureDate"))
+        .required(t("RequiredField")),
+      category_id: Yup.number()
+        .required(t("RequiredField")),
+      priority: Yup.number()
+        .min(1, t("MinPriority1"))
+        .max(10, t("MaxPriority10"))
+        .required(t("RequiredField")),
+    });
+
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          p: 3,
+        }}
+      >
+        <Card
+          sx={{
+            width: "100%",
+            maxWidth: 720,
+            p: 3,
+            boxShadow: 3,
+            borderRadius: 2,
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            {t("AddTaskTitle")}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" gutterBottom>
+            {t("AddTaskDescription")}
+          </Typography>
+
+          <Formik
+            initialValues={{
+              title: "",
+              description: "",
+              due_date: new Date(Date.now() + 86400000)
+                .toISOString()
+                .slice(0, 16),
+              category_id: "",
+              priority: 5,
+            }}
+            validationSchema={validationSchema}
+            onSubmit={this.handleSubmit}
+          >
+            {({ values, errors, touched, handleChange, setFieldValue }) => (
+              <Form>
+                <Stack spacing={3} sx={{ mt: 2 }}>
+                  <FormControl fullWidth error={touched.title && !!errors.title}>
+                    <Field
+                      as={TextField}
+                      name="title"
+                      label={t("TaskTitle")}
+                      variant="outlined"
+                      fullWidth
+                      error={touched.title && !!errors.title}
+                      helperText={touched.title && errors.title}
+                    />
+                  </FormControl>
+
+                  <FormControl
+                    fullWidth
+                    error={touched.description && !!errors.description}
+                  >
+                    <Field
+                      as={TextField}
+                      name="description"
+                      label={t("TaskDescription")}
+                      variant="outlined"
+                      multiline
+                      rows={4}
+                      fullWidth
+                      error={touched.description && !!errors.description}
+                      helperText={touched.description && errors.description}
+                    />
+                  </FormControl>
+
+                  {/* Due Date Field */}
+                  <FormControl
+                    fullWidth
+                    error={touched.due_date && !!errors.due_date}
+                  >
+                    <TextField
+                      name="due_date"
+                      label={t("DueDateTitle")}
+                      type="datetime-local"
+                      value={values.due_date}
+                      onChange={handleChange}
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      error={touched.due_date && !!errors.due_date}
+                      helperText={touched.due_date && errors.due_date}
+                    />
+                  </FormControl>
+
+                  <FormControl
+                    fullWidth
+                    error={touched.category_id && !!errors.category_id}
+                  >
+                    <Autocomplete
+                      options={this.categories}
+                      getOptionLabel={(option) => option.name || ""}
+                      value={
+                        this.categories.find(
+                          (c) => c.id === Number(values.category_id)
+                        ) || null
+                      }
+                      onChange={(_, newValue) => {
+                        setFieldValue(
+                          "category_id",
+                          newValue ? newValue.id : ""
+                        );
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          label={t("CategoryTitle")}
+                          error={touched.category_id && !!errors.category_id}
+                          helperText={
+                            touched.category_id && errors.category_id
+                          }
+                        />
+                      )}
+                    />
+                  </FormControl>
+
+                  <FormControl
+                    fullWidth
+                    error={touched.priority && !!errors.priority}
+                  >
+                    <Field
+                      name="priority"
+                      component={PrioritySlider}
+                      value={values.priority}
+                      onChange={(e: Event, value: number | number[]) => {
+                        setFieldValue("priority", value as number);
+                      }}
+                      step={1}
+                      min={1}
+                      max={10}
+                      valueLabelDisplay="auto"
+                      marks={[
+                        { value: 1, label: "1" },
+                        { value: 10, label: "10" },
+                      ]}
+                    />
+                    <FormHelperText error>
+                      {touched.priority && errors.priority}
+                    </FormHelperText>
+                  </FormControl>
+
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      size="large"
+                    >
+                      {t("SubmitButton")}
+                    </Button>
+                  </Box>
+                </Stack>
+              </Form>
+            )}
+          </Formik>
+        </Card>
+      </Box>
+    );
+  });
 }
