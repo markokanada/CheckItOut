@@ -12,14 +12,11 @@ import {
   TextField,
   Autocomplete,
   Typography,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   IconButton,
   InputAdornment,
   Snackbar,
-  Alert
+  Alert,
+  styled
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { observer } from "mobx-react-lite";
@@ -28,28 +25,67 @@ import GlobalEntities from "../store/GlobalEntities";
 import { useTranslation } from "react-i18next";
 import ViewComponent from "../interfaces/ViewComponent";
 import { PrioritySlider } from "../components/PrioritySlider";
-import {Filter} from "bad-words";
 import { CreateCategoryDialog } from "../components/CreateCategoryDialog";
 import i18n from "../translation";
 
+interface Category {
+  id?: number;
+  lang?: string;
+  name?: string;
+  user_id?: number;
+}
+
+interface SnackbarState {
+  open: boolean;
+  type: 'success' | 'error';
+  message: string;
+}
+
+interface FormValues {
+  title: string;
+  description: string;
+  due_date: string;
+  category_id: string;
+  priority: number;
+}
+
+const StyledTextField = styled(TextField)({
+  '& .MuiOutlinedInput-root': {
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderWidth: '1px',
+    },
+  },
+});
+
+const StyledAutocomplete = styled(Autocomplete<Category, false, false, false>)({
+  '& .MuiOutlinedInput-root': {
+    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+      borderWidth: '1px',
+    },
+  },
+});
 
 export default class TaskRecording implements ViewComponent {
-  @observable accessor category: Category = {id: undefined, lang: undefined, name:undefined, user_id:undefined};
+  @observable accessor category: Category = { id: undefined, lang: undefined, name: undefined, user_id: undefined };
   @observable accessor showCategoryDialog = false;
 
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
   }
 
-  @computed get categoryName() {
+  @computed get categoryName(): string {
     return this.category.name || "";
   }
 
-  @computed get categories() {
+  @computed get categories(): Category[] {
     return toJS(GlobalEntities.categories).filter(cat => cat.lang === i18n.language);
   }
 
-  @action handleSubmit = async (values: any, { resetForm, setSubmitting }: any, setSnackbar: any) => {
+  @action handleSubmit = async (
+    values: FormValues,
+    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void },
+    setSnackbar: (state: SnackbarState) => void
+  ) => {
     const formattedValues = {
       ...values,
       due_date: new Date(values.due_date).toISOString().slice(0, 19).replace("T", " "),
@@ -72,11 +108,14 @@ export default class TaskRecording implements ViewComponent {
     }
   };
 
-  @action toggleCategoryDialog = (open: boolean) => {
+  @action toggleCategoryDialog = (open: boolean): void => {
     this.showCategoryDialog = open;
   };
 
-  @action handleCreateCategory = async (name: string, setSnackbar: (args: { open: boolean, type: 'success' | 'error', message: string }) => void) => {
+  @action handleCreateCategory = async (
+    name: string,
+    setSnackbar: (state: SnackbarState) => void
+  ): Promise<void> => {
     try {
       const resp = await GlobalEntities.createCategory(name);
   
@@ -86,28 +125,31 @@ export default class TaskRecording implements ViewComponent {
       } else {
         setSnackbar({ open: true, type: 'error', message: 'Hiba a kategória létrehozásakor.' });
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Hiba a kategória létrehozásakor:", error);
       setSnackbar({ open: true, type: 'error', message: 'Hálózati hiba vagy szerverhiba.' });
     }
   };
-  
 
   View = observer(() => {
     const { t } = useTranslation();
-    const [snackbar, setSnackbar] = useState({ open: false, message: '', type: 'success' as 'success' | 'error' });
+    const [snackbar, setSnackbar] = useState<SnackbarState>({ 
+      open: false, 
+      message: '', 
+      type: 'success' 
+    });
 
     const validationSchema = Yup.object().shape({
       title: Yup.string().max(50, t("Max50Chars")).required(t("RequiredField")),
       description: Yup.string().max(255, t("Max255Chars")).required(t("RequiredField")),
       due_date: Yup.date()
-        .min(new Date(Date.now() + 60000), t("MustBeFutureDate")) // 1 perc múlva
+        .min(new Date(Date.now() + 60000), t("MustBeFutureDate"))
         .required(t("RequiredField")),
       category_id: Yup.number().required(t("RequiredField")),
       priority: Yup.number().min(1, t("MinPriority1")).max(10, t("MaxPriority10")).required(t("RequiredField")),
     });
     
-    const getNowRoundedToMinute = () => {
+    const getNowRoundedToMinute = (): string => {
       const now = new Date();
       now.setSeconds(0, 0);
     
@@ -123,7 +165,18 @@ export default class TaskRecording implements ViewComponent {
     return (
       <>
         <Box sx={{ display: "flex", justifyContent: "center", p: 3 }}>
-          <Card sx={{ width: "100%", maxWidth: 720, p: 3, boxShadow: 3, borderRadius: 2 }}>
+          <Card sx={{ 
+            width: "100%", 
+            maxWidth: 720, 
+            p: 3, 
+            boxShadow: 3, 
+            borderRadius: 2,
+            '& .MuiOutlinedInput-root': {
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderWidth: '1px',
+              },
+            },
+          }}>
             <Typography variant="h5" gutterBottom>{t("AddTaskTitle")}</Typography>
             <Typography variant="body2" color="text.secondary" gutterBottom>{t("AddTaskDescription")}</Typography>
 
@@ -142,15 +195,45 @@ export default class TaskRecording implements ViewComponent {
                 <Form>
                   <Stack spacing={3} sx={{ mt: 2 }}>
                     <FormControl fullWidth error={touched.title && !!errors.title}>
-                      <Field as={TextField} name="title" label={t("TaskTitle")} variant="outlined" fullWidth error={touched.title && !!errors.title} helperText={touched.title && errors.title} />
+                      <Field 
+                        as={StyledTextField} 
+                        name="title" 
+                        label={t("TaskTitle")} 
+                        variant="outlined" 
+                        fullWidth 
+                        error={touched.title && !!errors.title} 
+                        helperText={touched.title && errors.title} 
+                        sx={{
+                          '& input:focus-within, & textarea:focus-within': {
+                            boxShadow: 'none',
+                            background: 'none',
+                          },
+                        }}
+                      />
                     </FormControl>
 
                     <FormControl fullWidth error={touched.description && !!errors.description}>
-                      <Field as={TextField} name="description" label={t("TaskDescription")} variant="outlined" multiline rows={4} fullWidth error={touched.description && !!errors.description} helperText={touched.description && errors.description} />
+                      <Field 
+                        as={StyledTextField} 
+                        name="description" 
+                        label={t("TaskDescription")} 
+                        variant="outlined" 
+                        multiline 
+                        rows={4} 
+                        fullWidth 
+                        error={touched.description && !!errors.description} 
+                        helperText={touched.description && errors.description} 
+                        sx={{
+                          '& input:focus-within, & textarea:focus-within': {
+                            boxShadow: 'none',
+                            background: 'none',
+                          },
+                        }}
+                      />
                     </FormControl>
 
                     <FormControl fullWidth error={touched.due_date && !!errors.due_date}>
-                      <TextField
+                      <StyledTextField
                         name="due_date"
                         label={t("DueDateTitle")}
                         type="datetime-local"
@@ -159,11 +242,17 @@ export default class TaskRecording implements ViewComponent {
                         InputLabelProps={{ shrink: true }}
                         error={touched.due_date && !!errors.due_date}
                         helperText={touched.due_date && errors.due_date}
+                        sx={{
+                          '& input:focus-within, & textarea:focus-within': {
+                            boxShadow: 'none',
+                            background: 'none',
+                          },
+                        }}
                       />
                     </FormControl>
 
                     <FormControl fullWidth error={touched.category_id && !!errors.category_id}>
-                      <Autocomplete
+                      <StyledAutocomplete
                         options={this.categories}
                         getOptionLabel={(option) => option.name || ""}
                         value={this.categories.find((c) => c.id === Number(values.category_id)) || null}
@@ -171,18 +260,27 @@ export default class TaskRecording implements ViewComponent {
                           setFieldValue("category_id", newValue ? newValue.id : "");
                         }}
                         renderInput={(params) => (
-                          <TextField
+                          <StyledTextField
                             {...params}
                             label={t("CategoryTitle")}
                             error={touched.category_id && !!errors.category_id}
                             helperText={touched.category_id && errors.category_id}
+                            sx={{
+                              '& input:focus-within, & textarea:focus-within': {
+                                boxShadow: 'none',
+                                background: 'none',
+                              },
+                            }}
                             InputProps={{
                               ...params.InputProps,
                               endAdornment: (
                                 <>
                                   {params.InputProps.endAdornment}
                                   <InputAdornment position="end">
-                                    <IconButton onClick={() => this.toggleCategoryDialog(true)} edge="end">
+                                    <IconButton 
+                                      onClick={() => this.toggleCategoryDialog(true)} 
+                                      edge="end"
+                                    >
                                       <AddIcon />
                                     </IconButton>
                                   </InputAdornment>
@@ -195,12 +293,26 @@ export default class TaskRecording implements ViewComponent {
                     </FormControl>
 
                     <FormControl fullWidth error={touched.priority && !!errors.priority}>
-                      <Field name="priority" component={PrioritySlider} value={values.priority} onChange={(e: Event, value: number | number[]) => setFieldValue("priority", value as number)} />
+                      <Field 
+                        name="priority" 
+                        component={PrioritySlider} 
+                        value={values.priority} 
+                        onChange={(_e: Event, value: number | number[]) => 
+                          setFieldValue("priority", Array.isArray(value) ? value[0] : value)
+                        } sx={{
+                          '& input:focus-within, & textarea:focus-within': {
+                            boxShadow: 'none',
+                            background: 'none',
+                          },
+                        }}
+                      />
                       <FormHelperText error>{touched.priority && errors.priority}</FormHelperText>
                     </FormControl>
 
                     <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                      <Button type="submit" variant="contained" color="primary" size="large">{t("SubmitButton")}</Button>
+                      <Button type="submit" variant="contained" color="primary" size="large">
+                        {t("SubmitButton")}
+                      </Button>
                     </Box>
                   </Stack>
                 </Form>
@@ -208,15 +320,18 @@ export default class TaskRecording implements ViewComponent {
             </Formik>
 
             <CreateCategoryDialog
-            open={this.showCategoryDialog}
-            onClose={() => this.toggleCategoryDialog(false)}
-            onCreate={(name) => this.handleCreateCategory(name, setSnackbar)}
-          />
-
+              open={this.showCategoryDialog}
+              onClose={() => this.toggleCategoryDialog(false)}
+              onCreate={(name) => this.handleCreateCategory(name, setSnackbar)}
+            />
           </Card>
         </Box>
 
-        <Snackbar open={snackbar.open} autoHideDuration={4000} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Snackbar 
+          open={snackbar.open} 
+          autoHideDuration={4000} 
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+        >
           <Alert severity={snackbar.type} sx={{ width: '100%' }}>
             {snackbar.message}
           </Alert>
