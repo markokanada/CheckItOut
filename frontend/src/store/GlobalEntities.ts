@@ -42,6 +42,11 @@ class Entities {
     return this._tasks;
   }
   @action public logout(){
+      const savedLang = localStorage.getItem("language"); // nyelv mentése
+    localStorage.clear();
+    if (savedLang) {
+      localStorage.setItem("language", savedLang); // visszaállítás
+    }
      this._tasks = [];
      this.doneTasks = [];
      this.categories = [];

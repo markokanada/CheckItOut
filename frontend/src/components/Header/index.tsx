@@ -66,7 +66,6 @@ const Header = ({ t }: { t: TFunction }) => {
   };
 
   const handleConfirmLogout = () => {
-    localStorage.clear();
     GlobalEntities.logout();
     setIsModalVisible(false);
     navigate("/");
