@@ -107,7 +107,12 @@ class Entities {
 
   @action createCategory = async (name: string) => {
     try {
-      const resp = await GlobalApiHandlerInstance.post("/categories", { name });
+      const resp = await GlobalApiHandlerInstance.post("/categories", { category_name: name, lang: i18n.language , user_id:GlobalEntities.user.id }, {
+      
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+        },
+      });
   
       if (resp.status === 201 || resp.status === 200) {
         await this.loadCategories(); 
