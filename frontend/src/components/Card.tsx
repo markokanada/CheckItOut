@@ -14,6 +14,8 @@ import {
 import GlobalEntities from "../store/GlobalEntities";
 import { observer } from "mobx-react-lite";
 import { useTranslation } from "react-i18next";
+import { Task } from "../interfaces/Task";
+import { TaskStatus } from "../interfaces/TaskStatus";
 
 export class BaseCard implements ViewComponent {
   task: Task;
@@ -41,7 +43,7 @@ export class BaseCard implements ViewComponent {
     });
   }
 
-  @action toggleStatus = async (newStatus: string) => {
+  @action toggleStatus = async (newStatus: TaskStatus) => {
     this.task.status = newStatus;
     this.task.user_id = GlobalEntities.user.id as number;
 
@@ -49,7 +51,7 @@ export class BaseCard implements ViewComponent {
     if (resp.status === 200) {
       this.toggleAlert(
         true,
-        `${newStatus === "folyamatban" ? "Folyamatban" : "Kész"}: ${newStatus}`,
+        `${newStatus === "in-progress" ? "in-progress" : "finished"}: ${newStatus}`,
         "success"
       );
     } else {
@@ -118,7 +120,7 @@ export class BaseCard implements ViewComponent {
             <Button
               variant="contained"
               color="warning"
-              onClick={() => this.toggleStatus("folyamatban")}
+              onClick={() => this.toggleStatus("in-progress")}
               fullWidth
             >
               {t("button in progress")}
@@ -126,7 +128,7 @@ export class BaseCard implements ViewComponent {
             <Button
               variant="contained"
               color="success"
-              onClick={() => this.toggleStatus("kész")}
+              onClick={() => this.toggleStatus("finished")}
               fullWidth
             >
               {t("button done")}
