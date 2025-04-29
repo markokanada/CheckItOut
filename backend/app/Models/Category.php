@@ -10,4 +10,10 @@ class Category extends Model
     use HasFactory;
 
     public $timestamps = false;
+
+    protected $fillable = [
+        'category_name',
+        'lang',
+        'user_id',
+    ];
 }
