@@ -134,6 +134,21 @@
     "AddNewCategory": "Új kategória hozzáadása",
     "CategoryName": "Kategória neve",
     "Cancel": "Mégse",
-    "Add": "Hozzáadás"
+    "Add": "Hozzáadás",
+    "title": "Profil adatok",
+    "label name": "Felhasználó név",
+    "label email": "E-mail cím",
+    "label password": "Jelszó",
+    "button edit": "Szerkesztés",
+    "button save": "Mentés",
+    "button cancel": "Mégse",
+    "modal title": "Megerősítés",
+    "modal confirm": "Biztosan menti a módosításokat?",
+    "validation name required": "Név kötelező",
+    "validation email invalid": "Érvényes email szükséges",
+    "validation email required": "Email kötelező",
+    "validation password required": "Jelszó kötelező",
+    "snackbar success": "Sikeres frissítés!",
+    "snackbar invalid password": "Hibás jelszó"
 
 }
