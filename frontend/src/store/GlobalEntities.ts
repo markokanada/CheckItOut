@@ -142,7 +142,12 @@ class Entities {
   };
 
   @action updateTask = async (data: Task) => {
-    const resp = await GlobalApiHandlerInstance.put(`/tasks/${data.id}`, data);
+    const resp = await GlobalApiHandlerInstance.put(`/tasks/${data.id}`, data, {
+      
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      },
+    });
 
     if (resp.status === 200) {
       await this.loadTasks();
