@@ -88,7 +88,7 @@ export default class Login implements ViewComponent {
   @action private handleForgotPasswordSubmit = async (email: string) => {
     try {
       const resp = await GlobalEntities.sendPasswordResetEmail(email);
-      
+
       if (resp.status === 200) {
         this.snackbarMessage = "Password Reset Sent";
         this.snackbarSeverity = "success";
@@ -100,10 +100,10 @@ export default class Login implements ViewComponent {
       this.toggleForgotPasswordModal(false);
     } catch (error: any) {
       let translationKey = "Password Reset Error";
-      
+
       if (error.isAxiosError) {
         const serverMessage = error.response?.data?.message || error.message;
-        
+
         if (serverMessage.includes("email not found")) {
           translationKey = "Email Not Found";
         } else if (serverMessage.includes("password reset")) {
@@ -116,10 +116,18 @@ export default class Login implements ViewComponent {
       this.snackbarOpen = true;
     }
   };
-  @action private handlePasswordReset = async (email: string, token: string, newPassword: string) => {
+  @action private handlePasswordReset = async (
+    email: string,
+    token: string,
+    newPassword: string,
+  ) => {
     try {
-      const resp = await GlobalEntities.resetPassword(email, token, newPassword);
-      
+      const resp = await GlobalEntities.resetPassword(
+        email,
+        token,
+        newPassword,
+      );
+
       if (resp.status === 200) {
         this.snackbarMessage = "Password Reset Success";
         this.snackbarSeverity = "success";
@@ -129,10 +137,10 @@ export default class Login implements ViewComponent {
       return false;
     } catch (error: any) {
       let translationKey = "Password Reset Error";
-      
+
       if (error.isAxiosError) {
         const serverMessage = error.response?.data?.message || error.message;
-        
+
         if (serverMessage.includes("invalid token")) {
           translationKey = "Invalid Reset Token";
         } else if (serverMessage.includes("expired")) {
@@ -200,9 +208,9 @@ export default class Login implements ViewComponent {
                       helperText={touched.email && errors.email}
                       fullWidth
                       sx={{
-                        '& input:focus-within, & textarea:focus-within': {
-                          boxShadow: 'none',
-                          background: 'none',
+                        "& input:focus-within, & textarea:focus-within": {
+                          boxShadow: "none",
+                          background: "none",
                         },
                       }}
                     />
@@ -218,9 +226,9 @@ export default class Login implements ViewComponent {
                       helperText={touched.password && errors.password}
                       fullWidth
                       sx={{
-                        '& input:focus-within, & textarea:focus-within': {
-                          boxShadow: 'none',
-                          background: 'none',
+                        "& input:focus-within, & textarea:focus-within": {
+                          boxShadow: "none",
+                          background: "none",
                         },
                       }}
                     />
@@ -292,16 +300,18 @@ export default class Login implements ViewComponent {
                         error={touched.email && Boolean(errors.email)}
                         helperText={touched.email && errors.email}
                         sx={{
-                          '& input:focus-within, & textarea:focus-within': {
-                            boxShadow: 'none',
-                            background: 'none',
+                          "& input:focus-within, & textarea:focus-within": {
+                            boxShadow: "none",
+                            background: "none",
                           },
                         }}
                       />
                     </Box>
                   </DialogContent>
                   <DialogActions>
-                    <Button onClick={() => this.toggleForgotPasswordModal(false)}>
+                    <Button
+                      onClick={() => this.toggleForgotPasswordModal(false)}
+                    >
                       {t("Cancel")}
                     </Button>
                     <Button type="submit" color="primary">
