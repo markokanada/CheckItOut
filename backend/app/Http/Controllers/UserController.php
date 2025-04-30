@@ -45,13 +45,33 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource(
-            $user->load([
-                'tasks' => function ($query) {
-                    $query->whereDate('due_date', Carbon::today());
-                },
-            ])
-        );    }
+        Task::where('user_id', $user->id)
+        ->whereDate('due_date', Carbon::today())
+        ->where('due_date', '<', now())
+        ->where('status', '!=', 'expired')
+        ->update(['status' => 'expired']);
+
+    return new UserResource(
+        $user->load([
+            'tasks' => function ($query) {
+                $query->whereDate('due_date', Carbon::today())
+                    ->orderByRaw("
+                        CASE 
+                            WHEN status = 'expired' THEN 0 
+                            ELSE 1 
+                        END ASC,
+                        CASE 
+                            WHEN status = 'expired' THEN due_date 
+                            ELSE NULL 
+                        END ASC,
+                        CASE 
+                            WHEN status != 'expired' THEN due_date 
+                            ELSE NULL 
+                        END DESC
+                    ");
+            },
+        ])
+    );}
 
     /**
      * Update the specified resource in storage.
