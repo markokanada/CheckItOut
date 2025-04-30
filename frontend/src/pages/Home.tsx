@@ -32,7 +32,9 @@ export default class Home implements ViewComponent {
   };
 
   @computed private get card() {
-    return GlobalEntities.firstTask ? this.createCard(GlobalEntities.firstTask) : null;
+    return GlobalEntities.firstTask
+      ? this.createCard(GlobalEntities.firstTask)
+      : null;
   }
 
   View = observer(() => {
@@ -52,7 +54,11 @@ export default class Home implements ViewComponent {
     return (
       <>
         <Backdrop
-          sx={{backgroundColor: "rgba(0, 0, 0, 0.2)", color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{
+            backgroundColor: "rgba(0, 0, 0, 0.2)",
+            color: "#fff",
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+          }}
           open={loading}
         >
           <CircularProgress color="primary" />
@@ -64,9 +70,10 @@ export default class Home implements ViewComponent {
               <Flex alignItems="flex-start" height="100%" paddingTop="2rem">
                 <Box flex="1" p={4}>
                   <Section title={t("Next Task Title")}>
-                  <SimpleGrid columns={columns}>
-
-                    {this.card ?? <EmptyMessage message={t("Next Task Message")} />}
+                    <SimpleGrid columns={columns}>
+                      {this.card ?? (
+                        <EmptyMessage message={t("Next Task Message")} />
+                      )}
                     </SimpleGrid>
                   </Section>
                 </Box>
@@ -106,8 +113,10 @@ export default class Home implements ViewComponent {
               <Container maxW="6xl" py={{ base: 6, md: 8 }}>
                 <VStack padding={10} align="stretch">
                   <Section title={t("Next Task Title")}>
-                  <SimpleGrid columns={columns}>
-                    {this.card ?? <EmptyMessage message={t("Next Task Message")} />}
+                    <SimpleGrid columns={columns}>
+                      {this.card ?? (
+                        <EmptyMessage message={t("Next Task Message")} />
+                      )}
                     </SimpleGrid>
                   </Section>
 
