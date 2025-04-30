@@ -17,6 +17,7 @@ class TaskController extends Controller
     {
         Task::where('due_date', '<', now())
         ->where('status', '!=', 'expired')
+        ->where('status', '!=', 'finished')
         ->update(['status' => 'expired']);
 
     $tasks = Task::with(["user"])
