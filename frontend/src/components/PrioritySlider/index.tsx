@@ -20,17 +20,16 @@ export const PrioritySlider = ({ value, ...props }: { value: number }) => {
   ];
 
   const textColors = [
-    theme.palette.success.main,       // 1 - Very Low (green)
-    theme.palette.success.light,      // 2 - Low
-    theme.palette.info.main,          // 3 - Moderately Low
-    theme.palette.info.light,         // 4 - Below Average
-    theme.palette.warning.light,      // 5 - Average (yellow)
-    theme.palette.warning.main,       // 6 - Above Average
-    theme.palette.error.light,        // 7 - Moderately High
-    theme.palette.error.main,         // 8 - High (orange)
-    theme.palette.error.dark,         // 9 - Very High
-    '#d32f2f',                       // 10 - Critical (dark red)
-  
+    theme.palette.success.main,
+    theme.palette.success.light,
+    theme.palette.info.main,
+    theme.palette.info.light,
+    theme.palette.warning.light,
+    theme.palette.warning.main,
+    theme.palette.error.light,
+    theme.palette.error.main,
+    theme.palette.error.dark,
+    '#d32f2f',
   ];
 
   return (
@@ -47,6 +46,10 @@ export const PrioritySlider = ({ value, ...props }: { value: number }) => {
       <Slider
         {...props}
         value={value}
+        min={1}
+        max={10}
+        step={1}
+        marks
         sx={{
           color: priorityColors[value - 1],
           "& .MuiSlider-thumb": {
