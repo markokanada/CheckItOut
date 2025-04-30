@@ -21,12 +21,7 @@ import {
   Button,
   Snackbar,
 } from "@mui/material";
-import {
-  Edit,
-  Delete,
-  Save,
-  Cancel,
-} from "@mui/icons-material";
+import { Edit, Delete, Save, Cancel } from "@mui/icons-material";
 import ViewComponent from "../interfaces/ViewComponent";
 import { NavigateFunction } from "react-router-dom";
 import GlobalEntities from "../store/GlobalEntities";
@@ -58,12 +53,12 @@ export default class UserManagement implements ViewComponent {
     (
       e:
         | ChangeEvent<HTMLInputElement>
-        | ChangeEvent<{ name?: string; value: unknown }>
+        | ChangeEvent<{ name?: string; value: unknown }>,
     ) => {
       const { name, value } = e.target;
       if (!name) return;
       this.editedUser = { ...this.editedUser, [name]: value as string };
-    }
+    },
   );
 
   @action handleSaveRequest() {
@@ -85,7 +80,7 @@ export default class UserManagement implements ViewComponent {
         this.editedUser.id,
         this.editedUser.name ?? "",
         this.editedUser.email ?? "",
-        this.editedUser.role ?? ""
+        this.editedUser.role ?? "",
       );
 
       this.editingId = null;
@@ -125,8 +120,8 @@ export default class UserManagement implements ViewComponent {
   };
 
   View = observer(() => {
-        GlobalEntities.checkAndRedirectNotRightUser();
-    
+    GlobalEntities.checkAndRedirectNotRightUser();
+
     const { t } = useTranslation();
     const currentUser = GlobalEntities.user;
 
@@ -178,7 +173,9 @@ export default class UserManagement implements ViewComponent {
                       <Select
                         name="role"
                         value={this.editedUser.role || "user"}
-                        onChange={()=>{this.handleChange}}
+                        onChange={() => {
+                          this.handleChange;
+                        }}
                         size="small"
                       >
                         {!isCurrentUser && (
@@ -221,25 +218,46 @@ export default class UserManagement implements ViewComponent {
         </Table>
 
         {/* Save confirmation dialog */}
-        <Dialog open={this.confirmSave} onClose={() => this.handleCloseDialog(false)}>
+        <Dialog
+          open={this.confirmSave}
+          onClose={() => this.handleCloseDialog(false)}
+        >
           <DialogTitle>{t("Confirm Save")}</DialogTitle>
           <DialogContent>
-            <DialogContentText>{t("Are you sure you want to save changes?")}</DialogContentText>
+            <DialogContentText>
+              {t("Are you sure you want to save changes?")}
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.handleCloseDialog(false)}>{t("Cancel")}</Button>
-            <Button onClick={() => this.handleCloseDialog(true)} autoFocus>{t("Confirm")}</Button>
+            <Button onClick={() => this.handleCloseDialog(false)}>
+              {t("Cancel")}
+            </Button>
+            <Button onClick={() => this.handleCloseDialog(true)} autoFocus>
+              {t("Confirm")}
+            </Button>
           </DialogActions>
         </Dialog>
 
-        <Dialog open={this.confirmDeleteId !== null} onClose={() => this.handleCloseDeleteDialog(false)}>
+        <Dialog
+          open={this.confirmDeleteId !== null}
+          onClose={() => this.handleCloseDeleteDialog(false)}
+        >
           <DialogTitle>{t("Confirm Delete")}</DialogTitle>
           <DialogContent>
-            <DialogContentText>{t("Are you sure you want to delete this user?")}</DialogContentText>
+            <DialogContentText>
+              {t("Are you sure you want to delete this user?")}
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.handleCloseDeleteDialog(false)}>{t("Cancel")}</Button>
-            <Button onClick={() => this.handleCloseDeleteDialog(true)} autoFocus>{t("Confirm")}</Button>
+            <Button onClick={() => this.handleCloseDeleteDialog(false)}>
+              {t("Cancel")}
+            </Button>
+            <Button
+              onClick={() => this.handleCloseDeleteDialog(true)}
+              autoFocus
+            >
+              {t("Confirm")}
+            </Button>
           </DialogActions>
         </Dialog>
 
