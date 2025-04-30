@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string("email",255)->unique();
             $table->string("password",255);
             $table->string("role",50)->default('user');
-            $table->timestamps();
-        });
+            $table->string('password_reset_token', 255)->nullable();
+            $table->timestamp('password_reset_token_created_at')->nullable();
+            $table->timestamps();        });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
