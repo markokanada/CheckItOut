@@ -47,8 +47,10 @@ const Header = ({ t }: { t: TFunction }) => {
 
   const isHome = location.pathname === "/";
   const isInTheApp = location.pathname.startsWith("/app/");
-  const isUserLinksRequired = !isInTheApp && ["/", "/how-to-use", "/login", "/register"].includes(location.pathname);
-  const isAdminPanelNeeded = isInTheApp && GlobalEntities.user.role === "admin"
+  const isUserLinksRequired =
+    !isInTheApp &&
+    ["/", "/how-to-use", "/login", "/register"].includes(location.pathname);
+  const isAdminPanelNeeded = isInTheApp && GlobalEntities.user.role === "admin";
   const toggleButton = () => setVisibility(!visible);
 
   const scrollTo = (id: string) => {
@@ -80,7 +82,12 @@ const Header = ({ t }: { t: TFunction }) => {
     <LanguageSwitchContainer>
       {["en", "hu"].map((lang) => (
         <LanguageSwitch key={lang} onClick={() => handleChangeLanguage(lang)}>
-          <SvgIcon src={`${lang}.svg`} aria-label={lang} width="30px" height="30px" />
+          <SvgIcon
+            src={`${lang}.svg`}
+            aria-label={lang}
+            width="30px"
+            height="30px"
+          />
         </LanguageSwitch>
       ))}
     </LanguageSwitchContainer>
@@ -88,19 +95,25 @@ const Header = ({ t }: { t: TFunction }) => {
 
   const renderNavLinks = () => (
     <>
-      {isHome && navLinks.map(({ id, label }) => (
-        <CustomNavLinkSmall key={id} onClick={() => scrollTo(id)}>
-          <Span>{t(label)}</Span>
-        </CustomNavLinkSmall>
-      ))}
+      {isHome &&
+        navLinks.map(({ id, label }) => (
+          <CustomNavLinkSmall key={id} onClick={() => scrollTo(id)}>
+            <Span>{t(label)}</Span>
+          </CustomNavLinkSmall>
+        ))}
     </>
   );
 
   const renderAuthLinks = () => (
     <>
       {authLinks.map(({ path, label, color }) => (
-        <CustomNavLinkSmall key={path} onClick={() => {navigate(path);    setVisibility(false);
-                }        }>
+        <CustomNavLinkSmall
+          key={path}
+          onClick={() => {
+            navigate(path);
+            setVisibility(false);
+          }}
+        >
           <Span style={{ color }}>{t(label)}</Span>
         </CustomNavLinkSmall>
       ))}
@@ -110,16 +123,26 @@ const Header = ({ t }: { t: TFunction }) => {
   const renderAppNavigationLinks = () => (
     <>
       {appLinks.map(({ path, label, color }) => (
-        <CustomNavLinkSmall key={path} onClick={() => {navigate(path);    setVisibility(false);
-                }        }>
+        <CustomNavLinkSmall
+          key={path}
+          onClick={() => {
+            navigate(path);
+            setVisibility(false);
+          }}
+        >
           <Span style={{ color }}>{t(label)}</Span>
         </CustomNavLinkSmall>
       ))}
       {isAdminPanelNeeded && (
-        <CustomNavLinkSmall key="/app/admin/users" onClick={() => {navigate("/app/admin/users");    setVisibility(false);
-        }        }>
-  <Span style={{ color:"#FF824B" }}>{t("usermanagement")}</Span>
-</CustomNavLinkSmall>
+        <CustomNavLinkSmall
+          key="/app/admin/users"
+          onClick={() => {
+            navigate("/app/admin/users");
+            setVisibility(false);
+          }}
+        >
+          <Span style={{ color: "#FF824B" }}>{t("usermanagement")}</Span>
+        </CustomNavLinkSmall>
       )}
     </>
   );
@@ -134,7 +157,10 @@ const Header = ({ t }: { t: TFunction }) => {
     <HeaderSection>
       <Container>
         <Row justify="space-between">
-          <LogoContainer to={isInTheApp ? "/app/home" : "/"} aria-label="homepage">
+          <LogoContainer
+            to={isInTheApp ? "/app/home" : "/"}
+            aria-label="homepage"
+          >
             <SvgIcon src="logo.png" width="auto" height="64px" />
           </LogoContainer>
 
