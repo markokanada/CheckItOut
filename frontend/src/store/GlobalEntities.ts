@@ -11,7 +11,7 @@ class Entities {
   public userToken: string = "";
   public user: User = {
     id: undefined,
-    name: undefined, 
+    name: undefined,
     email: undefined,
     role: undefined,
     created_at: undefined,
@@ -42,17 +42,17 @@ class Entities {
   get tasks() {
     return this._tasks;
   }
-  @action public logout(){
-      const savedLang = localStorage.getItem("language"); // nyelv mentése
+  @action public logout() {
+    const savedLang = localStorage.getItem("language"); // nyelv mentése
     localStorage.clear();
     if (savedLang) {
       localStorage.setItem("language", savedLang); // visszaállítás
     }
-     this._tasks = [];
-     this.doneTasks = [];
-     this.categories = [];
-     this.userToken = "";
-     this.user= {
+    this._tasks = [];
+    this.doneTasks = [];
+    this.categories = [];
+    this.userToken = "";
+    this.user = {
       id: undefined,
       name: undefined,
       email: undefined,
@@ -97,32 +97,36 @@ class Entities {
 
   @action loadCategories = async () => {
     const resp = await GlobalApiHandlerInstance.get("/categories", {
-      
       headers: {
         Authorization: `Bearer ${localStorage.getItem("userToken")}`,
       },
-    })
-    
+    });
 
     this.categories = resp.data.data;
   };
   @action sendPasswordResetEmail = async (email: string) => {
     try {
-      const resp = await GlobalApiHandlerInstance.post("/forgot-password", { email });
+      const resp = await GlobalApiHandlerInstance.post("/forgot-password", {
+        email,
+      });
       return resp;
     } catch (error: any) {
       console.error("Password reset error:", error);
       throw error;
     }
   };
-  
-  @action resetPassword = async (email: string, token: string, newPassword: string) => {
+
+  @action resetPassword = async (
+    email: string,
+    token: string,
+    newPassword: string,
+  ) => {
     try {
       const resp = await GlobalApiHandlerInstance.post("/reset-password", {
         email,
         token,
         password: newPassword,
-        password_confirmation: newPassword
+        password_confirmation: newPassword,
       });
       return resp;
     } catch (error: any) {
@@ -132,29 +136,33 @@ class Entities {
   };
   @action createCategory = async (name: string) => {
     try {
-      const resp = await GlobalApiHandlerInstance.post("/categories", { category_name: name, lang: i18n.language , user_id:GlobalEntities.user.id }, {
-      
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+      const resp = await GlobalApiHandlerInstance.post(
+        "/categories",
+        {
+          category_name: name,
+          lang: i18n.language,
+          user_id: GlobalEntities.user.id,
         },
-      });
-  
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("userToken")}`,
+          },
+        },
+      );
+
       if (resp.status === 201 || resp.status === 200) {
-        await this.loadCategories(); 
+        await this.loadCategories();
       }
-  
+
       return resp;
     } catch (error) {
       console.error("Hiba a kategória létrehozásakor:", error);
       throw error;
     }
   };
-  
-  
 
   @action createTask = async (data: Object) => {
     const resp = await GlobalApiHandlerInstance.post("/tasks", data, {
-      
       headers: {
         Authorization: `Bearer ${localStorage.getItem("userToken")}`,
       },
@@ -168,7 +176,6 @@ class Entities {
 
   @action updateTask = async (data: Task) => {
     const resp = await GlobalApiHandlerInstance.put(`/tasks/${data.id}`, data, {
-      
       headers: {
         Authorization: `Bearer ${localStorage.getItem("userToken")}`,
       },
@@ -195,8 +202,8 @@ class Entities {
 
   @action loadDoneTasks = async () => {
     const resp = await GlobalApiHandlerInstance.get(
-      `/tasks/today/${this.user.id}`, {
-      
+      `/tasks/today/${this.user.id}`,
+      {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("userToken")}`,
         },
@@ -258,11 +265,11 @@ class Entities {
     }
   };
 
-  @action checkAndRedirectNotRightUser(){
+  @action checkAndRedirectNotRightUser() {
     const navigate = useNavigate();
-    
-    if(this.user.id===undefined){
-      navigate("/login")
+
+    if (this.user.id === undefined) {
+      navigate("/login");
     }
   }
 
@@ -288,13 +295,13 @@ class Entities {
 const GlobalEntities = new Entities();
 
 if (localStorage.getItem("userToken")) {
-  try{
+  try {
     const userDataResponse = await GlobalApiHandlerInstance.get("/user", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("userToken")}`,
       },
     });
-  
+
     GlobalEntities.user = userDataResponse.data;
     await GlobalEntities.loadTasks();
     await GlobalEntities.loadDoneTasks();
@@ -302,14 +309,10 @@ if (localStorage.getItem("userToken")) {
       await GlobalEntities.fetchUsers();
     }
     await GlobalEntities.loadCategories();
+  } catch (error) {
+    console.warn("Backend error:", error);
   }
-  catch(error){
-    console.warn("Backend error:", error)
-  }
-  
 }
-
-
 
 const savedLang = localStorage.getItem("language");
 if (savedLang) {
