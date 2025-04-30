@@ -268,6 +268,7 @@ if (localStorage.getItem("userToken")) {
     if (GlobalEntities.user.role == "admin") {
       await GlobalEntities.fetchUsers();
     }
+    await GlobalEntities.loadCategories();
   }
   catch(error){
     console.warn("Backend error:", error)
@@ -275,7 +276,7 @@ if (localStorage.getItem("userToken")) {
   
 }
 
-await GlobalEntities.loadCategories();
+
 
 const savedLang = localStorage.getItem("language");
 if (savedLang) {
