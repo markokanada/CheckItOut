@@ -109,9 +109,9 @@ export default class Register implements ViewComponent {
                       helperText={touched.name && errors.name}
                       fullWidth
                       sx={{
-                        '& input:focus-within, & textarea:focus-within': {
-                          boxShadow: 'none',
-                          background: 'none',
+                        "& input:focus-within, & textarea:focus-within": {
+                          boxShadow: "none",
+                          background: "none",
                         },
                       }}
                     />
@@ -127,9 +127,9 @@ export default class Register implements ViewComponent {
                       helperText={touched.email && errors.email}
                       fullWidth
                       sx={{
-                        '& input:focus-within, & textarea:focus-within': {
-                          boxShadow: 'none',
-                          background: 'none',
+                        "& input:focus-within, & textarea:focus-within": {
+                          boxShadow: "none",
+                          background: "none",
                         },
                       }}
                     />
@@ -145,9 +145,9 @@ export default class Register implements ViewComponent {
                       helperText={touched.password && errors.password}
                       fullWidth
                       sx={{
-                        '& input:focus-within, & textarea:focus-within': {
-                          boxShadow: 'none',
-                          background: 'none',
+                        "& input:focus-within, & textarea:focus-within": {
+                          boxShadow: "none",
+                          background: "none",
                         },
                       }}
                     />
@@ -168,9 +168,9 @@ export default class Register implements ViewComponent {
                       }
                       fullWidth
                       sx={{
-                        '& input:focus-within, & textarea:focus-within': {
-                          boxShadow: 'none',
-                          background: 'none',
+                        "& input:focus-within, & textarea:focus-within": {
+                          boxShadow: "none",
+                          background: "none",
                         },
                       }}
                     />
