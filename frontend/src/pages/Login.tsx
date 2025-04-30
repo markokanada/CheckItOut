@@ -12,26 +12,34 @@ import {
   TextField,
   Typography,
   Link,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Box,
 } from "@mui/material";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { action, makeObservable, observable } from "mobx";
 import GlobalEntities from "../store/GlobalEntities";
 import { useTranslation } from "react-i18next";
+import { VStack } from "@chakra-ui/react";
 
 export default class Login implements ViewComponent {
   @observable accessor snackbarOpen = false;
   @observable accessor snackbarMessage = "";
   @observable accessor snackbarSeverity: "success" | "error" = "success";
-  @observable accessor autoHideDuration = 7000
+  @observable accessor autoHideDuration = 7000;
   @observable accessor initialValues = {
     email: "",
     password: "",
   };
+  @observable accessor forgotPasswordModalOpen = false;
+  @observable accessor forgotPasswordEmail = "";
 
   constructor(public navigate: NavigateFunction) {
     makeObservable(this);
-    }
+  }
 
   @action private async handleSubmit(values: typeof this.initialValues) {
     try {
@@ -70,6 +78,75 @@ export default class Login implements ViewComponent {
     this.snackbarOpen = false;
   };
 
+  @action private toggleForgotPasswordModal = (open: boolean) => {
+    this.forgotPasswordModalOpen = open;
+    if (!open) {
+      this.forgotPasswordEmail = "";
+    }
+  };
+
+  @action private handleForgotPasswordSubmit = async (email: string) => {
+    try {
+      const resp = await GlobalEntities.sendPasswordResetEmail(email);
+      
+      if (resp.status === 200) {
+        this.snackbarMessage = "Password Reset Sent";
+        this.snackbarSeverity = "success";
+      } else {
+        this.snackbarMessage = "Password Reset Error";
+        this.snackbarSeverity = "error";
+      }
+      this.snackbarOpen = true;
+      this.toggleForgotPasswordModal(false);
+    } catch (error: any) {
+      let translationKey = "Password Reset Error";
+      
+      if (error.isAxiosError) {
+        const serverMessage = error.response?.data?.message || error.message;
+        
+        if (serverMessage.includes("email not found")) {
+          translationKey = "Email Not Found";
+        } else if (serverMessage.includes("password reset")) {
+          translationKey = "Password Reset Throttled";
+        }
+      }
+
+      this.snackbarMessage = translationKey;
+      this.snackbarSeverity = "error";
+      this.snackbarOpen = true;
+    }
+  };
+  @action private handlePasswordReset = async (email: string, token: string, newPassword: string) => {
+    try {
+      const resp = await GlobalEntities.resetPassword(email, token, newPassword);
+      
+      if (resp.status === 200) {
+        this.snackbarMessage = "Password Reset Success";
+        this.snackbarSeverity = "success";
+        this.snackbarOpen = true;
+        return true;
+      }
+      return false;
+    } catch (error: any) {
+      let translationKey = "Password Reset Error";
+      
+      if (error.isAxiosError) {
+        const serverMessage = error.response?.data?.message || error.message;
+        
+        if (serverMessage.includes("invalid token")) {
+          translationKey = "Invalid Reset Token";
+        } else if (serverMessage.includes("expired")) {
+          translationKey = "Reset Token Expired";
+        }
+      }
+
+      this.snackbarMessage = translationKey;
+      this.snackbarSeverity = "error";
+      this.snackbarOpen = true;
+      return false;
+    }
+  };
+
   View = observer(() => {
     if (GlobalEntities.user.id !== undefined) {
       this.snackbarMessage = "Login Success";
@@ -79,16 +156,22 @@ export default class Login implements ViewComponent {
       setTimeout(() => {
         this.navigate("/app/home");
       }, 2000);
-  }
+    }
     const { t } = useTranslation();
 
-    const validationSchema = Yup.object({
+    const loginValidationSchema = Yup.object({
       email: Yup.string()
         .email(t("Validation Email Format"))
         .required(t("Validation Email Required")),
       password: Yup.string()
         .min(6, t("Validation Password Length"))
         .required(t("Validation Password Required")),
+    });
+
+    const forgotPasswordValidationSchema = Yup.object({
+      email: Yup.string()
+        .email(t("Validation Email Format"))
+        .required(t("Validation Email Required")),
     });
 
     return (
@@ -100,7 +183,7 @@ export default class Login implements ViewComponent {
 
           <Formik
             initialValues={this.initialValues}
-            validationSchema={validationSchema}
+            validationSchema={loginValidationSchema}
             onSubmit={(values) => this.handleSubmit(values)}
           >
             {({ handleChange, values, touched, errors }) => (
@@ -147,13 +230,26 @@ export default class Login implements ViewComponent {
                     justifyContent="space-between"
                     alignItems="center"
                   >
-                    <Link
-                      component="button"
-                      variant="body2"
-                      onClick={() => this.navigate("/register")}
-                    >
-                      {t("Login No Account")}
-                    </Link>
+                    <VStack alignItems="start">
+                      <Link
+                        component="button"
+                        variant="body2"
+                        textAlign="left"
+                        padding={2}
+                        onClick={() => this.navigate("/register")}
+                      >
+                        {t("Login No Account")}
+                      </Link>
+                      <Link
+                        component="button"
+                        variant="body2"
+                        textAlign="left"
+                        padding={2}
+                        onClick={() => this.toggleForgotPasswordModal(true)}
+                      >
+                        {t("Forgotten Title")}
+                      </Link>
+                    </VStack>
                     <Button type="submit" variant="contained" color="primary">
                       {t("Login Submit")}
                     </Button>
@@ -162,6 +258,60 @@ export default class Login implements ViewComponent {
               </Form>
             )}
           </Formik>
+
+          <Dialog
+            open={this.forgotPasswordModalOpen}
+            onClose={() => this.toggleForgotPasswordModal(false)}
+          >
+            <DialogTitle>{t("Forgot Password Title")}</DialogTitle>
+            <Formik
+              initialValues={{ email: "" }}
+              validationSchema={forgotPasswordValidationSchema}
+              onSubmit={async (values, { setSubmitting }) => {
+                await this.handleForgotPasswordSubmit(values.email);
+                setSubmitting(false);
+              }}
+            >
+              {({ handleChange, handleSubmit, values, touched, errors }) => (
+                <form onSubmit={handleSubmit}>
+                  <DialogContent>
+                    <Box sx={{ minWidth: 300 }}>
+                      <Typography variant="body1" gutterBottom>
+                        {t("Forgot Password Instructions")}
+                      </Typography>
+                      <TextField
+                        autoFocus
+                        margin="dense"
+                        name="email"
+                        label={t("Login Email")}
+                        type="email"
+                        fullWidth
+                        variant="outlined"
+                        value={values.email}
+                        onChange={handleChange}
+                        error={touched.email && Boolean(errors.email)}
+                        helperText={touched.email && errors.email}
+                        sx={{
+                          '& input:focus-within, & textarea:focus-within': {
+                            boxShadow: 'none',
+                            background: 'none',
+                          },
+                        }}
+                      />
+                    </Box>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={() => this.toggleForgotPasswordModal(false)}>
+                      {t("Cancel")}
+                    </Button>
+                    <Button type="submit" color="primary">
+                      {t("Send Reset Link")}
+                    </Button>
+                  </DialogActions>
+                </form>
+              )}
+            </Formik>
+          </Dialog>
 
           <Snackbar
             open={this.snackbarOpen}
