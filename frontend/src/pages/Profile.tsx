@@ -72,6 +72,8 @@ export default class Profile implements ViewComponent {
   };
 
   View = observer(() => {
+        GlobalEntities.checkAndRedirectNotRightUser();
+    
     const { t } = useTranslation();
 
     return (
