@@ -99,6 +99,8 @@ export default class TaskRecording implements ViewComponent {
   };
 
   View = observer(() => {
+        GlobalEntities.checkAndRedirectNotRightUser();
+    
     const { t } = useTranslation();
     const [snackbar, setSnackbar] = useState<SnackbarState>({
       open: false,
