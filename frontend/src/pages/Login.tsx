@@ -116,6 +116,12 @@ export default class Login implements ViewComponent {
                       error={touched.email && Boolean(errors.email)}
                       helperText={touched.email && errors.email}
                       fullWidth
+                      sx={{
+                        '& input:focus-within, & textarea:focus-within': {
+                          boxShadow: 'none',
+                          background: 'none',
+                        },
+                      }}
                     />
                   </FormControl>
                   <FormControl>
@@ -128,6 +134,12 @@ export default class Login implements ViewComponent {
                       error={touched.password && Boolean(errors.password)}
                       helperText={touched.password && errors.password}
                       fullWidth
+                      sx={{
+                        '& input:focus-within, & textarea:focus-within': {
+                          boxShadow: 'none',
+                          background: 'none',
+                        },
+                      }}
                     />
                   </FormControl>
                   <Stack
