@@ -72,7 +72,10 @@ export default class App implements ViewComponent {
         <Box flex="1">
           <Routes>
             <Route path="/" element={<this.landing.View />} />
-            <Route path="/app/how-to-use" element={<this.documentation.View />} />
+            <Route
+              path="/app/how-to-use"
+              element={<this.documentation.View />}
+            />
             <Route path="/how-to-use" element={<this.documentation.View />} />
             <Route
               path="/app/home"
@@ -82,7 +85,10 @@ export default class App implements ViewComponent {
             <Route path="/app/profile" element={<this.profile.View />} />
             <Route path="/register" element={<this.register.View />} />
             <Route path="/login" element={<this.login.View />} />
-            <Route path="/app/admin/users" element={<this.userManagement.View />} />
+            <Route
+              path="/app/admin/users"
+              element={<this.userManagement.View />}
+            />
             <Route path="*" element={<this._404.View />} />
           </Routes>
         </Box>
