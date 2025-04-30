@@ -28,7 +28,7 @@ export class BaseCard implements ViewComponent {
     this.task = task;
 
     const idx = GlobalEntities.categories.findIndex(
-      (element) => element.id === task.category_id
+      (element) => element.id === task.category_id,
     );
 
     this.category = GlobalEntities.categories[idx];
@@ -52,7 +52,7 @@ export class BaseCard implements ViewComponent {
       this.toggleAlert(
         true,
         `${newStatus === "in-progress" ? "in-progress" : "finished"}: ${newStatus}`,
-        "success"
+        "success",
       );
     } else {
       this.toggleAlert(true, "update failed", "error");
@@ -66,7 +66,7 @@ export class BaseCard implements ViewComponent {
   @action toggleAlert = (
     open: boolean,
     message: string,
-    type: "success" | "error" | ""
+    type: "success" | "error" | "",
   ) => {
     this.showAlert = open;
     this.alertMessage = message;
@@ -89,7 +89,9 @@ export class BaseCard implements ViewComponent {
         id={`${this.task.id}`}
       >
         <Card.Header>
-          <Heading size="md" mb="1">{this.task.title}</Heading>
+          <Heading size="md" mb="1">
+            {this.task.title}
+          </Heading>
           <Typography variant="body2" color="text.secondary" gutterBottom>
             {this.task.description}
           </Typography>
@@ -98,14 +100,30 @@ export class BaseCard implements ViewComponent {
         <Divider sx={{ my: 2 }} />
 
         <Card.Body>
-          <Stack justifyContent="center" spacing={1} direction="row" flexWrap="wrap" useFlexGap>
-            <Chip label={`${t("label status")}: ${t(this.task.status)}`} color="info" />
-            <Chip label={`${t("label priority")}: ${t('PriorityValue'+this.task.priority)}`} color="secondary" />
-            <Chip label={`${t("label category")}: ${this.category !== undefined ? this.category.name : ""}`} color="primary" />
+          <Stack
+            justifyContent="center"
+            spacing={1}
+            direction="row"
+            flexWrap="wrap"
+            useFlexGap
+          >
+            <Chip
+              label={`${t("label status")}: ${t(this.task.status)}`}
+              color="info"
+            />
+            <Chip
+              label={`${t("label priority")}: ${t("PriorityValue" + this.task.priority)}`}
+              color="secondary"
+            />
+            <Chip
+              label={`${t("label category")}: ${this.category !== undefined ? this.category.name : ""}`}
+              color="primary"
+            />
           </Stack>
 
           <Typography variant="caption" color="text.secondary" mt={2}>
-            {t("label due date")}: {new Date(this.task.due_date).toLocaleDateString("hu-HU")}
+            {t("label due date")}:{" "}
+            {new Date(this.task.due_date).toLocaleDateString("hu-HU")}
           </Typography>
         </Card.Body>
 
