@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Mail\RegisteredMail;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -41,6 +43,7 @@ class AuthController extends Controller
 
         $user = User::create($data);
         event(new Registered($user));
+        Mail::to($user->email)->send(new RegisteredMail());
         return response()->json([
             "data" => [
                 "message" => "Sikeresen regisztrál $user->email."
