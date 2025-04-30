@@ -49,6 +49,7 @@ class UserController extends Controller
         ->whereDate('due_date', Carbon::today())
         ->where('due_date', '<', now())
         ->where('status', '!=', 'expired')
+        ->where('status', '!=', 'finished')
         ->update(['status' => 'expired']);
 
     return new UserResource(
