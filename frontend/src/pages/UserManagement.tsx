@@ -125,6 +125,8 @@ export default class UserManagement implements ViewComponent {
   };
 
   View = observer(() => {
+        GlobalEntities.checkAndRedirectNotRightUser();
+    
     const { t } = useTranslation();
     const currentUser = GlobalEntities.user;
 
