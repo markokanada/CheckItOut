@@ -36,7 +36,7 @@ export default class Home implements ViewComponent {
   }
 
   View = observer(() => {
-
+    GlobalEntities.checkAndRedirectNotRightUser();
     const { t } = useTranslation();
     const tasks = toJS(GlobalEntities.tasks);
     const doneTasks = toJS(GlobalEntities.doneTasks);
