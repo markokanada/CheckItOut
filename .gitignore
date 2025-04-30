@@ -4,3 +4,4 @@
 backend/testdb.sqlite
 backend/.env.testing
 frontend/pnpm-lock.yaml
+.vscode/terminal-shortcuts-workspace.json
