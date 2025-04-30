@@ -1,5 +1,5 @@
 export interface SnackbarState {
   open: boolean;
-  type: 'success' | 'error';
+  type: "success" | "error";
   message: string;
 }
