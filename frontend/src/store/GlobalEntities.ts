@@ -92,6 +92,7 @@ class Entities {
     if (this.user.role == "admin") {
       await GlobalEntities.fetchUsers();
     }
+    await GlobalEntities.loadCategories();
   };
 
   @action loadCategories = async () => {
