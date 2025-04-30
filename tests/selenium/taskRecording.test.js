@@ -1,81 +1,87 @@
-const { Builder, By, until } = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
+const { Builder, By, until } = require("selenium-webdriver");
+const chrome = require("selenium-webdriver/chrome");
 
 (async function basicTaskRecordingTest() {
-  let driver = await new Builder().forBrowser('chrome').build();
+  let driver = await new Builder().forBrowser("chrome").build();
 
   try {
-    await driver.get('http://frontend.vm1.test/task-recording');
+    await driver.get("http://frontend.vm1.test/task-recording");
 
-    await driver.wait(until.elementLocated(By.id('title')), 10000);
+    await driver.wait(until.elementLocated(By.id("title")), 10000);
 
-    console.log('The page has loaded successfully and the "title" field is found.');
-    
+    console.log(
+      'The page has loaded successfully and the "title" field is found.',
+    );
+
     // Fill in the "Task name" field
-    await driver.findElement(By.id('title')).sendKeys('Teszt');
+    await driver.findElement(By.id("title")).sendKeys("Teszt");
 
     // Fill in the "Description" field
-    await driver.findElement(By.id('descreption')).sendKeys('Description, Lorem...');
+    await driver
+      .findElement(By.id("descreption"))
+      .sendKeys("Description, Lorem...");
 
     // Enter the future deadline
-    const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 16); 
-    await driver.findElement(By.id('due_date')).sendKeys(tomorrow);
+    const tomorrow = new Date(Date.now() + 86400000).toISOString().slice(0, 16);
+    await driver.findElement(By.id("due_date")).sendKeys(tomorrow);
 
     // Past date validation
-    const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 16);
-    await driver.findElement(By.id('due_date')).sendKeys(yesterday);
+    const yesterday = new Date(Date.now() - 86400000)
+      .toISOString()
+      .slice(0, 16);
+    await driver.findElement(By.id("due_date")).sendKeys(yesterday);
 
-    await driver.findElement(By.id('priority')).sendKeys('3');
+    await driver.findElement(By.id("priority")).sendKeys("3");
 
-    await driver.findElement(By.id('category')).click();
+    await driver.findElement(By.id("category")).click();
     await driver.sleep(500);
-    const categoryOptions = await driver.findElements(By.css('li.MuiMenuItem-root'));
+    const categoryOptions = await driver.findElements(
+      By.css("li.MuiMenuItem-root"),
+    );
     if (categoryOptions.length > 0) {
       await categoryOptions[0].click();
     }
-    const dueDateError = await driver.findElement(By.css('#due_date-helper-text')).getText();
+    const dueDateError = await driver
+      .findElement(By.css("#due_date-helper-text"))
+      .getText();
 
-    if (dueDateError.includes('nem lehet korábban')) {
-      console.log('Working');
+    if (dueDateError.includes("nem lehet korábban")) {
+      console.log("Working");
     } else {
-      console.error('Not working');
+      console.error("Not working");
     }
 
-    // Select a category 
-    await driver.findElement(By.id('category')).click();
-    await driver.sleep(500); 
-    const categories = await driver.findElements(By.css('li.MuiMenuItem-root'));
+    // Select a category
+    await driver.findElement(By.id("category")).click();
+    await driver.sleep(500);
+    const categories = await driver.findElements(By.css("li.MuiMenuItem-root"));
     if (categories.length > 0) {
-      await categories[0].click(); 
+      await categories[0].click();
     } else {
-      console.log('There is no category available');
+      console.log("There is no category available");
     }
 
-    // Enter the priority 
-    await driver.findElement(By.id('priority')).sendKeys('5');
+    // Enter the priority
+    await driver.findElement(By.id("priority")).sendKeys("5");
 
     //Submit the form
     await driver.findElement(By.css('button[type="submit"]')).click();
-
 
     // Check if it is successful
     await driver.wait(until.alertIsPresent(), 5000);
     const alert = await driver.switchTo().alert();
     const alertText = await alert.getText();
 
-    if (alertText.includes('Successfully created')) {
-      console.log('Successfull');
+    if (alertText.includes("Successfully created")) {
+      console.log("Successfull");
     } else {
-      console.error('Error:', alertText);
+      console.error("Error:", alertText);
     }
 
     await alert.accept();
-
-
-
   } catch (err) {
-    console.error('Error:', err);
+    console.error("Error:", err);
   } finally {
-    await driver.quit(); 
+    await driver.quit();
   }
 })();
