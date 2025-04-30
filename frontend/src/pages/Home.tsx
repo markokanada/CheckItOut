@@ -7,7 +7,7 @@ import {
   VStack,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { NavigateFunction } from "react-router-dom";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 import ViewComponent from "../interfaces/ViewComponent";
 import { action, computed, makeObservable, toJS } from "mobx";
 import GlobalEntities from "../store/GlobalEntities";
@@ -36,6 +36,7 @@ export default class Home implements ViewComponent {
   }
 
   View = observer(() => {
+
     const { t } = useTranslation();
     const tasks = toJS(GlobalEntities.tasks);
     const doneTasks = toJS(GlobalEntities.doneTasks);
@@ -63,7 +64,10 @@ export default class Home implements ViewComponent {
               <Flex alignItems="flex-start" height="100%" paddingTop="2rem">
                 <Box flex="1" p={4}>
                   <Section title={t("Next Task Title")}>
+                  <SimpleGrid columns={columns}>
+
                     {this.card ?? <EmptyMessage message={t("Next Task Message")} />}
+                    </SimpleGrid>
                   </Section>
                 </Box>
 
@@ -102,14 +106,16 @@ export default class Home implements ViewComponent {
               <Container maxW="6xl" py={{ base: 6, md: 8 }}>
                 <VStack padding={10} align="stretch">
                   <Section title={t("Next Task Title")}>
+                  <SimpleGrid columns={columns}>
                     {this.card ?? <EmptyMessage message={t("Next Task Message")} />}
+                    </SimpleGrid>
                   </Section>
 
                   <Divider />
 
                   <Section title={t("Today Task Title")}>
                     {tasks.length ? (
-                      <SimpleGrid columns={columns} padding={6}>
+                      <SimpleGrid columns={columns}>
                         {tasks.map((task: Task) => this.createCard(task))}
                       </SimpleGrid>
                     ) : (
