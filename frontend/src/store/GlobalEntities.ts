@@ -2,6 +2,7 @@ import { action, computed, makeObservable, observable } from "mobx";
 import GlobalApiHandlerInstance from "../api/GlobalApiHandlerInstance";
 import i18n from "../translation";
 import { Task } from "../interfaces/Task";
+import { useNavigate } from "react-router-dom";
 
 class Entities {
   public _tasks: Task[] = [];
@@ -232,6 +233,14 @@ class Entities {
       return 0;
     }
   };
+
+  @action checkAndRedirectNotRightUser(){
+    const navigate = useNavigate();
+    
+    if(this.user.id===undefined){
+      navigate("/login")
+    }
+  }
 
   @action async fetchUsers() {
     const response = await GlobalApiHandlerInstance.get("/users", {
