@@ -175,6 +175,14 @@
     "Changes saved successfully": "A módosítások sikeresen mentve",
     "Confirm Delete": "Törlés megerősítése",
     "Are you sure you want to delete this user?": "Biztosan törölni szeretnéd ezt a felhasználót?",
-    "User deleted successfully": "A felhasználó sikeresen törölve"
+    "User deleted successfully": "A felhasználó sikeresen törölve",
+    
+        "Forgot Password Title": "Elfelejtett jelszó",
+        "Forgot Password Instructions": "Adja meg email címét és küldünk egy linket a jelszó visszaállításához.",
+        "Send Reset Link": "Visszaállító link küldése",
+        "Forgotten Title": "Elfelejtette jelszavát?",
+        "Password Reset Sent": "Jelszó-visszaállító link sikeresen elküldve",
+        "Password Reset Error": "Hiba történt a visszaállító link küldésekor"
+      
 
 }
