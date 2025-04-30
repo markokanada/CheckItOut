@@ -106,7 +106,30 @@ class Entities {
 
     this.categories = resp.data.data;
   };
-
+  @action sendPasswordResetEmail = async (email: string) => {
+    try {
+      const resp = await GlobalApiHandlerInstance.post("/forgot-password", { email });
+      return resp;
+    } catch (error: any) {
+      console.error("Password reset error:", error);
+      throw error;
+    }
+  };
+  
+  @action resetPassword = async (email: string, token: string, newPassword: string) => {
+    try {
+      const resp = await GlobalApiHandlerInstance.post("/reset-password", {
+        email,
+        token,
+        password: newPassword,
+        password_confirmation: newPassword
+      });
+      return resp;
+    } catch (error: any) {
+      console.error("Password reset error:", error);
+      throw error;
+    }
+  };
   @action createCategory = async (name: string) => {
     try {
       const resp = await GlobalApiHandlerInstance.post("/categories", { category_name: name, lang: i18n.language , user_id:GlobalEntities.user.id }, {
