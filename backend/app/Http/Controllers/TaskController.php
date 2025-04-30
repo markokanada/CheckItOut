@@ -7,7 +7,7 @@ use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use Carbon\Carbon;
 class TaskController extends Controller
 {
     /**
@@ -15,11 +15,29 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return TaskResource::collection(
-            Task::with(["user"])
-                ->whereDate("due_date", Carbon::today())
-                ->get()
-        );    }
+        Task::where('due_date', '<', now())
+        ->where('status', '!=', 'expired')
+        ->update(['status' => 'expired']);
+
+    $tasks = Task::with(["user"])
+        ->whereDate("due_date", Carbon::today())
+        ->orderByRaw("
+            CASE 
+                WHEN status = 'expired' THEN 0 
+                ELSE 1 
+            END ASC,
+            CASE 
+                WHEN status = 'expired' THEN due_date 
+                ELSE NULL 
+            END ASC,
+            CASE 
+                WHEN status != 'expired' THEN due_date 
+                ELSE NULL 
+            END DESC
+        ")
+        ->get();
+
+    return TaskResource::collection($tasks);}
 
     /**
      * Store a newly created resource in storage.
