@@ -30,11 +30,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get("users", [AdminController::class, "index"]);
     Route::get("tasks/today/{user}", [UserController::class, 'taskDoneToday']);
 });
-Route::get('/send-test-email', function () {
-    try {
-        Mail::to('markokanadateam2@gmail.com')->send(new TestEmail());
-        return 'Email sent!';
-    } catch (\Exception $e) {
-        return 'Hiba: ' . $e->getMessage();
-    }
-});
+// Route::get('/send-test-email', function () {
+//     try {
+//         Mail::to('markokanadateam2@gmail.com')->send(new TestEmail());
+//         return 'Email sent!';
+//     } catch (\Exception $e) {
+//         return 'Hiba: ' . $e->getMessage();
+//     }
+// });
