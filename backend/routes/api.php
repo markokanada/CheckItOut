@@ -10,12 +10,16 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Mail\TestEmail;
 use Illuminate\Support\Facades\Mail;
+
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/forgot-password', [UserController::class, 'sendResetLinkEmail']);
+Route::post('/reset-password', [UserController::class, 'resetPassword']);
 
 Route::apiResource("users", UserController::class)->except("index");
 
@@ -29,7 +33,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get("users", [AdminController::class, "index"]);
     Route::get("tasks/today/{user}", [UserController::class, 'taskDoneToday']);
+    
+    Route::post('/change-password', [UserController::class, 'changePassword']);
 });
+
 // Route::get('/send-test-email', function () {
 //     try {
 //         Mail::to('markokanadateam2@gmail.com')->send(new TestEmail());
