@@ -61,7 +61,7 @@ export default class Profile implements ViewComponent {
     const resp = await GlobalEntities.updateUser(
       this.name,
       this.email,
-      password
+      password,
     );
     if (resp !== 0) {
       this.showSnackbar("snackbar success", "success");
@@ -72,8 +72,8 @@ export default class Profile implements ViewComponent {
   };
 
   View = observer(() => {
-        GlobalEntities.checkAndRedirectNotRightUser();
-    
+    GlobalEntities.checkAndRedirectNotRightUser();
+
     const { t } = useTranslation();
 
     return (
@@ -206,7 +206,7 @@ export default class Profile implements ViewComponent {
                 initialValues={{ password: "" }}
                 validationSchema={Yup.object({
                   password: Yup.string().required(
-                    t("validation password required")
+                    t("validation password required"),
                   ),
                 })}
                 onSubmit={({ password }) => this.confirmEdit(password)}
