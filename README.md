@@ -22,4 +22,4 @@ docker compose stop
 docker compose down -v
 ```
 
- - A `-v` hatására a köteteket is törli, így az adatbázisban tárolt adatok is megszűnnek.
+- A `-v` hatására a köteteket is törli, így az adatbázisban tárolt adatok is megszűnnek.
