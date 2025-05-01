@@ -2,19 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\sendContactEmailRequest;
 use App\Mail\ContactFormMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
 class ContactController extends Controller
 {
-    public function sendContactEmail(Request $request)
+    public function sendContactEmail(sendContactEmailRequest $request)
 {
-    $validated = $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|max:255',
-        'description' => 'required|string',
-    ]);
+    $validated = $request->validated();
 
     try {
         Mail::to('hello@example.com') 
