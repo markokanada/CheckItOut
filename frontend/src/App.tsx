@@ -94,7 +94,10 @@ export default class App implements ViewComponent {
               path="/app/admin/users"
               element={<this.userManagement.View />}
             />
-            <Route path="/reset-password" element={<this.passwordReset.View />} />
+            <Route
+              path="/reset-password"
+              element={<this.passwordReset.View />}
+            />
             <Route path="*" element={<this._404.View />} />
           </Routes>
         </Box>
