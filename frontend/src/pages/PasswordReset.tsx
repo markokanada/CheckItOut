@@ -1,5 +1,9 @@
 import React from "react";
-import { NavigateFunction, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  NavigateFunction,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import ViewComponent from "../interfaces/ViewComponent";
 import { observer } from "mobx-react-lite";
 import {
@@ -39,20 +43,20 @@ export default class PasswordReset implements ViewComponent {
       await GlobalEntities.resetPassword(
         values.email,
         values.token,
-        values.password
+        values.password,
       );
-      
+
       this.snackbarMessage = "Password Reset Success";
       this.snackbarSeverity = "success";
       this.snackbarOpen = true;
-      
+
       setTimeout(() => this.navigate("/login"), 3000);
     } catch (error: any) {
       let translationKey = "Password Reset Error";
-      
+
       if (error.isAxiosError) {
         const serverMessage = error.response?.data?.message || error.message;
-        
+
         if (serverMessage.includes("invalid token")) {
           translationKey = "Invalid Reset Token";
         } else if (serverMessage.includes("expired")) {
@@ -131,9 +135,9 @@ export default class PasswordReset implements ViewComponent {
                       }}
                     />
                   </FormControl>
-                  
+
                   <input type="hidden" name="token" value={values.token} />
-                  
+
                   <FormControl>
                     <TextField
                       label={t("New Password")}
@@ -152,7 +156,7 @@ export default class PasswordReset implements ViewComponent {
                       }}
                     />
                   </FormControl>
-                  
+
                   <FormControl>
                     <TextField
                       label={t("Confirm New Password")}
@@ -176,10 +180,10 @@ export default class PasswordReset implements ViewComponent {
                       }}
                     />
                   </FormControl>
-                  
-                  <Button 
-                    type="submit" 
-                    variant="contained" 
+
+                  <Button
+                    type="submit"
+                    variant="contained"
                     color="primary"
                     fullWidth
                     size="large"
