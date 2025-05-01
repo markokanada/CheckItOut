@@ -29,7 +29,7 @@ import { StyledTextField } from "../common/StyledTextField";
 import { StyledAutocomplete } from "../common/StyledAutocomplete";
 import { PrioritySlider } from "../components/PrioritySlider";
 import i18n from "../translation";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
 export class BaseCard implements ViewComponent {
   task: Task;
@@ -38,11 +38,12 @@ export class BaseCard implements ViewComponent {
   alertMessage: string = "";
   alertType: "success" | "error" | "" = "";
   isEditModalOpen: boolean = false;
-  editSnackbar: { open: boolean; message: string; type: "success" | "error" } = {
-    open: false,
-    message: "",
-    type: "success",
-  };
+  editSnackbar: { open: boolean; message: string; type: "success" | "error" } =
+    {
+      open: false,
+      message: "",
+      type: "success",
+    };
 
   constructor(task: Task) {
     this.task = task;
@@ -90,21 +91,21 @@ export class BaseCard implements ViewComponent {
       const formatDateForServer = (dateString: string) => {
         const date = new Date(dateString);
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const hours = String(date.getHours()).padStart(2, '0');
-        const minutes = String(date.getMinutes()).padStart(2, '0');
-        const seconds = String(date.getSeconds()).padStart(2, '0');
-        
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+        const seconds = String(date.getSeconds()).padStart(2, "0");
+
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
       };
-  
+
       const taskValues = {
         ...formValues,
         due_date: formatDateForServer(formValues.due_date),
         user_id: GlobalEntities.user.id as number,
       };
-  
+
       const resp = await GlobalEntities.updateTask(taskValues);
       if (resp.status === 200) {
         // Frissítjük a lokális task objektumot is
@@ -184,19 +185,19 @@ export class BaseCard implements ViewComponent {
     });
 
     const formatDateForInput = (date: Date | string) => {
-      const dateObj = typeof date === 'string' ? new Date(date) : date;
-      
+      const dateObj = typeof date === "string" ? new Date(date) : date;
+
       if (isNaN(dateObj.getTime())) {
         console.error("Invalid date provided:", date);
         return formatDateForInput(new Date());
       }
 
       const year = dateObj.getFullYear();
-      const month = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const day = String(dateObj.getDate()).padStart(2, '0');
-      const hours = String(dateObj.getHours()).padStart(2, '0');
-      const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-      
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const day = String(dateObj.getDate()).padStart(2, "0");
+      const hours = String(dateObj.getHours()).padStart(2, "0");
+      const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+
       return `${year}-${month}-${day}T${hours}:${minutes}`;
     };
 
@@ -223,9 +224,9 @@ export class BaseCard implements ViewComponent {
               right: 16,
               color: "primary.main",
               backgroundColor: "background.paper",
-              '&:hover': {
+              "&:hover": {
                 backgroundColor: "action.hover",
-              }
+              },
             }}
           >
             <EditIcon fontSize="small" />
@@ -314,7 +315,12 @@ export class BaseCard implements ViewComponent {
           </Snackbar>
         </Card.Root>
 
-        <Dialog open={this.isEditModalOpen} onClose={this.handleEditClose} maxWidth="sm" fullWidth>
+        <Dialog
+          open={this.isEditModalOpen}
+          onClose={this.handleEditClose}
+          maxWidth="sm"
+          fullWidth
+        >
           <DialogTitle>{t("EditTask")}</DialogTitle>
           <DialogContent>
             <Formik
@@ -328,7 +334,10 @@ export class BaseCard implements ViewComponent {
               {({ values, errors, touched, handleChange, setFieldValue }) => (
                 <Form id="edit-task-form">
                   <Stack spacing={3} sx={{ mt: 2 }}>
-                    <FormControl fullWidth error={touched.title && !!errors.title}>
+                    <FormControl
+                      fullWidth
+                      error={touched.title && !!errors.title}
+                    >
                       <Field
                         as={StyledTextField}
                         name="title"
@@ -340,7 +349,10 @@ export class BaseCard implements ViewComponent {
                       />
                     </FormControl>
 
-                    <FormControl fullWidth error={touched.description && !!errors.description}>
+                    <FormControl
+                      fullWidth
+                      error={touched.description && !!errors.description}
+                    >
                       <Field
                         as={StyledTextField}
                         name="description"
@@ -354,7 +366,10 @@ export class BaseCard implements ViewComponent {
                       />
                     </FormControl>
 
-                    <FormControl fullWidth error={touched.due_date && !!errors.due_date}>
+                    <FormControl
+                      fullWidth
+                      error={touched.due_date && !!errors.due_date}
+                    >
                       <StyledTextField
                         name="due_date"
                         label={t("DueDateTitle")}
@@ -367,21 +382,24 @@ export class BaseCard implements ViewComponent {
                       />
                     </FormControl>
 
-                    <FormControl fullWidth error={touched.category_id && !!errors.category_id}>
+                    <FormControl
+                      fullWidth
+                      error={touched.category_id && !!errors.category_id}
+                    >
                       <StyledAutocomplete
                         options={GlobalEntities.categories.filter(
-                          (cat) => cat.lang === i18n.language
+                          (cat) => cat.lang === i18n.language,
                         )}
                         getOptionLabel={(option) => option.name || ""}
                         value={
                           GlobalEntities.categories.find(
-                            (c) => c.id === values.category_id
+                            (c) => c.id === values.category_id,
                           ) || null
                         }
                         onChange={(_, newValue) => {
                           setFieldValue(
                             "category_id",
-                            newValue ? newValue.id : ""
+                            newValue ? newValue.id : "",
                           );
                         }}
                         renderInput={(params) => (
@@ -397,7 +415,10 @@ export class BaseCard implements ViewComponent {
                       />
                     </FormControl>
 
-                    <FormControl fullWidth error={touched.priority && !!errors.priority}>
+                    <FormControl
+                      fullWidth
+                      error={touched.priority && !!errors.priority}
+                    >
                       <Field
                         name="priority"
                         component={PrioritySlider}
@@ -405,7 +426,7 @@ export class BaseCard implements ViewComponent {
                         onChange={(_e: Event, value: number | number[]) =>
                           setFieldValue(
                             "priority",
-                            Array.isArray(value) ? value[0] : value
+                            Array.isArray(value) ? value[0] : value,
                           )
                         }
                       />
@@ -420,10 +441,10 @@ export class BaseCard implements ViewComponent {
           </DialogContent>
           <DialogActions>
             <Button onClick={this.handleEditClose}>{t("Cancel")}</Button>
-            <Button 
-              type="submit" 
-              form="edit-task-form" 
-              variant="contained" 
+            <Button
+              type="submit"
+              form="edit-task-form"
+              variant="contained"
               color="primary"
             >
               {t("Save")}
@@ -434,7 +455,9 @@ export class BaseCard implements ViewComponent {
         <Snackbar
           open={this.editSnackbar.open}
           autoHideDuration={4000}
-          onClose={() => this.editSnackbar = { ...this.editSnackbar, open: false }}
+          onClose={() =>
+            (this.editSnackbar = { ...this.editSnackbar, open: false })
+          }
           anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         >
           <Alert severity={this.editSnackbar.type} sx={{ width: "100%" }}>
