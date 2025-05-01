@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { notification } from "antd";
 import { useTranslation } from "react-i18next";
+import GlobalApiHandlerInstance from "../../api/GlobalApiHandlerInstance";
 
 interface IValues {
   name: string;
@@ -20,7 +21,7 @@ export const useForm = (validate: (values: IValues) => IValues) => {
     errors: { ...initialValues },
   });
 
-  const { t } = useTranslation(); // 🔥 Fontos!
+  const { t } = useTranslation();
 
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -28,24 +29,21 @@ export const useForm = (validate: (values: IValues) => IValues) => {
     const errors = validate(values);
     setFormState((prev) => ({ ...prev, errors }));
 
-    const url = "http://mailcatcher.vm1.test/"; // TODO: Replace later
-
     try {
       if (Object.values(errors).every((error) => error === "")) {
-        const response = await fetch(url, {
-          method: "POST",
+        const response = await GlobalApiHandlerInstance.post("/contact", {
+          name: values.name,
+          email: values.email,
+          description: values.message
+        }, {
           headers: {
             "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
+            "Accept": "application/json",
+          }
         });
 
-        if (!response.ok) {
-          notification["error"]({
-            message: t("Notification Error Title"),
-            description: t("Notification Error Description"),
-          });
-        } else {
+        if (response.status >= 200 && response.status < 300) {
+          // Sikeres küldés
           event.target.reset();
           setFormState(() => ({
             values: { ...initialValues },
@@ -56,16 +54,21 @@ export const useForm = (validate: (values: IValues) => IValues) => {
             message: t("Notification Success Title"),
             description: t("Notification Success Description"),
           });
+        } else {
+          // Hibás válasz
+          notification["error"]({
+            message: t("Notification Error Title"),
+            description: response.data?.message || t("Notification Error Description"),
+          });
         }
       }
-    } catch (error) {
+    } catch (error: any) {
       notification["error"]({
         message: t("Notification Error Title"),
-        description: t("Notification Error Fallback"),
+        description: error.response?.data?.message || t("Notification Error Fallback"),
       });
     }
-  };
-
+};
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
