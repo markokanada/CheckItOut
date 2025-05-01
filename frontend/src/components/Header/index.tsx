@@ -49,7 +49,9 @@ const Header = ({ t }: { t: TFunction }) => {
   const isInTheApp = location.pathname.startsWith("/app/");
   const isUserLinksRequired =
     !isInTheApp &&
-    ["/", "/how-to-use", "/login", "/register", "/reset-password"].includes(location.pathname);
+    ["/", "/how-to-use", "/login", "/register", "/reset-password"].includes(
+      location.pathname,
+    );
   const isAdminPanelNeeded = isInTheApp && GlobalEntities.user.role === "admin";
   const toggleButton = () => setVisibility(!visible);
 
