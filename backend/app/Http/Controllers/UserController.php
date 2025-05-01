@@ -158,44 +158,60 @@ class UserController extends Controller
             'message' => 'Jelszó-visszaállítási link elküldve az email címre. / Password reset link sent to email address.'
         ]);
     }
-
+    protected function isTokenExpired($tokenCreatedAt)
+    {
+        if (!$tokenCreatedAt instanceof \Carbon\Carbon) {
+            $tokenCreatedAt = \Carbon\Carbon::parse($tokenCreatedAt);
+        }
+        
+        return $tokenCreatedAt->addHours(2)->isPast();
+    }
     /**
      * Reset user's password using token
      */
     public function resetPassword(Request $request): JsonResponse
     {
+        
         $request->validate([
             'email' => 'required|email',
             'token' => 'required|string',
             'password' => 'required|confirmed|min:8',
         ]);
-
+    
         $user = User::where('email', $request->email)->first();
-
+    
         if (!$user || !$user->password_reset_token) {
             return response()->json([
                 'message' => 'Érvénytelen token vagy email cím. / Invalid token or email address.'
             ], 400);
         }
-
+        
         if (!Hash::check($request->token, $user->password_reset_token)) {
             return response()->json([
                 'message' => 'Érvénytelen token. / Invalid token.'
             ], 400);
         }
-
+        if ($this->isTokenExpired($user->password_reset_token_created_at)) {
+            return response()->json([
+                'message' => 'A token lejárt. / The token has expired.'
+            ], 400);
+        }
+        if (!$user->password_reset_token_created_at instanceof \Carbon\Carbon) {
+            $user->password_reset_token_created_at = \Carbon\Carbon::parse($user->password_reset_token_created_at);
+        }
+    
         if ($user->password_reset_token_created_at->addHours(2)->isPast()) {
             return response()->json([
                 'message' => 'A token lejárt. / The token has expired.'
             ], 400);
         }
-
+    
         $user->forceFill([
             'password' => Hash::make($request->password),
             'password_reset_token' => null,
             'password_reset_token_created_at' => null
         ])->save();
-
+    
         return response()->json([
             'message' => 'Jelszó sikeresen visszaállítva. / Password successfully reset.'
         ]);
