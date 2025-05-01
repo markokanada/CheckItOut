@@ -18,6 +18,7 @@ import Footer from "./components/Footer";
 import Documentation from "./pages/Documentation";
 import _404 from "./pages/404";
 import { Box, Flex } from "@chakra-ui/react";
+import PasswordReset from "./pages/PasswordReset";
 
 export default class App implements ViewComponent {
   constructor(private navigate: NavigateFunction) {
@@ -60,6 +61,10 @@ export default class App implements ViewComponent {
     return new UserManagement(this.navigate);
   }
 
+  @computed get passwordReset(): ViewComponent {
+    return new PasswordReset(this.navigate);
+  }
+
   @computed get _404(): ViewComponent {
     return new _404(this.navigate);
   }
@@ -89,6 +94,7 @@ export default class App implements ViewComponent {
               path="/app/admin/users"
               element={<this.userManagement.View />}
             />
+            <Route path="/reset-password" element={<this.passwordReset.View />} />
             <Route path="*" element={<this._404.View />} />
           </Routes>
         </Box>
