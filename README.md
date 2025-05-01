@@ -23,3 +23,10 @@ docker compose down -v
 ```
 
 - A `-v` hatására a köteteket is törli, így az adatbázisban tárolt adatok is megszűnnek.
+
+## Hiba esetén
+
+```
+echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf
+sudo sysctl -p
+```
