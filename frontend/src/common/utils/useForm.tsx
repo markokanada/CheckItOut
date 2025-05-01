@@ -31,16 +31,20 @@ export const useForm = (validate: (values: IValues) => IValues) => {
 
     try {
       if (Object.values(errors).every((error) => error === "")) {
-        const response = await GlobalApiHandlerInstance.post("/contact", {
-          name: values.name,
-          email: values.email,
-          description: values.message
-        }, {
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          }
-        });
+        const response = await GlobalApiHandlerInstance.post(
+          "/contact",
+          {
+            name: values.name,
+            email: values.email,
+            description: values.message,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          },
+        );
 
         if (response.status >= 200 && response.status < 300) {
           // Sikeres küldés
@@ -58,17 +62,19 @@ export const useForm = (validate: (values: IValues) => IValues) => {
           // Hibás válasz
           notification["error"]({
             message: t("Notification Error Title"),
-            description: response.data?.message || t("Notification Error Description"),
+            description:
+              response.data?.message || t("Notification Error Description"),
           });
         }
       }
     } catch (error: any) {
       notification["error"]({
         message: t("Notification Error Title"),
-        description: error.response?.data?.message || t("Notification Error Fallback"),
+        description:
+          error.response?.data?.message || t("Notification Error Fallback"),
       });
     }
-};
+  };
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
