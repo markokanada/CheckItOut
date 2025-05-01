@@ -61,7 +61,10 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task) :JsonResource
     {
-        $task->update($request->validated());
+        $data = $request->validated();
+        $data['status'] = 'new'; 
+        $task->update($data);
+    
         return new TaskResource($task);
     }
 
