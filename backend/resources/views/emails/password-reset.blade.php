@@ -7,10 +7,9 @@
 <body style="font-family: Arial, sans-serif; line-height: 1.6;">
     @php
         $resetUrl = $resetLink;
-        if (strpos($resetLink, 'backend.') === 0) {
+        if (strpos($resetLink, 'backend.') !== false) {
             $resetUrl = str_replace('backend.', 'frontend.', $resetLink);
         }
-        $resetUrl .= '/resetPassword';
     @endphp
 
     <h2>🔐 Jelszó visszaállítás</h2>
