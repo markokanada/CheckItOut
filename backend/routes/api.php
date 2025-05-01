@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
@@ -45,3 +46,5 @@ Route::middleware('auth:sanctum')->group(function () {
 //         return 'Hiba: ' . $e->getMessage();
 //     }
 // });
+
+Route::post('/contact', [ContactController::class, 'sendContactEmail']);
