@@ -191,5 +191,10 @@
   "Send Reset Link": "Send Reset Link",
   "Password Reset Sent": "Password reset link sent successfully",
   "Password Reset Send Error": "Error sending password reset link",
-  "Forgotten Title": "Have you forgotten your password?"
+  "Forgotten Title": "Have you forgotten your password?",
+  "TaskUpdatedSuccess": "Task updated successfully.",
+  "TaskUpdateError": "Failed to update the task.",
+  "EditTask": "Edit Task",
+  "Save": "Save"
+
 }

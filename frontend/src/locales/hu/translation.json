@@ -189,7 +189,9 @@
   "Send Reset Link": "Visszaállító link küldése",
   "Forgotten Title": "Elfelejtette jelszavát?",
   "Password Reset Sent": "Jelszó-visszaállító link sikeresen elküldve",
-  "Password Reset Send Error": "Hiba történt a visszaállító link küldésekor"
-
-
+  "Password Reset Send Error": "Hiba történt a visszaállító link küldésekor",
+  "TaskUpdatedSuccess": "A feladat sikeresen frissítve.",
+  "TaskUpdateError": "Nem sikerült frissíteni a feladatot.",
+  "EditTask": "Feladat szerkesztése",
+  "Save": "Mentés"
 }
