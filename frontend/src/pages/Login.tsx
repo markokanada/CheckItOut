@@ -136,7 +136,7 @@ export default class Login implements ViewComponent {
       }
       return false;
     } catch (error: any) {
-      let translationKey = "Password Reset Error";
+      let translationKey = "Password Reset Send Error";
 
       if (error.isAxiosError) {
         const serverMessage = error.response?.data?.message || error.message;
