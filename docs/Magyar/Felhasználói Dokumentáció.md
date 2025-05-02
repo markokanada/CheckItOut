@@ -205,3 +205,26 @@ Ez a dokumentáció részletes útmutatót nyújt a Check It Out webalkalmazás 
 - **Mégse**: Változtatások elvetése
 
 **Biztonsági megjegyzés**: Email cím változtatásával újra kell jelentkeznie.
+
+## 4. PWA Telepítés és Offline Használat
+
+### 4.1 Telepítés
+
+1. **Asztali számítógépen**:
+    - Chrome: Kattintson a jobb felső sarokban lévő telepítés ikonra
+    - Firefox: Menüből "Telepítés alkalmazásként" lehetőség
+2. **Mobil eszközön**:
+    - Safari (iOS): Megosztás → Kezdőképernyőre helyezés
+    - Chrome (Android): Menü → Telepítés alkalmazásként
+
+### 4.2 Offline Funkciók
+
+- Meglévő feladatok megtekintése
+- Új feladatok létrehozása (online állapotba visszatéréskor szinkronizálódik)
+- Profiladatok szerkesztése
+
+### 4.3 Előnyök
+
+- Gyorsabb betöltés
+- Kezdőképernyőről közvetlen elérés
+- Push értesítések (jövőbeli fejlesztés)
