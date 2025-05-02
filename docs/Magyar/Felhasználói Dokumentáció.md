@@ -19,3 +19,7 @@ A CheckItOut egy egyszerű és hatékony eszköz a napi teendők rendszerezésé
 A CheckItOut segít abban, hogy több időd maradjon arra, ami igazán fontos. Kezdd el még ma, és tapasztald meg a hatékony időgazdálkodás előnyeit!
 
 **Próbáld ki most!**
+
+## 1. Bevezetés
+
+Ez a dokumentáció részletes útmutatót nyújt a Check It Out webalkalmazás használatához. Az alkalmazás segítségével hatékonyan kezelheti napi feladatait, projektjeit, és személyre szabhatja felhasználói fiókját.
