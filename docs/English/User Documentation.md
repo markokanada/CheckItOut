@@ -203,3 +203,26 @@ This documentation provides a detailed guide for using the CheckItOut web applic
 - **Cancel**: Discard changes
 
 **Security Note**: Changing your email will require re-login.
+
+## 4. PWA Installation and Offline Use
+
+### 4.1 Installation
+
+1. **On Desktop**:  
+    - Chrome: Click the install icon in the top-right corner  
+    - Firefox: Use menu → “Install as app”  
+2. **On Mobile**:  
+    - Safari (iOS): Share → Add to Home Screen  
+    - Chrome (Android): Menu → Install App
+
+### 4.2 Offline Features
+
+- View existing tasks  
+- Create new tasks (synced once back online)  
+- Edit profile data
+
+### 4.3 Benefits
+
+- Faster loading  
+- Direct access from home screen  
+- Push notifications (coming soon)
