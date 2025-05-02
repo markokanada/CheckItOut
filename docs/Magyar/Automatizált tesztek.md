@@ -75,3 +75,19 @@ Az alkalmazás tesztelése több szinten történik:
     - A feladatok sorrendjének ellenőrzése
     - Magasabb prioritású feladatok előrébb helyezése
     - Azonos prioritásnál korábbi határidő előrébb
+
+## Tesztelési Stratégia
+
+1. **Tesztkörnyezet**:
+    - Külön frontend és backend tesztkörnyezet
+    - Chrome böngésző Seleniumhoz
+    - Adatbázis automatikus frissítése tesztenként
+2. **Tesztadatok**:
+    - Factory-k használata véletlenszerű, de konzisztens adatokhoz
+    - Mock objektumok komplex függőségek helyettesítésére
+3. **Futtatás**:
+    - JavaScript tesztek: Node.js környezetben
+    - PHP tesztek: PHPUnit keretrendszerrel
+4. **Jelentéskészítés**:
+    - Konzolos kimenet minden tesztfuttatáskor
+    - Hibák részletes naplózása
