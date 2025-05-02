@@ -241,3 +241,11 @@ Ez a dokumentáció részletes útmutatót nyújt a Check It Out webalkalmazás 
 
 - Email: [info@oneofthelot.hu](mailto:info@oneofthelot.hu)
 - Ügyfélszolgálat: Hétfő-Péntek 9:00-17:00
+
+## 6. Adatvédelmi információk
+
+- Minden adat titkosítottan tárolódik
+- Jelszavak soha nem tárolódnak nyílt szövegként
+- Adatvédelmi szabályzat elérhető a láblécben
+
+Ez a dokumentáció folyamatosan frissül az új funkciókkal együtt. Legutóbbi frissítés: 2025.05.02
