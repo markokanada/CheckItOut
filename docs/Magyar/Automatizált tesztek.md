@@ -32,3 +32,19 @@ Az alkalmazás tesztelése több szinten történik:
     - Jövőbeli és múltbeli dátum kezelése
     - Prioritás beállítás
     - Kategória választó működése
+
+## API Tesztek (PHPUnit)
+
+### 1. Ütemezés API Tesztek (ScheduleApiTest.php)
+
+- **Tesztelt végpontok**:
+    - `GET /api/schedules` - Listázás
+    - `POST /api/schedules` - Létrehozás
+    - `GET /api/schedules/{id}` - Egy elem lekérdezése
+    - `PUT /api/schedules/{id}` - Frissítés
+    - `DELETE /api/schedules/{id}` - Törlés
+- **Tesztelt esetek**:
+    - Válasz státuszkódok
+    - JSON struktúra ellenőrzése
+    - Adatbázis műveletek hatásainak ellenőrzése
+    - Factory alapú tesztadatok generálása
