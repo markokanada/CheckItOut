@@ -19,3 +19,7 @@ CheckItOut is a simple and effective tool designed to help you organize daily ta
 CheckItOut helps you free up time for what really matters. Get started today and experience the benefits of effective time management!
 
 **Try it now!**
+
+## 1. Introduction
+
+This documentation provides a detailed guide for using the CheckItOut web application. The app allows you to efficiently manage your daily tasks, projects, and customize your user profile.
