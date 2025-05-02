@@ -226,3 +226,25 @@ This documentation provides a detailed guide for using the CheckItOut web applic
 - Faster loading  
 - Direct access from home screen  
 - Push notifications (coming soon)
+
+## 5. Troubleshooting
+
+### 5.1 Common Issues
+
+- **Login Failed**: Check CAPS LOCK or reset your password  
+- **Invalid Token**: Reset link is valid for 24 hours only  
+- **Offline Limitations**: Some features require internet connection
+
+### 5.2 Contact
+
+- Email: [info@oneofthelot.hu](mailto:info@oneofthelot.hu)  
+- Support: Monday–Friday 9:00–17:00
+
+## 6. Privacy Information
+
+- All data is stored securely and encrypted  
+- Passwords are never stored in plain text  
+- Privacy Policy is accessible in the footer
+
+This documentation is regularly updated with new features.  
+Last updated: 2025.05.02
