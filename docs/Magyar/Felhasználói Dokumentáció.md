@@ -23,3 +23,22 @@ A CheckItOut segít abban, hogy több időd maradjon arra, ami igazán fontos. K
 ## 1. Bevezetés
 
 Ez a dokumentáció részletes útmutatót nyújt a Check It Out webalkalmazás használatához. Az alkalmazás segítségével hatékonyan kezelheti napi feladatait, projektjeit, és személyre szabhatja felhasználói fiókját.
+
+## 2. Általános Szerkezet
+
+### 2.1 Fejléc (Header)
+
+- **Logó**: Bal felső sarokban, a kezdőlapra visszavezet
+- **Navigációs menü**:
+    - *Kezdőlap*: Visszavezet a főoldalra
+    - *Új feladat*: Feladat létrehozása oldal
+    - *Profil*: Felhasználói adatok kezelése
+    - *Kijelentkezés*: Munkamenet lezárása
+- **Nyelvválasztó**: Jobb felső sarokban (angol/magyar)
+
+### 2.2 Lábléc (Footer)
+
+- **Kapcsolat**: Email cím és fizikai cím
+- **Dokumentáció**: Használati útmutató linkje
+- **Nyelvválasztó**
+- **Copyright információk**
