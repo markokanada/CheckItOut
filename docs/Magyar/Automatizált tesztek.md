@@ -48,3 +48,16 @@ Az alkalmazás tesztelése több szinten történik:
     - JSON struktúra ellenőrzése
     - Adatbázis műveletek hatásainak ellenőrzése
     - Factory alapú tesztadatok generálása
+
+### 2. Feladat API Tesztek (TaskApiTest.php)
+
+- **Tesztelt végpontok**:
+    - `GET /api/tasks` - Listázás
+    - `POST /api/tasks` - Létrehozás
+    - `GET /api/tasks/{id}` - Egy elem lekérdezése
+    - `PUT /api/tasks/{id}` - Frissítés
+    - `DELETE /api/tasks/{id}` - Törlés
+- **Különleges ellenőrzések**:
+    - Frissítéskor a módosított mezők ellenőrzése
+    - Törlés utáni adatbázis állapot ellenőrzése
+    - Több elem egyidejű kezelése
