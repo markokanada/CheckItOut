@@ -8,3 +8,14 @@ CheckItOut is a simple and effective tool designed to help you organize daily ta
 - **Customizable** – Create personalized lists, set reminders, and prioritize your tasks.  
 - **Clarity** – Effortlessly track your tasks on a daily, weekly, or even monthly basis.  
 - **Efficiency** – Helps you stay focused and organized throughout your day.
+
+### How Does It Work?
+
+1. **Create New Tasks** – Add your daily to-dos with a single click.  
+2. **Set Deadlines and Reminders** – Never miss an important task again!  
+3. **Define Priorities** – Rank your tasks based on their importance.  
+4. **Mark Tasks as Complete** – Enjoy the satisfaction of progress as you move forward in an organized way.
+
+CheckItOut helps you free up time for what really matters. Get started today and experience the benefits of effective time management!
+
+**Try it now!**
