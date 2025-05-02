@@ -61,3 +61,17 @@ Az alkalmazás tesztelése több szinten történik:
     - Frissítéskor a módosított mezők ellenőrzése
     - Törlés utáni adatbázis állapot ellenőrzése
     - Több elem egyidejű kezelése
+
+## Egységtesztek (PHPUnit)
+
+### 1. Ütemezés Összeállító Teszt (ScheduleTest.php)
+
+- **Tesztelt metódus**: `scheduleComposer` a ScheduleController-ben
+- **Tesztelt funkció**:
+    - Feladatok rendezése prioritás és határidő szerint
+    - Mock objektum használata a User modellhez
+    - Várt eredmény ellenőrzése
+- **Fontosabb assert-ek**:
+    - A feladatok sorrendjének ellenőrzése
+    - Magasabb prioritású feladatok előrébb helyezése
+    - Azonos prioritásnál korábbi határidő előrébb
