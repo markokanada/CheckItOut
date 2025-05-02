@@ -91,3 +91,17 @@ Az alkalmazás tesztelése több szinten történik:
 4. **Jelentéskészítés**:
     - Konzolos kimenet minden tesztfuttatáskor
     - Hibák részletes naplózása
+
+## Fontos Megjegyzések
+
+1. **Időérzékeny tesztek**:
+    - Dátum-ellenőrzések különös figyelmet igényelnek
+    - Relatív dátumok használata (tegnap, holnap)
+2. **Aszinkron műveletek**:
+    - Megfelelő várakozási idők beállítása Seleniumban
+    - Explicit wait használata elemek megjelenéséhez
+3. **Adatbázis-állapot**:
+    - Minden teszt előtt tiszta állapot biztosítása
+    - RefreshDatabase trait használata
+
+Ez a tesztlefedettség biztosítja az alkalmazás kulcsfontosságú funkcionalitásainak megfelelő működését, miközben lehetővé teszi a gyors hibaelhárítást és a fejlesztési folyamat stabilitását.
