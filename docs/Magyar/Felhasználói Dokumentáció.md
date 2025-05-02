@@ -228,3 +228,16 @@ Ez a dokumentáció részletes útmutatót nyújt a Check It Out webalkalmazás 
 - Gyorsabb betöltés
 - Kezdőképernyőről közvetlen elérés
 - Push értesítések (jövőbeli fejlesztés)
+
+## 5. Hibaelhárítás
+
+### 5.1 Gyakori problémák
+
+- **Bejelentkezés sikertelen**: Ellenőrizze a CAPS LOCK állapotát, vagy használja a jelszó-visszaállítást
+- **Token érvénytelen**: A jelszó-visszaállító link 24 óráig érvényes
+- **Offline mód korlátozások**: Néhány funkció csak online állapotban érhető el
+
+### 5.2 Kapcsolat
+
+- Email: [info@oneofthelot.hu](mailto:info@oneofthelot.hu)
+- Ügyfélszolgálat: Hétfő-Péntek 9:00-17:00
