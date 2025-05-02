@@ -8,4 +8,3 @@ A BMSzC Neumann János Informatikai Technikum megbízásból.
 
 Buborék Márkó Zsolt, Csóka Márton, Molnár Márk
 
-# Dokumentáció
